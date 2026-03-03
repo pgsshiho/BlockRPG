@@ -421,7 +421,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3194118419900049985}
   - component: {fileID: 5411025173013786381}
-  - component: {fileID: 4824410308167138740}
+  - component: {fileID: 8958206435021236515}
   m_Layer: 6
   m_Name: Z
   m_TagString: Untagged
@@ -475,7 +475,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &4824410308167138740
+--- !u!114 &8958206435021236515
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -484,12 +484,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6123128595633570121}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed2897fc9a2f90747bfc965f30c6d919, type: 3}
+  m_Script: {fileID: 11500000, guid: bad413130d3ccfe4ab515b7bc9ce3389, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BasicTetris
-  level: 1
-  isbottom: 0
-  isdone: 0
+  m_EditorClassIdentifier: Assembly-CSharp::BlockBase
 --- !u!1 &6460498836437839721
 GameObject:
   m_ObjectHideFlags: 0

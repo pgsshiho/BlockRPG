@@ -557,8 +557,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9170486748301930376}
-  - component: {fileID: 8417041036629714186}
   - component: {fileID: 7440074047960255074}
+  - component: {fileID: 2184362028853464598}
   m_Layer: 6
   m_Name: s
   m_TagString: Untagged
@@ -585,21 +585,6 @@ Transform:
   - {fileID: 6146213697107952516}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8417041036629714186
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7540356213538286948}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed2897fc9a2f90747bfc965f30c6d919, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BasicTetris
-  level: 1
-  isbottom: 0
-  isdone: 0
 --- !u!50 &7440074047960255074
 Rigidbody2D:
   serializedVersion: 5
@@ -627,3 +612,15 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &2184362028853464598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7540356213538286948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bad413130d3ccfe4ab515b7bc9ce3389, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BlockBase
