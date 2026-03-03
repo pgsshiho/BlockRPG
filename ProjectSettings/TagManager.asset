@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - wall
+  - spawn
   layers:
   - Default
   - TransparentFX
@@ -12,8 +13,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Block
+  - Floor
   - 
   - 
   - 
