@@ -1,15 +1,17 @@
 using UnityEngine;
-using TMPro; // TextMeshPro를 사용한다면 추가, 일반 Text라면 삭제
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class blockclear : MonoBehaviour
 {
     public const int width = 20;
-    public const int height = 60;
+    public const int height = 80;
     public static Transform[,] grid = new Transform[width, height];
     public static int ScoreForSpeed = 0;
+
     [Header("Score Settings")]
     public int currentScore = 0;
-    public TextMeshProUGUI scoreText; // 유니티 에디터에서 TextUI를 드래그해서 넣어주세요
+    public TextMeshProUGUI scoreText;
 
     void Awake()
     {
@@ -26,8 +28,7 @@ public class blockclear : MonoBehaviour
 
     public void DeleteFullLines()
     {
-        int linesClearedInStep = 0; // 이번에 동시에 지워진 줄 수
-
+        int linesCleared = 0;
         for (int y = 0; y < height; y++)
         {
             if (IsLineFull(y))
@@ -35,40 +36,41 @@ public class blockclear : MonoBehaviour
                 DeleteLine(y);
                 DecreaseRowsAbove(y + 1);
                 y--;
-                linesClearedInStep++;
+                linesCleared++;
             }
         }
+        if (linesCleared > 0) AddScore(linesCleared);
+        CheckGameOver();
+    }
 
-        if (linesClearedInStep > 0)
+    public void CheckGameOver()
+    {
+        // 19번 라인에 블록이 하나라도 있으면 즉시 게임오버
+        for (int x = 0; x < width; x++)
         {
-            AddScore(linesClearedInStep);
+            if (grid[x, 55] != null)
+            {
+                Time.timeScale = 1;
+                ScoreForSpeed = 0;
+                SceneManager.LoadScene("Mainmenu");
+                return;
+            }
         }
     }
 
-    // 점수 계산 공식 (지운 줄 수에 따라 차등 지급)
     void AddScore(int lines)
     {
-        switch (lines)
-        {
-            case 1: currentScore += 100; break;   // 1줄: 100점
-            case 2: currentScore += 300; break;   // 2줄: 300점
-            case 3: currentScore += 500; break;   // 3줄: 500점
-            case 4: currentScore += 800; break;   // 4줄(테트리스): 800점
-            default: currentScore += lines * 200; break;
-        }
-        ScoreForSpeed = currentScore; // 현재 점수를 업데이트
+        int[] bonus = { 0, 100, 300, 500, 800 };
+        currentScore += (lines <= 4) ? bonus[lines] : lines * 200;
+        ScoreForSpeed = currentScore;
         UpdateScoreUI();
     }
 
     void UpdateScoreUI()
     {
-        if (scoreText != null)
-        {
-            scoreText.text = "Score: " + currentScore.ToString();
-        }
+        if (scoreText != null) scoreText.text = "Score: " + currentScore;
     }
 
-    // IsLineFull, DeleteLine, DecreaseRowsAbove 함수는 기존과 동일하게 유지...
     bool IsLineFull(int y)
     {
         int count = 0;
@@ -76,6 +78,8 @@ public class blockclear : MonoBehaviour
         {
             if (grid[x, y] != null) count++;
         }
+        // 실제 게임 화면 가로 칸 수에 맞춰 이 숫자를 조절하세요.
+        // 화면이 10칸 너비라면 10, 20칸 너비라면 20으로 설정합니다.
         return count >= 10;
     }
 
@@ -83,10 +87,11 @@ public class blockclear : MonoBehaviour
     {
         for (int x = 0; x < width; x++)
         {
+            // [수정] grid[x, y]가 null이 아닐 때만 Destroy를 호출합니다.
             if (grid[x, y] != null)
             {
                 Destroy(grid[x, y].gameObject);
-                grid[x, y] = null;
+                grid[x, y] = null; // 삭제 후 배열 칸을 비워줍니다.
             }
         }
     }
