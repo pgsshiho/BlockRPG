@@ -9,8 +9,8 @@ EditorBuildSettings:
     path: Assets/Mainmenu/Scene/Mainmenu.unity
     guid: 48e566d6c95d0274dafb40a45a24faf4
   - enabled: 1
-    path: Assets/Worldmap/Scene/worldmap.unity
-    guid: c804190dc60e3254386ab04795387f51
+    path: Assets/Tetris/Scene/Tetris.unity
+    guid: 4f8c54403bf62b149b77227d4846b275
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100,
       type: 3}

@@ -9,9 +9,14 @@ public class Mainmenu : MonoBehaviour
     }
    void Update()
     {
-        if (Input.anyKeyDown) {
-            SceneManager.LoadScene("worldmap");
-            Debug.Log("눌림");
-        }
+       
+    }
+    public void qu()
+    {
+        Application.Quit();
+    }
+    public void start()
+    {
+        SceneManager.LoadScene("Tetris");
     }
 }

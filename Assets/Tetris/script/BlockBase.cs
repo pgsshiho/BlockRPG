@@ -10,10 +10,15 @@ public class BlockBase : MonoBehaviour
     Conebase cb;
     bool gameover = false ;
     public GameObject ghost;
+    blockclear bc;
+    float timers = 0f;
+    public bool isground = false;
+    public int trying = 0;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         cb = FindAnyObjectByType<Conebase>();
+        bc = FindAnyObjectByType<blockclear>();
     }
     void LateUpdate() // 이동이 다 끝난 후 고스트 위치 계산
     {
@@ -63,23 +68,46 @@ public class BlockBase : MonoBehaviour
     }
     void Update()
     {
-        // 1. 회전 로직 (월킥 포함)
+        if(isground == true)
+        {
+            timers++;
+        }
+        // 1. 회전 로직 (월킥 보강)
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             transform.Rotate(0f, 0f, 90f);
+            Sound.instance.swing.Play();
+            // 회전 후 겹친다면 여러 방향으로 튕겨나가며 빈자리 찾기
             if (!IsRotationSafe())
             {
-                transform.position += new Vector3(1.0f, 0, 0);
-                if (!IsRotationSafe())
+                // 월킥 후보지들: 왼쪽으로 0.5, 오른쪽으로 0.5, 왼쪽으로 1.0, 오른쪽으로 1.0, 위로 0.5
+                Vector3[] kickOffsets = {
+                    new Vector3(-0.5f, 0, 0),
+                    new Vector3(0.5f, 0, 0),
+                    new Vector3(-1.0f, 0, 0),
+                    new Vector3(1.0f, 0, 0),
+                    new Vector3(0, 0.5f, 0)
+                };
+
+                bool fixedRotation = false;
+                foreach (Vector3 offset in kickOffsets)
                 {
-                    transform.position += new Vector3(-2.0f, 0, 0);
-                    if (!IsRotationSafe())
+                    transform.position += offset;
+                    if (IsRotationSafe())
                     {
-                        transform.position += new Vector3(1.0f, 0, 0);
-                        transform.Rotate(0f, 0f, -90f);
+                        fixedRotation = true;
+                        break;
                     }
+                    transform.position -= offset; // 안 맞으면 원복 후 다음 시도
+                }
+
+                if (!fixedRotation)
+                {
+                    // 모든 방향 실패 시 회전 취소
+                    transform.Rotate(0f, 0f, -90f);
                 }
             }
+                
         }
 
         // 2. 하드 드랍
@@ -91,6 +119,7 @@ public class BlockBase : MonoBehaviour
             }
             // 소수점 오차 보정 (그리드 스냅)
             transform.position = new Vector3(Mathf.Round(transform.position.x * 2f) / 2f, Mathf.Round(transform.position.y * 2f) / 2f, 0);
+            timers = 0; // 사운드 추가
             OnHardDropSettle();
             return;
         }
@@ -105,30 +134,48 @@ public class BlockBase : MonoBehaviour
     {
         if (Input.GetKeyDown(key))
         {
-            if (canmove(dir)) transform.position += (dir.y == 0) ? new Vector3(moveAmount, 0, 0) : new Vector3(0, moveAmount, 0);
+            timer = 0;
+
+            if (canmove(dir))
+            {
+                transform.position += (dir.y == 0) ? new Vector3(moveAmount, 0, 0) : new Vector3(0, moveAmount, 0);
+                if (isground) timers = 0; // 바닥에서 옆으로 이동 시 유예 초기화
+            }
+            else if (key == KeyCode.DownArrow) // [추가] 아래 키 눌렀는데 못 움직이면(바닥이면)
+            {
+                OnHardDropSettle(); // 즉시 설치
+                return;
+            }
         }
 
         if (Input.GetKey(key))
         {
             timer += Time.deltaTime;
-            if (timer >= 0.2f)
+            float initialDelay = 0.15f;
+            float repeatInterval = 0.03f;
+
+            if (timer >= initialDelay)
             {
                 if (canmove(dir))
                 {
                     if (dir.y == 0) transform.position += new Vector3(moveAmount, 0, 0);
                     else transform.position += new Vector3(0, moveAmount, 0);
+                    if (isground) timers = 0;
                 }
-                timer = 0;
+                else if (key == KeyCode.DownArrow) // [추가] 꾹 누르는 중에도 바닥에 닿으면
+                {
+                    OnHardDropSettle(); // 즉시 설치
+                    return;
+                }
+                timer = initialDelay - repeatInterval;
             }
         }
-        else if (Input.GetKeyUp(key))
-        {
-            timer = 0;
-        }
+        // ... KeyUp 로직 ...
     }
 
     private void FixedUpdate()
     {
+        UpdateLevelSpeed(); // 매 고정 프레임마다 속도 체크
         nowfram++;
         if (nowfram >= frame)
         {
@@ -142,30 +189,41 @@ public class BlockBase : MonoBehaviour
         if (canmove(Vector3.down))
         {
             transform.position += new Vector3(0, -0.5f, 0);
+            isground = false; // 아래로 한 칸이라도 내려가면 지면 상태 해제
+            timers = 0;       // 타이머 초기화
         }
         else
         {
-            OnHardDropSettle();
+            isground = true;
+            // 30프레임(약 0.5초) 지났거나 15번 비볐으면 고정
+            if (timers >= 20 || trying >= 15) OnHardDropSettle();
         }
     }
 
+    // BlockBase.cs 내부 수정
     void OnHardDropSettle()
     {
         if (ghost != null) Destroy(ghost);
+
+        foreach (Transform child in transform)
+        {
+            // blockclear 클래스의 함수를 사용
+            Vector2Int index = blockclear.PosToIndex(child.position);
+
+            if (index.x >= 0 && index.x < blockclear.width && index.y >= 0 && index.y < blockclear.height)
+            {
+                blockclear.grid[index.x, index.y] = child;
+                child.tag = "Block";
+            }
+        }
+
+        // blockclear 컴포넌트를 찾아서 호출
+        FindAnyObjectByType<blockclear>().DeleteFullLines();
+        Sound.instance.drop.Play();
         this.enabled = false;
-        if (rb != null)
-        {
-            rb.linearVelocity = Vector2.zero;
-            rb.isKinematic = true;
-        }
-        if(transform.position.y >= 9.2f)
-        {
-            gameover = true;
-            Debug.Log("게임오버");
-        }
+        if (rb != null) { rb.linearVelocity = Vector2.zero; rb.isKinematic = true; }
         cb.Clone();
     }
-
     // [중요] 레이캐스트 대신 OverlapPoint를 사용하여 겹침 현상 해결
     bool canmove(Vector3 direction)
     {
@@ -213,5 +271,30 @@ public class BlockBase : MonoBehaviour
             }
         }
         return true;
+    }
+    void UpdateLevelSpeed()
+    {
+        int s = blockclear.ScoreForSpeed;
+
+        if (s < 1000) frame = 60;
+        else if (s < 2000) frame = 54;
+        else if (s < 3500) frame = 48;
+        else if (s < 5000) frame = 42;
+        else if (s < 7000) frame = 36;
+        else if (s < 9000) frame = 32;
+        else if (s < 11000) frame = 28;
+        else if (s < 13500) frame = 24;
+        else if (s < 16000) frame = 20;
+        else if (s < 19000) frame = 18;
+        else if (s < 22000) frame = 16;
+        else if (s < 25000) frame = 14;
+        else if (s < 29000) frame = 12;
+        else if (s < 33000) frame = 10;
+        else if (s < 38000) frame = 8;
+        else if (s < 43000) frame = 7;
+        else if (s < 49000) frame = 6;
+        else if (s < 55000) frame = 5;
+        else if (s < 62000) frame = 4;
+        else frame = 3; // 최고 난이도
     }
 }

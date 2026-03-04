@@ -6,8 +6,19 @@ public class Conebase : MonoBehaviour
     private GameObject ghostBlock;
     public GameObject[] prefabs;
     public GameObject spawnpoint;
-    List<GameObject> blockBag = new List<GameObject>();
-    int c = 0;
+    public List<GameObject> blockBag = new List<GameObject>();
+    public int c = 0;
+    Hold hhold;
+    public GameObject currentBlock;
+
+    public int it = 5;
+    public GameObject[] nextHoldObs;
+    private List<GameObject> nextVisuals = new List<GameObject>();
+
+    void Awake()
+    {
+        hhold = FindAnyObjectByType<Hold>();
+    }
 
     void Start()
     {
@@ -15,56 +26,89 @@ public class Conebase : MonoBehaviour
         Clone();
     }
 
-
     public void Clone()
     {
-        if (c >= blockBag.Count) fillbag();
+        if (c + it >= blockBag.Count) fillbag();
 
-        // 1. 실제 조작할 블록 생성
-        GameObject currentBlock = Instantiate(blockBag[c], spawnpoint.transform.position, Quaternion.identity);
-
-        // 2. 고스트 블록 생성 (seeclone 호출)
+        currentBlock = Instantiate(blockBag[c], spawnpoint.transform.position, Quaternion.identity);
         seeclone(blockBag[c], currentBlock);
 
         c++;
+        UpdateNextVisuals();
+        hhold.ishold = true;
     }
+
     public void fillbag()
     {
-        blockBag.Clear();
-        // 배열(prefabs)의 내용물을 리스트(blockBag)에 하나씩 추가
-        blockBag.AddRange(prefabs);
-
-        // Fisher-Yates Shuffle
-        for (int i = blockBag.Count - 1; i > 0; i--)
+        List<GameObject> newBag = new List<GameObject>(prefabs);
+        for (int i = newBag.Count - 1; i > 0; i--)
         {
             int k = Random.Range(0, i + 1);
-            GameObject temp = blockBag[k];
-            blockBag[k] = blockBag[i];
-            blockBag[i] = temp;
+            GameObject temp = newBag[k];
+            newBag[k] = newBag[i];
+            newBag[i] = temp;
         }
-        c = 0;
+        blockBag.AddRange(newBag);
+    }
+
+    void UpdateNextVisuals()
+    {
+        foreach (GameObject obj in nextVisuals) Destroy(obj);
+        nextVisuals.Clear();
+
+        for (int i = 0; i < it; i++)
+        {
+            if (i >= nextHoldObs.Length) break;
+
+            int nextIndex = c + i;
+            if (nextIndex < blockBag.Count)
+            {
+                // 위치를 왼쪽으로 0.5만큼 보정한 좌표 계산
+                Vector3 spawnPos = nextHoldObs[i].transform.position + new Vector3(-0.2f, 0, 0);
+
+                // 계산된 위치에 생성
+                GameObject visual = Instantiate(blockBag[nextIndex], spawnPos, Quaternion.identity);
+
+                // 다시 부모의 전체 크기를 조절하는 방식
+                visual.transform.localScale = new Vector3(0.4f, 0.4f, 1f);
+
+                DisableBlockFunctions(visual);
+                nextVisuals.Add(visual);
+            }
+        }
     }
     public void seeclone(GameObject prefab, GameObject owner)
     {
-        // 기존 고스트가 있다면 삭제
         if (ghostBlock != null) Destroy(ghostBlock);
 
-        // 프리팹 복제
         ghostBlock = Instantiate(prefab, spawnpoint.transform.position, Quaternion.identity);
 
-        // 고스트 블록의 기능들 제거 (조작되지 않게)
         Destroy(ghostBlock.GetComponent<BlockBase>());
         if (ghostBlock.GetComponent<Rigidbody2D>()) ghostBlock.GetComponent<Rigidbody2D>().simulated = false;
 
-        // 반투명 처리
         foreach (SpriteRenderer sr in ghostBlock.GetComponentsInChildren<SpriteRenderer>())
         {
             Color color = sr.color;
-            color.a = 0.3f; // 투명도 30%
+            color.a = 0.3f;
             sr.color = color;
         }
 
-        // 실제 블록(BlockBase)에게 내 고스트가 누구인지 알려줌
         owner.GetComponent<BlockBase>().ghost = ghostBlock;
+    }
+
+    void DisableBlockFunctions(GameObject obj)
+    {
+        BlockBase script = obj.GetComponent<BlockBase>();
+        if (script != null) Destroy(script);
+        Rigidbody2D rb = obj.GetComponent<Rigidbody2D>();
+        if (rb != null) rb.simulated = false;
+
+        Collider2D mainCol = obj.GetComponent<Collider2D>();
+        if (mainCol != null) mainCol.enabled = false;
+
+        foreach (var col in obj.GetComponentsInChildren<Collider2D>())
+        {
+            col.enabled = false;
+        }
     }
 }
