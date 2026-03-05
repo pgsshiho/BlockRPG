@@ -11,10 +11,13 @@ public class blockclear : MonoBehaviour
 
     [Header("Score Settings")]
     public int currentScore = 0;
+    public int nowdamage = 0;
     public TextMeshProUGUI scoreText;
+    Enemybase eb;
 
     void Awake()
     {
+        eb = FindAnyObjectByType<Enemybase>();
         grid = new Transform[width, height];
         UpdateScoreUI();
     }
@@ -60,13 +63,24 @@ public class blockclear : MonoBehaviour
 
     void AddScore(int lines)
     {
-        int[] bonus = { 0, 100, 300, 500, 800 };
-        currentScore += (lines <= 4) ? bonus[lines] : lines * 200;
+        int[] bonusScore = { 0, 50, 100, 200, 400 };
+        currentScore += (lines <= 4) ? bonusScore[lines] : lines * 100;
+
+        int[] damageAmount = { 0, 10, 30, 55, 100 };
+        nowdamage = (lines <= 4) ? damageAmount[lines] : lines * 25;
+
+        if (eb != null) eb.hit(nowdamage);
+        else
+        {
+            eb = FindAnyObjectByType<Enemybase>();
+            if (eb != null) eb.hit(nowdamage);
+        }
+
         ScoreForSpeed = currentScore;
         UpdateScoreUI();
     }
 
-    void UpdateScoreUI()
+    public void UpdateScoreUI()
     {
         if (scoreText != null) scoreText.text = "Score: " + currentScore;
     }

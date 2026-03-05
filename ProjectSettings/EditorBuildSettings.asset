@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Tetris/Scene/Tetris.unity
     guid: 4f8c54403bf62b149b77227d4846b275
+  - enabled: 1
+    path: Assets/GameOver/Scene/Gameover.unity
+    guid: a90fe5ca814c1b94dba844c7f79673dc
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100,
       type: 3}

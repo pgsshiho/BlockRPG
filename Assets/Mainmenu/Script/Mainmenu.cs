@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -5,13 +6,14 @@ public class Mainmenu : MonoBehaviour
 {
     Stat st;
     public GameObject panel;
+    public TextMeshProUGUI dif;
     void Start()
     {
         st = FindAnyObjectByType<Stat>();
     }
    void Update()
     {
-       
+        dif.text = st.difficult.ToString();
     }
     public void qu()
     {
@@ -30,7 +32,7 @@ public void difup()
 }
 public void difdown()
 {
-    if (st.difficult > 0)
+    if (st.difficult > 1)
     {
         st.difficult--;
     }

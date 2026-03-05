@@ -58,6 +58,7 @@ public class BlockBase : MonoBehaviour
         Quaternion originalRot = transform.rotation;
 
         // 1. 일단 회전
+        if (!gameObject.name.Contains("ㅁ")) { 
         transform.Rotate(0, 0, 90);
         SnapToGrid();
 
@@ -103,7 +104,6 @@ public class BlockBase : MonoBehaviour
         }
         else
         {
-            // T-스핀 성공 또는 일반 회전 성공
             if (isground) lockDelayTimer = 0;
             trying++;
             Sound.instance.swing.Play();
@@ -113,6 +113,7 @@ public class BlockBase : MonoBehaviour
             {
                 Debug.Log("T-Spin Potential Rotation Success!");
             }
+        }
         }
     }
 

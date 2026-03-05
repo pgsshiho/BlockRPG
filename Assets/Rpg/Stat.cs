@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Stat : MonoBehaviour
 {
@@ -18,33 +19,14 @@ public class Stat : MonoBehaviour
     {
         if (instance == null)
         {
-            // 1. 내가 처음 생성된 Stat이라면 인스턴스로 등록
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
         else
         {
-            // 2. 이미 instance가 있다면, 새로 생긴(씬 전환으로 생성된) 나는 삭제
             Debug.Log("중복된 Stat 객체를 삭제합니다.");
             Destroy(gameObject);
-            return; // 중요: 파괴된 객체가 이후 로직을 타지 않게 즉시 종료
-        }
-    }
-
-    void Update()
-    {
-    }
-
-    // 경험치가 쌓일 때마다 호출하거나 Update에서 체크
-    public void LevelCheck()
-    {
-        float requiredEx = level * 30f;
-        if (ex >= requiredEx)
-        {
-            ex -= requiredEx; // 남은 경험치 이월
-            level++;
-            maxstatpoint += 5; // 레벨업 시 포인트 보너스 (예시)
-            Debug.Log("Level Up! Current Level: " + level);
+            return;
         }
     }
 
@@ -52,9 +34,39 @@ public class Stat : MonoBehaviour
     public void upatk() { atk++; }
     public void updef() { def++; }
 
-    // 외부에서 경험치 획득 시 호출
+    // 1. 데미지 함수 (연산자 수정 완료)
+    public void damage(int Damage, string name)
+    {
+        hp -= Damage;
+        if (hp <= 0)
+        {
+            Gameover.killerName = name;
+            SceneManager.LoadScene("Gameover");
+        }
+    }
+
+    // 2. 경험치 획득 함수 (하나로 합침)
     public void GainExperience(float amount)
     {
         ex += amount;
+        LevelCheck(); // 경험치 먹을 때마다 레벨업 체크
+    }
+
+    // 3. 레벨업 로직
+    public void LevelCheck()
+    {
+        float requiredEx = level * 30f;
+
+        // 경험치가 충분하면 계속 레벨업 할 수 있도록 while 사용 (선택사항)
+        while (ex >= requiredEx)
+        {
+            ex -= requiredEx;
+            level++;
+            maxstatpoint += 5; // 레벨업 보너스 포인트
+            Debug.Log("Level Up! Current Level: " + level);
+
+            // 다음 레벨에 필요한 경험치 재계산
+            requiredEx = level * 30f;
+        }
     }
 }
