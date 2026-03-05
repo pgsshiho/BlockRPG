@@ -55,7 +55,8 @@ public class blockclear : MonoBehaviour
             {
                 Time.timeScale = 1;
                 ScoreForSpeed = 0;
-                SceneManager.LoadScene("Mainmenu");
+                Gameover.killerName = "블럭";
+                SceneManager.LoadScene("Gameover");
                 return;
             }
         }

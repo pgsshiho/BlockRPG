@@ -154,7 +154,6 @@ public class BlockBase : MonoBehaviour
             if (timer >= 0.15f)
             {
                 if (canmove(dir)) { transform.position += dir * 0.5f; SnapToGrid(); }
-                else if (key == KeyCode.DownArrow) { OnHardDropSettle(); return; }
                 timer = 0.12f;
             }
         }

@@ -21,6 +21,7 @@ public class Mainmenu : MonoBehaviour
     }
     public void start()
     {
+        st.hp = st.maxhp;
         SceneManager.LoadScene("Tetris");
     }
 public void difup()

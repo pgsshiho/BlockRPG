@@ -20,13 +20,32 @@ public class slime : Enemybase
             anim.SetTrigger("Attack");
         }
 
-        StartCoroutine(WaitAnimation());
+        StartCoroutine(WaitAttackAnimation());
     }
 
-    IEnumerator WaitAnimation()
+    IEnumerator WaitAttackAnimation()
+    {
+        yield return new WaitForSeconds(1.0f);
+        isattack = false;
+    }
+
+
+    // --- [죽음 파트] ---
+    public override void dead()
+    {
+
+        if (anim != null)
+        {
+            anim.SetTrigger("dead");
+        }
+
+        StartCoroutine(WaitDeadAnimation());
+    }
+
+    IEnumerator WaitDeadAnimation()
     {
         yield return new WaitForSeconds(1.0f);
 
-        isattack = false;
+        base.dead();
     }
 }

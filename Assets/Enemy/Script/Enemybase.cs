@@ -5,16 +5,16 @@ public class Enemybase : MonoBehaviour
     public float frame = 0f;
     public bool isattack = false;
 
-    public float baseTargetFrame = 300f;
+    public float baseTargetFrame = 500f;
     public float targetFrame;
-    public int maxhp = 100;
-    public int hp = 100;
+    public int maxhp = 40;
+    public int hp = 40;
 
     protected blockclear bc; // 자식에서도 접근 가능하게 protected
     protected EnemySpawn es;
     protected Stat st;
 
-    public int damage = 10;
+    public int damage = 3;
     public int ex;
 
     protected virtual void Start()
@@ -23,10 +23,13 @@ public class Enemybase : MonoBehaviour
         es = FindAnyObjectByType<EnemySpawn>();
         st = FindAnyObjectByType<Stat>();
         UpdateTargetFrame();
+        hp = hp * st.difficult;
+        maxhp = maxhp * st.difficult;
     }
 
     void Update()
     {
+        
         UpdateTargetFrame();
 
         if (frame >= targetFrame && !isattack)
@@ -73,6 +76,7 @@ public class Enemybase : MonoBehaviour
         if (es != null) es.spawn();
         st.GainExperience(ex);
         st.hp += 5;
+        st.hpcal();
         Destroy(gameObject);
         
     }

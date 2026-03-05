@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.UI;
 public class Stat : MonoBehaviour
 {
     public static Stat instance;
@@ -14,7 +14,7 @@ public class Stat : MonoBehaviour
     public int maxhp = 100;
     public int level = 1;
     public float ex = 0;
-
+    public GameObject hpbar;
     private void Awake()
     {
         if (instance == null)
@@ -29,7 +29,9 @@ public class Stat : MonoBehaviour
             return;
         }
     }
-
+    public void Update()
+    {
+    }
     public void upit() { it++; }
     public void upatk() { atk++; }
     public void updef() { def++; }
@@ -37,7 +39,8 @@ public class Stat : MonoBehaviour
     // 1. 데미지 함수 (연산자 수정 완료)
     public void damage(int Damage, string name)
     {
-        hp -= Damage;
+        hp -= Damage * difficult;
+        hpcal();
         if (hp <= 0)
         {
             Gameover.killerName = name;
@@ -67,6 +70,19 @@ public class Stat : MonoBehaviour
 
             // 다음 레벨에 필요한 경험치 재계산
             requiredEx = level * 30f;
+        }
+    }
+    public void hpcal()
+    {
+        if (hpbar == null)
+        {
+            hpbar = GameObject.Find("HPBar");
+        }
+
+        if (hpbar != null)
+        {
+            float hpRatio = (float)hp / maxhp;
+            hpbar.GetComponent<Image>().fillAmount = hpRatio;
         }
     }
 }
