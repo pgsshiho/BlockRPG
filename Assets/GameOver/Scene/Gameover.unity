@@ -554,7 +554,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1309852568}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 223325445}
+        m_TargetAssemblyTypeName: Gameover, Assembly-CSharp
+        m_MethodName: backmenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1309852568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -933,7 +945,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2027892145}
   - component: {fileID: 2027892144}
-  - component: {fileID: 2027892143}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -941,14 +952,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &2027892143
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2027892142}
-  m_Enabled: 1
 --- !u!20 &2027892144
 Camera:
   m_ObjectHideFlags: 0

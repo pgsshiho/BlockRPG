@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class blockclear : MonoBehaviour
 {
-    public const int width = 20;
+    public const int width = 30;
     public const int height = 80;
     public static Transform[,] grid = new Transform[width, height];
     public static int ScoreForSpeed = 0;

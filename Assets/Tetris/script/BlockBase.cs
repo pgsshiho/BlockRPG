@@ -9,6 +9,8 @@ public class BlockBase : MonoBehaviour
     float timer = 0f;
     float lockDelayTimer = 0f;
 
+    int dropDistance = 1;
+
     Conebase cb;
     GameManager gm;
     blockclear bc;
@@ -37,13 +39,9 @@ public class BlockBase : MonoBehaviour
 
         if (isground) lockDelayTimer += Time.deltaTime;
 
-        // 1. 회전 로직 (안전성 강화)
         if (Input.GetKeyDown(KeyCode.UpArrow)) RotateBlock();
-
-        // 2. 하드 드랍
         if (Input.GetKeyDown(KeyCode.Space)) HardDrop();
 
-        // 3. 이동 처리
         HandleInputMovement(KeyCode.RightArrow, Vector3.right);
         HandleInputMovement(KeyCode.LeftArrow, Vector3.left);
         HandleInputMovement(KeyCode.DownArrow, Vector3.down);
@@ -57,63 +55,57 @@ public class BlockBase : MonoBehaviour
         Vector3 originalPos = transform.position;
         Quaternion originalRot = transform.rotation;
 
-        // 1. 일단 회전
-        if (!gameObject.name.Contains("ㅁ")) { 
-        transform.Rotate(0, 0, 90);
-        SnapToGrid();
-
-        // 2. 만약 회전 직후가 안전하다면 바로 성공 처리
-        if (IsRotationSafe())
+        if (!gameObject.name.Contains("ㅁ"))
         {
-            Sound.instance.swing.Play();
-            return;
-        }
-
-        // 3. 충돌했다면 월킥(Wall Kick) 시도 (T-스핀의 핵심)
-        // 순서: 좌, 우, 하, 상, 대각선 순으로 체크 범위를 넓힘
-        Vector3[] kickOffsets = {
-        new Vector3(-0.5f, 0, 0),  // 좌
-        new Vector3(0.5f, 0, 0),   // 우
-        new Vector3(0, -0.5f, 0),  // 하 (T-스핀 시 아래로 찍어 누르기)
-        new Vector3(-0.5f, -0.5f, 0),
-        new Vector3(0.5f, -0.5f, 0),
-        new Vector3(0, 0.5f, 0),   // 상
-        new Vector3(-1.0f, 0, 0),  // 좌2
-        new Vector3(1.0f, 0, 0)    // 우2
-    };
-
-        bool fixedPos = false;
-        foreach (Vector3 offset in kickOffsets)
-        {
-            transform.position = originalPos + offset;
+            transform.Rotate(0, 0, -90);
             SnapToGrid();
 
             if (IsRotationSafe())
             {
-                fixedPos = true;
-                break;
+                Sound.instance.swing.Play();
+                return;
             }
-        }
 
-        // 4. 결과 처리
-        if (!fixedPos)
-        {
-            // 어디로 밀어도 겹치면 회전 취소
-            transform.position = originalPos;
-            transform.rotation = originalRot;
-        }
-        else
-        {
-            if (isground) lockDelayTimer = 0;
-            trying++;
-            Sound.instance.swing.Play();
+            Vector3[] kickOffsets = {
+                new Vector3(-0.5f, 0, 0),
+                new Vector3(0.5f, 0, 0),
+                new Vector3(0, -0.5f, 0),
+                new Vector3(-0.5f, -0.5f, 0),
+                new Vector3(0.5f, -0.5f, 0),
+                new Vector3(0, 0.5f, 0),
+                new Vector3(-1.0f, 0, 0),
+                new Vector3(1.0f, 0, 0)
+            };
 
-            // [추가] T-스핀 판정 로그 (선택 사항)
-            if (gameObject.name.Contains("T") || gameObject.name.Contains("t"))
+            bool fixedPos = false;
+            foreach (Vector3 offset in kickOffsets)
             {
-                Debug.Log("T-Spin Potential Rotation Success!");
+                transform.position = originalPos + offset;
+                SnapToGrid();
+
+                if (IsRotationSafe())
+                {
+                    fixedPos = true;
+                    break;
+                }
             }
-        }
+
+            if (!fixedPos)
+            {
+                transform.position = originalPos;
+                transform.rotation = originalRot;
+            }
+            else
+            {
+                if (isground) lockDelayTimer = 0;
+                trying++;
+                Sound.instance.swing.Play();
+
+                if (gameObject.name.Contains("T") || gameObject.name.Contains("t"))
+                {
+                    Debug.Log("T-Spin Potential Rotation Success!");
+                }
+            }
         }
     }
 
@@ -124,6 +116,7 @@ public class BlockBase : MonoBehaviour
             Mathf.Round(transform.position.y * 2f) / 2f, 0);
     }
 
+    // 🔥 1. 회전 시 맵 밖으로 뚫고 나가는지 체크하는 로직 추가!
     bool IsRotationSafe()
     {
         foreach (Transform child in transform)
@@ -131,6 +124,10 @@ public class BlockBase : MonoBehaviour
             Vector2 pos = new Vector2(
                 Mathf.Round(child.position.x * 2f) / 2f,
                 Mathf.Round(child.position.y * 2f) / 2f);
+
+            // [핵심 추가] 그리드 좌표를 가져와서 맵을 벗어났으면 즉시 회전 취소!
+            Vector2Int index = blockclear.PosToIndex(pos);
+            if (index.x < 0 || index.x >= blockclear.width || index.y < 0) return false;
 
             Collider2D[] hits = Physics2D.OverlapPointAll(pos);
             foreach (var hit in hits)
@@ -169,8 +166,26 @@ public class BlockBase : MonoBehaviour
 
     public void Fall()
     {
-        if (canmove(Vector3.down)) { transform.position += new Vector3(0, -0.5f, 0); isground = false; lockDelayTimer = 0; }
-        else { isground = true; if (lockDelayTimer >= 0.5f || trying >= 15) OnHardDropSettle(); }
+        for (int i = 0; i < dropDistance; i++)
+        {
+            if (canmove(Vector3.down))
+            {
+                transform.position += new Vector3(0, -0.5f, 0);
+                isground = false;
+                lockDelayTimer = 0;
+            }
+            else
+            {
+                isground = true;
+                break;
+            }
+        }
+
+        if (isground)
+        {
+            if (lockDelayTimer >= 0.5f || trying >= 15)
+                OnHardDropSettle();
+        }
     }
 
     void OnHardDropSettle()
@@ -193,6 +208,7 @@ public class BlockBase : MonoBehaviour
         cb.Clone();
     }
 
+    // 🔥 2. 이동 시에도 맵 밖으로 뚫고 나가는지 체크!
     bool canmove(Vector3 direction)
     {
         foreach (Transform child in transform)
@@ -200,6 +216,11 @@ public class BlockBase : MonoBehaviour
             Vector2 targetPos = (Vector2)child.position + (Vector2)direction * 0.5f;
             targetPos.x = Mathf.Round(targetPos.x * 2f) / 2f;
             targetPos.y = Mathf.Round(targetPos.y * 2f) / 2f;
+
+            // [핵심 추가] 맵 바깥 범위 차단
+            Vector2Int index = blockclear.PosToIndex(targetPos);
+            if (index.x < 0 || index.x >= blockclear.width || index.y < 0) return false;
+
             Collider2D[] hits = Physics2D.OverlapPointAll(targetPos);
             foreach (var hit in hits)
                 if (hit.transform.parent != transform && hit.transform != transform)
@@ -212,7 +233,15 @@ public class BlockBase : MonoBehaviour
     {
         ghost.transform.position = transform.position;
         ghost.transform.rotation = transform.rotation;
-        while (canmoveGhost(Vector3.down)) ghost.transform.position += new Vector3(0, -0.5f, 0);
+
+        // 🔥 3. 무한 루프 억제기 장착! (안전장치 50번 제한)
+        int loopSafe = 0;
+        while (canmoveGhost(Vector3.down) && loopSafe < 50)
+        {
+            ghost.transform.position += new Vector3(0, -0.5f, 0);
+            loopSafe++;
+        }
+
         ghost.transform.position = new Vector3(Mathf.Round(ghost.transform.position.x * 2f) / 2f, Mathf.Round(ghost.transform.position.y * 2f) / 2f, 0);
     }
 
@@ -223,6 +252,11 @@ public class BlockBase : MonoBehaviour
             Vector2 targetPos = (Vector2)child.position + (Vector2)direction * 0.5f;
             targetPos.x = Mathf.Round(targetPos.x * 2f) / 2f;
             targetPos.y = Mathf.Round(targetPos.y * 2f) / 2f;
+
+            // [핵심 추가] 고스트 블록도 맵 밖으로 못 나가게 막음
+            Vector2Int index = blockclear.PosToIndex(targetPos);
+            if (index.x < 0 || index.x >= blockclear.width || index.y < 0) return false;
+
             Collider2D[] hits = Physics2D.OverlapPointAll(targetPos);
             foreach (var hit in hits)
                 if (hit.transform.parent != transform && hit.transform != transform && hit.transform.parent != ghost.transform)
@@ -233,7 +267,13 @@ public class BlockBase : MonoBehaviour
 
     void HardDrop()
     {
-        while (canmove(Vector3.down)) transform.position += new Vector3(0, -0.5f, 0);
+        // 🔥 여기도 무한 루프 억제기 장착!
+        int loopSafe = 0;
+        while (canmove(Vector3.down) && loopSafe < 50)
+        {
+            transform.position += new Vector3(0, -0.5f, 0);
+            loopSafe++;
+        }
         SnapToGrid(); OnHardDropSettle();
     }
 
@@ -242,8 +282,24 @@ public class BlockBase : MonoBehaviour
         int s = blockclear.ScoreForSpeed;
         int d = (Stat.instance != null) ? Stat.instance.difficult : 3;
         int[] frames = { 60, 54, 48, 42, 36, 32, 28, 24, 20, 18, 16, 14, 12, 10, 8, 7, 6, 5, 4 };
-        frame = 3;
-        for (int i = 0; i < 19; i++) { if (s < (i + 1) * 2000) { frame = frames[i]; break; } }
-        frame = Mathf.Max(1, frame + (3 - d) * 5);
+
+        int baseFrame = 60;
+        for (int i = 0; i < 19; i++)
+        {
+            if (s < (i + 1) * 2000) { baseFrame = frames[i]; break; }
+        }
+
+        int rawFrame = baseFrame + (3 - d) * 7;
+
+        if (rawFrame >= 1)
+        {
+            frame = rawFrame;
+            dropDistance = 1;
+        }
+        else
+        {
+            frame = 1;
+            dropDistance = 1 + Mathf.CeilToInt(Mathf.Abs(rawFrame) / 5f);
+        }
     }
 }
