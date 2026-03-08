@@ -8,7 +8,7 @@ public class Hold : MonoBehaviour
     BlockBase bb;
     Conebase cb;
     public GameObject holdob;
-    private GameObject currentHoldVisual;
+    public GameObject currentHoldVisual;
 
     void Awake()
     {
