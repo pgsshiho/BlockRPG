@@ -23,7 +23,8 @@ public class Enemybase : MonoBehaviour
     protected virtual void Start()
     {
         st = Stat.instance;
-
+        es = FindAnyObjectByType<EnemySpawn>();
+        bc = FindAnyObjectByType<blockclear>();
         // 인스펙터에 입력한 원본 값에 난이도를 딱 한 번만 곱해서 할당합니다.
         maxhp = baseHp * st.difficult;
         hp = maxhp;
@@ -78,6 +79,7 @@ public class Enemybase : MonoBehaviour
             bc.currentScore += 100;
             bc.UpdateScoreUI();
         }
+        Debug.Log("죽음 확인");
         if (es != null) es.spawn();
         st.GainExperience(ex);
         st.hp += 5;

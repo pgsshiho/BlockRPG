@@ -46,6 +46,7 @@ public class EnemySpawn : MonoBehaviour
 
         if (enemy[nowdif].prefabs.Length > 0)
         {
+            Debug.Log("적을 스폰합니다");
             randomnenemy = Random.Range(0, enemy[nowdif].prefabs.Length);
             Instantiate(enemy[nowdif].prefabs[randomnenemy], spawnpoint.transform.position, Quaternion.identity);
         }
