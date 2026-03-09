@@ -85,6 +85,13 @@ public class BlockBase : MonoBehaviour
 
                 if (IsRotationSafe())
                 {
+                    if (gameObject.name.Contains("Z"))
+                    {
+                        Debug.Log("z-spin");
+                    }
+                    else if (gameObject.name.Contains("ㅗ")){
+                        Debug.Log("T-spin");
+                    }
                     fixedPos = true;
                     break;
                 }
