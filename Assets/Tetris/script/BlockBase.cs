@@ -18,6 +18,9 @@ public class BlockBase : MonoBehaviour
     public GameObject ghost;
     public bool isground = false;
     public int trying = 0;
+    public bool Tspin = false;
+    public bool rightclock = false;
+    public bool rightleft = false;
 
     void Start()
     {
@@ -39,7 +42,23 @@ public class BlockBase : MonoBehaviour
 
         if (isground) lockDelayTimer += Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.UpArrow)) RotateBlock();
+        // 위쪽 화살표: 반시계 방향 (또는 설정에 따라 시계)
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            rightclock = false;
+            RotateBlock();
+        }
+        // Z키: 시계 방향 (괄호 추가 완료)
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            rightclock = true;
+            RotateBlock();
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            rightleft = true;
+            RotateBlock();
+        }
         if (Input.GetKeyDown(KeyCode.Space)) HardDrop();
 
         HandleInputMovement(KeyCode.RightArrow, Vector3.right);
@@ -57,61 +76,95 @@ public class BlockBase : MonoBehaviour
 
         if (!gameObject.name.Contains("ㅁ"))
         {
-            transform.Rotate(0, 0, -90);
+            if (rightleft == true)
+            {
+                transform.Rotate(0, 0, 180);
+                rightleft = false;
+            }
+            else if (rightclock == false)
+            {
+                transform.Rotate(0, 0, -90);
+            }
+            else if(rightclock == true)
+            {
+                transform.Rotate(0, 0, 90);
+            }
             SnapToGrid();
+
+            bool success = false;
 
             if (IsRotationSafe())
             {
-                Sound.instance.swing.Play();
-                return;
+                success = true;
             }
-
-            Vector3[] kickOffsets = {
-                new Vector3(-0.5f, 0, 0),
-                new Vector3(0.5f, 0, 0),
-                new Vector3(0, -0.5f, 0),
-                new Vector3(-0.5f, -0.5f, 0),
-                new Vector3(0.5f, -0.5f, 0),
-                new Vector3(0, 0.5f, 0),
-                new Vector3(-1.0f, 0, 0),
-                new Vector3(1.0f, 0, 0)
-            };
-
-            bool fixedPos = false;
-            foreach (Vector3 offset in kickOffsets)
+            else
             {
-                transform.position = originalPos + offset;
-                SnapToGrid();
+                Vector3[] kickOffsets = {
+                    new Vector3(-0.5f, 0, 0), new Vector3(0.5f, 0, 0),
+                    new Vector3(0, -0.5f, 0), new Vector3(-0.5f, -0.5f, 0),
+                    new Vector3(0.5f, -0.5f, 0), new Vector3(0, 0.5f, 0),
+                    new Vector3(-1.0f, 0, 0), new Vector3(1.0f, 0, 0)
+                };
 
-                if (IsRotationSafe())
+                foreach (Vector3 offset in kickOffsets)
                 {
-                    if (gameObject.name.Contains("Z"))
+                    transform.position = originalPos + offset;
+                    SnapToGrid();
+                    if (IsRotationSafe())
                     {
-                        Debug.Log("z-spin");
+                        success = true;
+                        break;
                     }
-                    else if (gameObject.name.Contains("ㅗ")){
-                        Debug.Log("T-spin");
-                    }
-                    fixedPos = true;
-                    break;
                 }
             }
 
-            if (!fixedPos)
-            {
-                transform.position = originalPos;
-                transform.rotation = originalRot;
-            }
-            else
+            if (success)
             {
                 if (isground) lockDelayTimer = 0;
                 trying++;
                 Sound.instance.swing.Play();
 
-                if (gameObject.name.Contains("T") || gameObject.name.Contains("t"))
+                // 🔥 T-Spin 판정 로직 시작
+                if (gameObject.name.Contains("ㅗ") || gameObject.name.Contains("T"))
                 {
-                    Debug.Log("T-Spin Potential Rotation Success!");
+                    Vector2[] corners = {
+                        new Vector2(-0.5f, 0.5f), new Vector2(0.5f, 0.5f),
+                        new Vector2(-0.5f, -0.5f), new Vector2(0.5f, -0.5f)
+                    };
+
+                    int cornerCount = 0;
+                    foreach (Vector2 offset in corners)
+                    {
+                        Vector2 check = (Vector2)transform.position + offset;
+                        Vector2Int index = blockclear.PosToIndex(check);
+
+                        // 벽 밖이거나 블록/바닥이 있다면 카운트++
+                        if (index.x < 0 || index.x >= blockclear.width || index.y < 0)
+                        {
+                            cornerCount++;
+                        }
+                        else
+                        {
+                            Collider2D hit = Physics2D.OverlapPoint(check);
+                            if (hit != null && hit.transform.parent != transform)
+                            {
+                                if (hit.CompareTag("Floor") || hit.CompareTag("Block")) cornerCount++;
+                            }
+                        }
+                    }
+
+                    if (cornerCount >= 3)
+                    {
+                        Tspin = true;
+                        Debug.Log("T-Spin Flag ON!");
+                    }
+                    else Tspin = false;
                 }
+            }
+            else
+            {
+                transform.position = originalPos;
+                transform.rotation = originalRot;
             }
         }
     }
@@ -146,20 +199,44 @@ public class BlockBase : MonoBehaviour
         return true;
     }
 
+    float dasDelay = 0.15f; // 처음 눌렀을 때 대기 시간
+    float arrDelay = 0.03f; // 연사 속도
+    float moveTimer = 0f;
+
     void HandleInputMovement(KeyCode key, Vector3 dir)
     {
+        Vector3 finalDir = (gm != null && gm.IsMirrored) ?
+            (dir == Vector3.right ? Vector3.left : (dir == Vector3.left ? Vector3.right : dir)) : dir;
+
         if (Input.GetKeyDown(key))
         {
-            if (canmove(dir)) { transform.position += dir * 0.5f; SnapToGrid(); }
+            MoveOnce(finalDir);
+            moveTimer = 0; // 타이머 초기화
         }
+
         if (Input.GetKey(key))
         {
-            timer += Time.deltaTime;
-            if (timer >= 0.15f)
+            moveTimer += Time.deltaTime;
+            if (moveTimer > dasDelay)
             {
-                if (canmove(dir)) { transform.position += dir * 0.5f; SnapToGrid(); }
-                timer = 0.12f;
+                // DAS 시간이 지나면 ARR 간격으로 계속 이동
+                if (moveTimer > dasDelay + arrDelay)
+                {
+                    MoveOnce(finalDir);
+                    moveTimer = dasDelay; // ARR 간격 유지를 위해 값 조정
+                }
             }
+        }
+    }
+
+    void MoveOnce(Vector3 dir)
+    {
+        if (canmove(dir))
+        {
+            transform.position += dir * 0.5f;
+            SnapToGrid();
+            // 땅에 닿아있을 때 좌우로 움직이면 고정 시간을 초기화해주는 배려 (Infinity Lock)
+            if (isground) lockDelayTimer = 0;
         }
     }
 
@@ -206,7 +283,6 @@ public class BlockBase : MonoBehaviour
             {
                 blockclear.grid[index.x, index.y] = child;
                 child.tag = "Block";
-                Debug.Log($"저장 위치: [X:{index.x}, Y:{index.y}]");
             }
         }
         bc.DeleteFullLines();
@@ -221,17 +297,23 @@ public class BlockBase : MonoBehaviour
         foreach (Transform child in transform)
         {
             Vector2 targetPos = (Vector2)child.position + (Vector2)direction * 0.5f;
-            targetPos.x = Mathf.Round(targetPos.x * 2f) / 2f;
-            targetPos.y = Mathf.Round(targetPos.y * 2f) / 2f;
 
-            // [핵심 추가] 맵 바깥 범위 차단
+            // OverlapPoint 대신 OverlapBox 사용
+            // 크기를 0.45f로 설정하여 옆 블록과의 미세한 접촉으로 인한 오류 방지
+            Collider2D hit = Physics2D.OverlapBox(targetPos, new Vector2(0.45f, 0.45f), 0);
+
+            if (hit != null)
+            {
+                // 내 자식이 아니고, 바닥이나 다른 블록이면 이동 불가
+                if (hit.transform.parent != transform && hit.transform != transform)
+                {
+                    if (hit.CompareTag("Floor") || hit.CompareTag("Block")) return false;
+                }
+            }
+
+            // 기존의 맵 밖 체크 로직 유지
             Vector2Int index = blockclear.PosToIndex(targetPos);
             if (index.x < 0 || index.x >= blockclear.width || index.y < 0) return false;
-
-            Collider2D[] hits = Physics2D.OverlapPointAll(targetPos);
-            foreach (var hit in hits)
-                if (hit.transform.parent != transform && hit.transform != transform)
-                    if (hit.CompareTag("Floor") || hit.CompareTag("Block")) return false;
         }
         return true;
     }

@@ -41,6 +41,11 @@ public class Conebase : MonoBehaviour
     public void fillbag()
     {
         List<GameObject> newBag = new List<GameObject>(prefabs);
+        if(prefabs.Length > 0)
+        {
+            int extra = Random.Range(0, prefabs.Length);
+            newBag.Add(prefabs[extra]);
+        }
         for (int i = newBag.Count - 1; i > 0; i--)
         {
             int k = Random.Range(0, i + 1);

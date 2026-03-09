@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -5,15 +6,15 @@ public class GameManager : MonoBehaviour
 {
     public GameObject panel;
     public bool isON = false;
-    void Start()
-    {
-        
-    }
+
+    // 현재 화면과 조작이 반전된 상태인지 외부에서 확인할 수 있는 변수
+    public bool IsMirrored { get; private set; }
+
     void Awake()
     {
-        // 씬이 시작될 때 시간이 멈춰있을 가능성을 방지
         Time.timeScale = 1;
         isON = false;
+        IsMirrored = false; // 초기화
 
         if (panel != null)
         {
@@ -21,30 +22,48 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && isON == false)
+        // 일시정지 로직
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Time.timeScale = 0;
-            panel.SetActive(true);
-            isON = true;
-        } 
-        else if(Input.GetKeyDown(KeyCode.Escape) && isON == true)
-        {
-            Time.timeScale = 1;
-            panel.SetActive(false);
-            isON = false;
+            if (!isON) PauseGame();
+            else ResumeGame();
         }
     }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0;
+        panel.SetActive(true);
+        isON = true;
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1;
+        panel.SetActive(false);
+        isON = false;
+    }
+
     public void backmenu()
     {
+        // 씬 이동 전 시간 스케일 복구는 필수!
+        Time.timeScale = 1;
         SceneManager.LoadScene("Mainmenu");
     }
-    public void continues()
+
+    // 화면 반전 실행 함수
+    public void SetMirrorMode(bool isMirrored)
     {
-        panel.SetActive(false);
-        Time.timeScale = 1;
-        isON = false;
+        IsMirrored = isMirrored;
+
+        // 카메라의 스케일을 반전시켜 거울 효과 연출
+        if (Camera.main != null)
+        {
+            Vector3 scale = Camera.main.transform.localScale;
+            scale.x = isMirrored ? -1f : 1f;
+            Camera.main.transform.localScale = scale;
+        }
     }
 }

@@ -14,18 +14,20 @@ public class blockclear : MonoBehaviour
     public int nowdamage = 0;
     public TextMeshProUGUI scoreText;
     Enemybase eb;
+    BlockBase bb;
 
     void Awake()
     {
         eb = FindAnyObjectByType<Enemybase>();
+        bb = FindAnyObjectByType<BlockBase>();
         grid = new Transform[width, height];
         UpdateScoreUI();
     }
 
     public static Vector2Int PosToIndex(Vector3 pos)
     {
-        int x = Mathf.RoundToInt((pos.x + 4.5f) * 2f);
-        int y = Mathf.RoundToInt((pos.y + 19f) * 2f);
+        int x = Mathf.RoundToInt((pos.x + 4.5f+ 0.01f) * 2f);
+        int y = Mathf.RoundToInt((pos.y + 19f+ 0.01f) * 2f);
         return new Vector2Int(x, y);
     }
 
@@ -64,18 +66,34 @@ public class blockclear : MonoBehaviour
 
     void AddScore(int lines)
     {
-        int[] bonusScore = { 0, 50, 100, 200, 400 };
-        currentScore += (lines <= 4) ? bonusScore[lines] : lines * 100;
+        int scoreBonus = 0;
+        int damageBonus = 0;
 
-        int[] damageAmount = { 0, 10, 30, 55, 100 };
-        nowdamage = (lines <= 4) ? damageAmount[lines] : lines * 25;
-
-        if (eb != null) eb.hit(nowdamage);
-        else
+        // 1. T-Spin 여부 먼저 확인 및 변수 저장
+        bool isTspinActive = false;
+        if (bb != null && bb.Tspin)
         {
-            eb = FindAnyObjectByType<Enemybase>();
-            if (eb != null) eb.hit(nowdamage);
+            isTspinActive = true;
+            bb.Tspin = false; // 여기서 한 번만 초기화
+            scoreBonus = 100;
+            damageBonus = 15;
+            Debug.Log("T-Spin Bonus Applied!");
         }
+
+        // 2. 기본 점수/데미지 배열
+        int[] bonusScore = { 0, 50, 100, 200, 400 };
+        int[] damageAmount = { 0, 10, 30, 55, 100 };
+
+        // 3. 최종 계산 (T-Spin 보너스 합산)
+        int lineScore = (lines <= 4) ? bonusScore[lines] : lines * 100;
+        int lineDamage = (lines <= 4) ? damageAmount[lines] : lines * 25;
+
+        currentScore += lineScore + scoreBonus;
+        nowdamage = lineDamage + damageBonus;
+
+        // 4. 적 공격
+        if (eb == null) eb = FindAnyObjectByType<Enemybase>();
+        if (eb != null) eb.hit(nowdamage);
 
         ScoreForSpeed = currentScore;
         UpdateScoreUI();
@@ -93,8 +111,8 @@ public class blockclear : MonoBehaviour
         {
             if (grid[x, y] != null) count++;
         }
-        // 실제 게임 화면 가로 칸 수에 맞춰 이 숫자를 조절하세요.
-        // 화면이 10칸 너비라면 10, 20칸 너비라면 20으로 설정합니다.
+        // 이 로그를 통해 실제 인덱스당 몇 칸이 인식되는지 확인하세요.
+        if (count > 0) Debug.Log($"Line {y} check: {count} blocks found.");
         return count >= 10;
     }
 
