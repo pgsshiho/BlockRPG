@@ -14,20 +14,24 @@ public class Enemybase : MonoBehaviour
     protected EnemySpawn es;
     protected Stat st;
 
-    public int damage = 3;
+    public int damage;
     public int ex;
     public GameObject hpbar;
+    public int baseHp = 40;     // 유니티 인스펙터에서 수정할 원본 체력
+    public int baseDamage = 3;  // 유니티 인스펙터에서 수정할 원본 데미지
+
     protected virtual void Start()
     {
-        bc = FindAnyObjectByType<blockclear>();
-        es = FindAnyObjectByType<EnemySpawn>();
-        st = FindAnyObjectByType<Stat>();
+        st = Stat.instance;
+
+        // 인스펙터에 입력한 원본 값에 난이도를 딱 한 번만 곱해서 할당합니다.
+        maxhp = baseHp * st.difficult;
+        hp = maxhp;
+        damage = baseDamage; // 데미지는 아래 Stat에서 곱해주므로 여기선 원본만 전달
+
         UpdateTargetFrame();
-        hp = hp * st.difficult;
-        maxhp = maxhp * st.difficult;
         hpcal();
     }
-
     void Update()
     {
         

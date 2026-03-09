@@ -21,10 +21,15 @@ public class Mainmenu : MonoBehaviour
     }
     public void start()
     {
-        st.hp = st.maxhp;
+        // Find 대신 static 변수인 instance를 직접 사용
+        if (Stat.instance != null)
+        {
+            Stat.instance.hp = Stat.instance.maxhp;
+            Debug.Log("체력 초기화 완료: " + Stat.instance.hp);
+        }
         SceneManager.LoadScene("Tetris");
     }
-public void difup()
+    public void difup()
 {
     if (st.difficult < 10)
     {

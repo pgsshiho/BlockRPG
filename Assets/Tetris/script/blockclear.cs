@@ -112,7 +112,6 @@ public class blockclear : MonoBehaviour
             if (grid[x, y] != null) count++;
         }
         // 이 로그를 통해 실제 인덱스당 몇 칸이 인식되는지 확인하세요.
-        if (count > 0) Debug.Log($"Line {y} check: {count} blocks found.");
         return count >= 10;
     }
 

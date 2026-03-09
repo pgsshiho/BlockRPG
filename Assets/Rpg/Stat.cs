@@ -15,6 +15,7 @@ public class Stat : MonoBehaviour
     public int level = 1;
     public float ex = 0;
     public GameObject hpbar;
+
     private void Awake()
     {
         if (instance == null)
@@ -47,7 +48,11 @@ public class Stat : MonoBehaviour
             SceneManager.LoadScene("Gameover");
         }
     }
-
+    private void Start()
+    {
+        hpcal();
+        Debug.Log($"현재 체력{hp}");
+    }
     // 2. 경험치 획득 함수 (하나로 합침)
     public void GainExperience(float amount)
     {
@@ -60,7 +65,6 @@ public class Stat : MonoBehaviour
     {
         float requiredEx = level * 30f;
 
-        // 경험치가 충분하면 계속 레벨업 할 수 있도록 while 사용 (선택사항)
         while (ex >= requiredEx)
         {
             ex -= requiredEx;
@@ -72,15 +76,21 @@ public class Stat : MonoBehaviour
             requiredEx = level * 30f;
         }
     }
+    // Stat.cs 에 추가 및 수정
+    public void ResetStatus()
+    {
+        hp = maxhp;
+        // UI는 씬이 로드된 후에 찾아야 하므로 여기서는 값만 초기화합니다.
+    }
+
     public void hpcal()
     {
-        if (hpbar == null)
+        // 씬 전환 직후에는 Unity가 오브젝트를 바로 못 찾을 수 있으므로 
+        // 매번 새로 찾는 로직을 강화합니다.
+        GameObject found = GameObject.Find("HPBar");
+        if (found != null)
         {
-            hpbar = GameObject.Find("HPBar");
-        }
-
-        if (hpbar != null)
-        {
+            hpbar = found;
             float hpRatio = (float)hp / maxhp;
             hpbar.GetComponent<Image>().fillAmount = hpRatio;
         }
