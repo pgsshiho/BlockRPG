@@ -13,6 +13,7 @@ public class blockclear : MonoBehaviour
     public int currentScore = 0;
     public int nowdamage = 0;
     public TextMeshProUGUI scoreText;
+    public int combo = 0;
     Enemybase eb;
     BlockBase bb;
 
@@ -44,7 +45,20 @@ public class blockclear : MonoBehaviour
                 linesCleared++;
             }
         }
-        if (linesCleared > 0) AddScore(linesCleared);
+
+        if (linesCleared > 0)
+        {
+            // 줄을 지웠다면 콤보 증가!
+            combo++;
+            AddScore(linesCleared);
+            Debug.Log("Combo: " + combo);
+        }
+        else
+        {
+            // 줄을 하나도 못 지웠다면 콤보 초기화
+            combo = 0;
+        }
+
         CheckGameOver();
     }
 
@@ -66,32 +80,32 @@ public class blockclear : MonoBehaviour
 
     void AddScore(int lines)
     {
+        // 콤보 보너스 계산 (예: 콤보당 50점, 데미지 5씩 추가)
+        // 첫 번째 줄 제거(combo 1)일 때는 보너스가 없게 하려면 (combo - 1)을 사용합니다.
+        int comboScoreBonus = (combo > 1) ? (combo - 1) * 50 : 0;
+        int comboDamageBonus = (combo > 1) ? (combo - 1) * 5 : 0;
+
         int scoreBonus = 0;
         int damageBonus = 0;
 
-        // 1. T-Spin 여부 먼저 확인 및 변수 저장
-        bool isTspinActive = false;
+        // T-Spin 확인 로직 (기존 유지)
         if (bb != null && bb.Tspin)
         {
-            isTspinActive = true;
-            bb.Tspin = false; // 여기서 한 번만 초기화
+            bb.Tspin = false;
             scoreBonus = 100;
             damageBonus = 15;
-            Debug.Log("T-Spin Bonus Applied!");
         }
 
-        // 2. 기본 점수/데미지 배열
         int[] bonusScore = { 0, 50, 100, 200, 400 };
         int[] damageAmount = { 0, 10, 30, 55, 100 };
 
-        // 3. 최종 계산 (T-Spin 보너스 합산)
         int lineScore = (lines <= 4) ? bonusScore[lines] : lines * 100;
         int lineDamage = (lines <= 4) ? damageAmount[lines] : lines * 25;
 
-        currentScore += lineScore + scoreBonus;
-        nowdamage = lineDamage + damageBonus;
+        // 콤보 보너스까지 합산
+        currentScore += lineScore + scoreBonus + comboScoreBonus;
+        nowdamage = lineDamage + damageBonus + comboDamageBonus;
 
-        // 4. 적 공격
         if (eb == null) eb = FindAnyObjectByType<Enemybase>();
         if (eb != null) eb.hit(nowdamage);
 
@@ -101,7 +115,11 @@ public class blockclear : MonoBehaviour
 
     public void UpdateScoreUI()
     {
-        if (scoreText != null) scoreText.text = "Score: " + currentScore;
+        if (scoreText != null)
+        {
+            string comboText = (combo > 1) ? $"\n{combo} COMBO!" : "";
+            scoreText.text = "Score: " + currentScore + comboText;
+        }
     }
 
     bool IsLineFull(int y)
@@ -111,7 +129,6 @@ public class blockclear : MonoBehaviour
         {
             if (grid[x, y] != null) count++;
         }
-        // 이 로그를 통해 실제 인덱스당 몇 칸이 인식되는지 확인하세요.
         return count >= 10;
     }
 

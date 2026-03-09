@@ -27688,9 +27688,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Conebase
   prefabs:
   - {fileID: 173433797650514612, guid: 023f0e4d81405bf42a924cd8af961b9d, type: 3}
-  - {fileID: 1868090368043384210, guid: 8b5cba4a544ef1145bcd49a4d6baa269, type: 3}
+  - {fileID: 3050312548583743152, guid: 8b5cba4a544ef1145bcd49a4d6baa269, type: 3}
   - {fileID: 7699560391337517708, guid: 0e5660c27ec1bf349aeab9018f06109f, type: 3}
-  - {fileID: 42544643126272727, guid: 8a9882ebddd40ca4ba7635ef78cf4d77, type: 3}
+  - {fileID: 7591513600245328522, guid: 8a9882ebddd40ca4ba7635ef78cf4d77, type: 3}
   - {fileID: 6123128595633570121, guid: 34d76fded6889eb4d969b7330b5d4bb0, type: 3}
   - {fileID: 7932892591227902193, guid: c14d5177237624740b0182f18a339d82, type: 3}
   - {fileID: 7024745003875259462, guid: e833fc774b3c4194587d4df46d37aa76, type: 3}
@@ -27737,6 +27737,7 @@ MonoBehaviour:
   currentScore: 0
   nowdamage: 0
   scoreText: {fileID: 1711288959}
+  combo: 0
 --- !u!114 &2078534755
 MonoBehaviour:
   m_ObjectHideFlags: 0
