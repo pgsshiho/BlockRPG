@@ -9,6 +9,8 @@ public class KeyBinding : MonoBehaviour
     public KeyCode hardDrop = KeyCode.Space;
     public KeyCode zRotate = KeyCode.Z;
     public KeyCode aRotate = KeyCode.A;
+    public KeyCode menu = KeyCode.Escape;
+    public KeyCode openstat = KeyCode.K;
     public static KeyBinding instance;
     void Start()
     {

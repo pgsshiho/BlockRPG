@@ -30,18 +30,23 @@ public class Conebase : MonoBehaviour
     {
         if (c + it >= blockBag.Count) fillbag();
 
+        // 1. 블록 생성
         currentBlock = Instantiate(blockBag[c], spawnpoint.transform.position, Quaternion.identity);
+
+        // 2. 고스트 생성 및 설정
         seeclone(blockBag[c], currentBlock);
 
         c++;
         UpdateNextVisuals();
-        hhold.ishold = true;
+
+        // Hold 기능 활성화
+        if (hhold != null) hhold.ishold = true;
     }
 
     public void fillbag()
     {
         List<GameObject> newBag = new List<GameObject>(prefabs);
-        if(prefabs.Length > 0)
+        if (prefabs.Length > 0)
         {
             int extra = Random.Range(0, prefabs.Length);
             newBag.Add(prefabs[extra]);
@@ -68,29 +73,33 @@ public class Conebase : MonoBehaviour
             int nextIndex = c + i;
             if (nextIndex < blockBag.Count)
             {
-                // 위치를 왼쪽으로 0.5만큼 보정한 좌표 계산
                 Vector3 spawnPos = nextHoldObs[i].transform.position + new Vector3(-0.2f, 0, 0);
-
-                // 계산된 위치에 생성
                 GameObject visual = Instantiate(blockBag[nextIndex], spawnPos, Quaternion.identity);
-
-                // 다시 부모의 전체 크기를 조절하는 방식
                 visual.transform.localScale = new Vector3(0.4f, 0.4f, 1f);
 
+                // 시각화용 블록이므로 모든 기능 정지
                 DisableBlockFunctions(visual);
                 nextVisuals.Add(visual);
             }
         }
     }
+
     public void seeclone(GameObject prefab, GameObject owner)
     {
         if (ghostBlock != null) Destroy(ghostBlock);
 
+        // 고스트 생성
         ghostBlock = Instantiate(prefab, spawnpoint.transform.position, Quaternion.identity);
 
-        Destroy(ghostBlock.GetComponent<BlockBase>());
-        if (ghostBlock.GetComponent<Rigidbody2D>()) ghostBlock.GetComponent<Rigidbody2D>().simulated = false;
+        // [중요] BlockBase의 디자인 변경 기능과 충돌하지 않도록 스크립트 먼저 제거
+        BlockBase bBase = ghostBlock.GetComponent<BlockBase>();
+        if (bBase != null) Destroy(bBase);
 
+        // 고스트는 물리 연산 제외
+        Rigidbody2D rb = ghostBlock.GetComponent<Rigidbody2D>();
+        if (rb != null) rb.simulated = false;
+
+        // 투명도 조절 (자식들의 모든 SpriteRenderer 대상)
         foreach (SpriteRenderer sr in ghostBlock.GetComponentsInChildren<SpriteRenderer>())
         {
             Color color = sr.color;
@@ -98,22 +107,28 @@ public class Conebase : MonoBehaviour
             sr.color = color;
         }
 
+        // 본체에 고스트 연결
         owner.GetComponent<BlockBase>().ghost = ghostBlock;
     }
 
     void DisableBlockFunctions(GameObject obj)
     {
+        // 1. 메인 스크립트 제거
         BlockBase script = obj.GetComponent<BlockBase>();
         if (script != null) Destroy(script);
+
+        // 2. 물리 및 충돌체 완전히 비활성화
         Rigidbody2D rb = obj.GetComponent<Rigidbody2D>();
         if (rb != null) rb.simulated = false;
 
-        Collider2D mainCol = obj.GetComponent<Collider2D>();
-        if (mainCol != null) mainCol.enabled = false;
-
+        // 3. 모든 자식 콜라이더 끄기 (본체 이동 방해 금지)
         foreach (var col in obj.GetComponentsInChildren<Collider2D>())
         {
             col.enabled = false;
         }
+
+        // 4. (추가) 디자인 변경용 오브젝트가 있다면 기본값으로 설정
+        // BlockBase가 삭제되었으므로 수동으로 첫 번째 자식(BaseDesign)만 켜둠
+        // 만약 구조가 다를 경우를 대비해 Try-Catch나 null 체크를 강화할 수 있습니다.
     }
 }

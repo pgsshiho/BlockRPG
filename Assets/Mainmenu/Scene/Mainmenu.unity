@@ -1994,7 +1994,6 @@ GameObject:
   m_Component:
   - component: {fileID: 703093906}
   - component: {fileID: 703093905}
-  - component: {fileID: 703093907}
   m_Layer: 0
   m_Name: StatManager
   m_TagString: Untagged
@@ -2017,9 +2016,8 @@ MonoBehaviour:
   difficult: 3
   it: 0
   atk: 0
-  def: 0
+  spd: 0
   maxstatpoint: 0
-  currentmaxstatpoint: 0
   hp: 100
   maxhp: 100
   level: 1
@@ -2040,25 +2038,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &703093907
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 703093904}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b2072df94d85b84ba8b0e6ed2e3a16a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::KeyBinding
-  rotate: 273
-  right: 275
-  left: 276
-  down: 274
-  hardDrop: 32
-  zRotate: 122
-  aRotate: 97
 --- !u!1 &716692745
 GameObject:
   m_ObjectHideFlags: 0
@@ -2582,6 +2561,59 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 955201468}
   m_CullTransparentMesh: 1
+--- !u!1 &970265028
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 970265030}
+  - component: {fileID: 970265029}
+  m_Layer: 0
+  m_Name: KeyBinding
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &970265029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 970265028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b2072df94d85b84ba8b0e6ed2e3a16a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KeyBinding
+  rotate: 273
+  right: 275
+  left: 276
+  down: 274
+  hardDrop: 32
+  zRotate: 122
+  aRotate: 97
+  menu: 27
+  openstat: 107
+--- !u!4 &970265030
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 970265028}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.89974, y: -5.22897, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1005927804
 GameObject:
   m_ObjectHideFlags: 0
@@ -4555,3 +4587,4 @@ SceneRoots:
   - {fileID: 1711379565}
   - {fileID: 740287252}
   - {fileID: 822568023}
+  - {fileID: 970265030}

@@ -6,7 +6,8 @@ public class GameManager : MonoBehaviour
 {
     public GameObject panel;
     public bool isON = false;
-
+    KeyBinding key;
+    public GameObject statpanel;
     // 현재 화면과 조작이 반전된 상태인지 외부에서 확인할 수 있는 변수
     public bool IsMirrored { get; private set; }
 
@@ -21,14 +22,22 @@ public class GameManager : MonoBehaviour
             panel.SetActive(false);
         }
     }
-
+    private void Start()
+    {
+        key = KeyBinding.instance;
+    }
     void Update()
     {
         // 일시정지 로직
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(key.menu))
         {
             if (!isON) PauseGame();
             else ResumeGame();
+        }
+        if (Input.GetKeyDown(key.openstat))
+        {
+            if (!isON) openstat();
+            else closestat();
         }
     }
 
@@ -65,5 +74,17 @@ public class GameManager : MonoBehaviour
             scale.x = isMirrored ? -1f : 1f;
             Camera.main.transform.localScale = scale;
         }
+    }
+    public void openstat()
+    {
+        Time.timeScale = 0;
+        statpanel.SetActive(true);
+        isON = true;
+    }
+    public void closestat()
+    {
+        Time.timeScale = 1;
+        statpanel.SetActive(false);
+        isON = false;
     }
 }

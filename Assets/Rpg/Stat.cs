@@ -1,21 +1,20 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+
 public class Stat : MonoBehaviour
 {
     public static Stat instance;
     public int difficult = 3;
 
-    public int it = 0, atk = 0, def = 0;
+    public int it = 0, atk = 0, spd = 0;
     public int maxstatpoint = 0;
-    public int currentmaxstatpoint = 0;
-
     public int hp = 100;
     public int maxhp = 100;
     public int level = 1;
     public float ex = 0;
     public GameObject hpbar;
-
+    StatUI su;
     private void Awake()
     {
         if (instance == null)
@@ -23,21 +22,67 @@ public class Stat : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        else
+        else if (instance != this)
         {
-            Debug.Log("중복된 Stat 객체를 삭제합니다.");
-            Destroy(gameObject);
-            return;
+            // 1. 기존에 이미 존재하던 데이터(메인화면 등에서 온 것)를 현재 인스턴스로 복사
+            this.it = instance.it;
+            this.atk = instance.atk;
+            this.spd = instance.spd;
+            this.maxstatpoint = instance.maxstatpoint;
+            this.hp = instance.hp;
+            this.maxhp = instance.maxhp;
+            this.level = instance.level;
+            this.ex = instance.ex;
+
+            // 2. 구버전(UI가 없을 수도 있는 오브젝트)을 삭제
+            Destroy(instance.gameObject);
+
+            // 3. 현재 UI가 붙어있는 '나'를 새로운 대표(instance)로 설정
+            instance = this;
+            DontDestroyOnLoad(gameObject);
         }
     }
-    public void Update()
-    {
-    }
-    public void upit() { it++; }
-    public void upatk() { atk++; }
-    public void updef() { def++; }
 
-    // 1. 데미지 함수 (연산자 수정 완료)
+    public virtual void upit()
+    {
+        if (maxstatpoint > 0 && it < 5)
+        {
+            it++;
+            maxstatpoint--; // 포인트 소모 추가
+        }
+    }
+
+    public virtual void upatk()
+    {
+        if (maxstatpoint > 0)
+        {
+            atk++;
+            maxstatpoint--;
+        }
+    }
+
+    public virtual void upmaxhp()
+    {
+        if (maxstatpoint > 0)
+        {
+            maxhp += 10;
+            maxstatpoint--;
+        }
+    }
+
+    public virtual void upspd()
+    {
+        if (maxstatpoint > 0 && spd < 10)
+        {
+            spd++;
+            maxstatpoint--;
+        }
+    }
+    public virtual void downit() { it--; maxstatpoint++; }
+    public virtual void downatk() { atk--; maxstatpoint++; }
+    public virtual void downmaxhp() { maxhp = Mathf.Max(maxhp - 10, 10); maxstatpoint++; } // 체력 최소값 보호
+    public virtual void downspd() { spd = Mathf.Max(spd - 1, -10); maxstatpoint++; }
+
     public void damage(int Damage, string name)
     {
         hp -= Damage * difficult;
@@ -48,44 +93,38 @@ public class Stat : MonoBehaviour
             SceneManager.LoadScene("Gameover");
         }
     }
+
     private void Start()
     {
         hpcal();
-        Debug.Log($"현재 체력{hp}");
     }
-    // 2. 경험치 획득 함수 (하나로 합침)
+
     public void GainExperience(float amount)
     {
         ex += amount;
-        LevelCheck(); // 경험치 먹을 때마다 레벨업 체크
+        LevelCheck();
     }
 
-    // 3. 레벨업 로직
     public void LevelCheck()
     {
         float requiredEx = level * 30f;
-
         while (ex >= requiredEx)
         {
             ex -= requiredEx;
             level++;
-            maxstatpoint += 5; // 레벨업 보너스 포인트
-            Debug.Log("Level Up! Current Level: " + level);
-
-            // 다음 레벨에 필요한 경험치 재계산
+            maxstatpoint += 1;
             requiredEx = level * 30f;
         }
     }
-    // Stat.cs 에 추가 및 수정
+
     public void ResetStatus()
     {
         hp = maxhp;
+        hpcal();
     }
 
     public void hpcal()
     {
-        // 씬 전환 직후에는 Unity가 오브젝트를 바로 못 찾을 수 있으므로 
-        // 매번 새로 찾는 로직을 강화합니다.
         GameObject found = GameObject.Find("HPBar");
         if (found != null)
         {
@@ -94,21 +133,12 @@ public class Stat : MonoBehaviour
             hpbar.GetComponent<Image>().fillAmount = hpRatio;
         }
     }
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
 
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
+    public void OnEnable() { SceneManager.sceneLoaded += OnSceneLoaded; }
+    public void OnDisable() { SceneManager.sceneLoaded -= OnSceneLoaded; }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "Tetris")
-        {
-            hpcal(); // 씬이 로드되면 UI 바를 새로 찾아 연결
-        }
+        if (scene.name == "Tetris") hpcal();
     }
 }
