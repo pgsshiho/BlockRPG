@@ -17,6 +17,7 @@ public class blockclear : MonoBehaviour
     Enemybase eb;
     BlockBase bb;
     Sound sd;
+    string comboText = "";
 
     void Awake()
     {
@@ -64,7 +65,9 @@ public class blockclear : MonoBehaviour
         {
             // 줄을 하나도 못 지웠다면 콤보 초기화
             combo = 0;
+            comboText = "";
             sd.blockclear.pitch = 1f;
+            UpdateScoreUI();
         }
 
         CheckGameOver();
@@ -125,7 +128,11 @@ public class blockclear : MonoBehaviour
     {
         if (scoreText != null)
         {
-            string comboText = (combo > 1) ? $"\n{combo} COMBO!" : "";
+            comboText = (combo > 1) ? $"\n{combo} COMBO!" : "";
+            if(combo == 0)
+            {
+                comboText = "";
+            }
             scoreText.text = "Score: " + currentScore + comboText;
         }
     }
