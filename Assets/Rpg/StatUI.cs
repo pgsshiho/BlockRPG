@@ -1,6 +1,6 @@
 using TMPro;
 using UnityEngine;
-using UnityEditor.UI;
+using UnityEngine.UI;
 public class StatUI : Stat
 {
 
