@@ -11,6 +11,7 @@ public class Sound : MonoBehaviour
     public AudioSource swing;
     public AudioSource drop;
     public AudioSource tspinSuccess;
+    public AudioSource blockclear;
 
     [Header("Settings UI")]
     public AudioMixer mixer;

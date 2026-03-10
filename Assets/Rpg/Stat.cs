@@ -80,7 +80,6 @@ public class Stat : MonoBehaviour
     public void ResetStatus()
     {
         hp = maxhp;
-        // UI는 씬이 로드된 후에 찾아야 하므로 여기서는 값만 초기화합니다.
     }
 
     public void hpcal()

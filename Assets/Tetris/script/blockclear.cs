@@ -16,11 +16,13 @@ public class blockclear : MonoBehaviour
     public int combo = 0;
     Enemybase eb;
     BlockBase bb;
+    Sound sd;
 
     void Awake()
     {
         eb = FindAnyObjectByType<Enemybase>();
         bb = FindAnyObjectByType<BlockBase>();
+        sd = FindAnyObjectByType<Sound>();
         grid = new Transform[width, height];
         UpdateScoreUI();
     }
@@ -43,20 +45,26 @@ public class blockclear : MonoBehaviour
                 DecreaseRowsAbove(y + 1);
                 y--;
                 linesCleared++;
+                sd.blockclear.Play();
             }
         }
 
         if (linesCleared > 0)
         {
-            // 줄을 지웠다면 콤보 증가!
             combo++;
             AddScore(linesCleared);
             Debug.Log("Combo: " + combo);
+            if(sd.blockclear.pitch < 2)
+            {
+                sd.blockclear.pitch += 0.1f;
+            }
+
         }
         else
         {
             // 줄을 하나도 못 지웠다면 콤보 초기화
             combo = 0;
+            sd.blockclear.pitch = 1f;
         }
 
         CheckGameOver();
