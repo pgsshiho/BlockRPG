@@ -95,4 +95,21 @@ public class Stat : MonoBehaviour
             hpbar.GetComponent<Image>().fillAmount = hpRatio;
         }
     }
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Tetris")
+        {
+            hpcal(); // 씬이 로드되면 UI 바를 새로 찾아 연결
+        }
+    }
 }

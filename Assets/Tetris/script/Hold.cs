@@ -9,7 +9,7 @@ public class Hold : MonoBehaviour
     Conebase cb;
     public GameObject holdob;
     public GameObject currentHoldVisual;
-
+    public GameObject grayhold;
     void Awake()
     {
         cb = FindAnyObjectByType<Conebase>();
@@ -60,6 +60,14 @@ public class Hold : MonoBehaviour
                 ishold = false;
             }
             ishave = true;
+        }
+        if(ishold == true)
+        {
+            grayhold.SetActive(false);
+        }
+        else
+        {
+            grayhold.SetActive(true);
         }
     }
 

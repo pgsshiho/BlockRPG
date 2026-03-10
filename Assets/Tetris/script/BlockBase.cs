@@ -351,26 +351,16 @@ public class BlockBase : MonoBehaviour
         int s = blockclear.ScoreForSpeed;
         int d = (Stat.instance != null) ? Stat.instance.difficult : 3;
 
-        // 1. 프레임 배열을 더 촘촘하고 빠르게 수정 (뒤로 갈수록 급격히 낮아짐)
-        // 60프레임에서 시작해서 2프레임까지 더 빠르게 도달하도록 설정
         int[] frames = { 60, 50, 42, 35, 30, 25, 20, 16, 13, 10, 8, 7, 6, 5, 4, 3, 2, 2, 1 };
 
-        int baseFrame = 60;
-
-        // 2. 점수 간격을 2000 -> 1000으로 수정 (더 자주 빨라짐)
         int scoreInterval = 1000;
+        int level = s / scoreInterval; // 현재 레벨 계산
 
-        for (int i = 0; i < frames.Length; i++)
-        {
-            if (s < (i + 1) * scoreInterval)
-            {
-                baseFrame = frames[i];
-                break;
-            }
-        }
+        // 1. 배열 범위를 벗어나지 않도록 clamp 처리
+        int index = Mathf.Min(level, frames.Length - 1);
+        int baseFrame = frames[index];
 
-        // 3. 난이도에 의한 추가 가속 (난이도가 높으면 더 드라마틱하게 빨라짐)
-        // 난이도 d가 3보다 크면 프레임을 더 깎음
+        // 2. 난이도 보정
         int rawFrame = baseFrame - (d - 3) * 5;
 
         if (rawFrame >= 1)
@@ -380,9 +370,10 @@ public class BlockBase : MonoBehaviour
         }
         else
         {
-            // 1프레임 미만으로 떨어지면 한 프레임에 여러 칸 이동 (20G 모드)
             frame = 1;
-            dropDistance = 1 + Mathf.CeilToInt(Mathf.Abs(rawFrame) / 3f);
+            // 3. dropDistance의 최대치를 제한 (예: 20칸)하여 무한 루프 렉 방지
+            int calculatedDistance = 1 + Mathf.CeilToInt(Mathf.Abs(rawFrame) / 3f);
+            dropDistance = Mathf.Min(calculatedDistance, 20);
         }
     }
 }

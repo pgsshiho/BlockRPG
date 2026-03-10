@@ -21,11 +21,10 @@ public class Mainmenu : MonoBehaviour
     }
     public void start()
     {
-        // Find 대신 static 변수인 instance를 직접 사용
+        Time.timeScale = 1f; // 혹시라도 멈춰있을 시간을 재생
         if (Stat.instance != null)
         {
             Stat.instance.hp = Stat.instance.maxhp;
-            Debug.Log("체력 초기화 완료: " + Stat.instance.hp);
         }
         SceneManager.LoadScene("Tetris");
     }
