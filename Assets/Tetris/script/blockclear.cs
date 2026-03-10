@@ -18,7 +18,6 @@ public class blockclear : MonoBehaviour
     BlockBase bb;
     Sound sd;
     string comboText = "";
-
     void Awake()
     {
         eb = FindAnyObjectByType<Enemybase>();
@@ -30,8 +29,9 @@ public class blockclear : MonoBehaviour
 
     public static Vector2Int PosToIndex(Vector3 pos)
     {
-        int x = Mathf.RoundToInt((pos.x + 4.5f+ 0.01f) * 2f);
-        int y = Mathf.RoundToInt((pos.y + 19f+ 0.01f) * 2f);
+        // 그리드 좌표를 인덱스로 변환하는 로직 (기존 유지하되 소수점 오차 방지)
+        int x = Mathf.RoundToInt((pos.x + 4.5f) * 2f);
+        int y = Mathf.RoundToInt((pos.y + 19f) * 2f);
         return new Vector2Int(x, y);
     }
 
