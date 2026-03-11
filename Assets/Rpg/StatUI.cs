@@ -1,112 +1,87 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-public class StatUI : Stat
-{
 
-    [Header("UI Text Components")]
+public class StatUI : MonoBehaviour
+{
+    [Header("Status Text (TMP)")]
     public TextMeshProUGUI itText;
     public TextMeshProUGUI atkText;
     public TextMeshProUGUI maxhpText;
     public TextMeshProUGUI spdText;
-    public TextMeshProUGUI statp;
-    [Header("OverStat Popup")]
-    public GameObject overstat;
-    public TextMeshProUGUI over;
-    [Header("LevelUp Group")]
-    public GameObject leveluppanel;
-    public TextMeshProUGUI levelupText;
+    public TextMeshProUGUI statpText;
+
+    [Header("Popups")]
+    public GameObject overstatPopup;
+    public TextMeshProUGUI popupText;
 
     private void Start()
     {
-        UpdateUI();
-        if (overstat != null) overstat.SetActive(false);
+        if (overstatPopup != null) overstatPopup.SetActive(false);
     }
 
     private void Update()
     {
-        UpdateUI();
+        UpdateDisplay();
     }
 
-    public override void upit()
+    private void UpdateDisplay()
     {
-        if (maxstatpoint <= 0) { overs("포인트가 부족합니다!"); return; }
-        if (it >= 5) { overs("더 이상 올릴 수 없습니다!"); return; }
-        base.upit();
+        if (Stat.instance == null) return;
+
+        if (itText != null) itText.text = Stat.instance.it.ToString();
+        if (atkText != null) atkText.text = Stat.instance.atk.ToString();
+        if (maxhpText != null) maxhpText.text = Stat.instance.maxhp.ToString();
+        if (spdText != null) spdText.text = Stat.instance.spd.ToString();
+        if (statpText != null) statpText.text = "Points: " + Stat.instance.maxstatpoint.ToString();
     }
 
-    public override void upatk()
+    // --- 버튼 연동 함수 (Inspector에서 Button OnClick에 연결) ---
+    public void Btn_UpIt()
     {
-        if (maxstatpoint <= 0) { overs("포인트가 부족합니다!"); return; }
-        if (spd >= 100) { overs("더 이상 올릴 수 없습니다!"); return; }
-        base.upatk();
+        if (Stat.instance.maxstatpoint <= 0) { ShowMessage("포인트 부족!"); return; }
+        if (Stat.instance.it >= 5) { ShowMessage("최대치 도달!"); return; }
+        Stat.instance.upit();
+    }
+    public void Btn_UpAtk()
+    {
+        if (Stat.instance.maxstatpoint <= 0) { ShowMessage("포인트 부족!"); return; }
+        if (Stat.instance.atk >= 20) { ShowMessage("최대치 도달!"); return; }
+        Stat.instance.upatk();
+    }
+    public void Btn_UpSpd()
+    {
+        if (Stat.instance.maxstatpoint <= 0) { ShowMessage("포인트 부족!"); return; }
+        if (Stat.instance.spd >= 10) { ShowMessage("최대치 도달!"); return; }
+        Stat.instance.upspd();
+    }
+    public void Btn_UpMaxHp()
+    {
+        if (Stat.instance.maxstatpoint <= 0) { ShowMessage("포인트 부족!"); return; }
+        Stat.instance.upmaxhp();
     }
 
-    public override void upspd()
+    public void Btn_DownIt() => Stat.instance.downit();
+    public void Btn_DownAtk() => Stat.instance.downatk();
+    public void Btn_DownSpd() => Stat.instance.downspd();
+    public void Btn_DownMaxHp() => Stat.instance.downmaxhp();
+
+    // --- 팝업 로직 ---
+    public void ShowMessage(string message)
     {
-        if (maxstatpoint <= 0) { overs("포인트가 부족합니다!"); return; }
-        if (spd >= 10) { overs("더 이상 올릴 수 없습니다!"); return; }
-        base.upspd();
+        if (overstatPopup == null) return;
+        CancelInvoke("HidePopup");
+        overstatPopup.SetActive(true);
+        popupText.text = message;
+        Invoke("HidePopup", 1f);
     }
 
-    public override void upmaxhp()
+    public void ShowLevelUp()
     {
-        if (maxstatpoint <= 0) { overs("포인트가 부족합니다!"); return; }
-        base.upmaxhp(); hpcal();
+        ShowMessage("Level Up!");
     }
 
-    public override void downit()
+    private void HidePopup()
     {
-        if (it <= 0) { overs("0보다 작아질 수 없습니다"); return; }
-        base.downit();
-    }
-
-    public override void downatk()
-    { // 누락된 공격력 감소 추가
-        if (atk <= 0) { overs("0보다 작아질 수 없습니다"); return; }
-        base.downatk();
-    }
-
-    public override void downmaxhp()
-    {
-        if (maxhp <= 10) { overs("10보다 작아질 수 없습니다"); return; }
-        base.downmaxhp(); hpcal();
-    }
-
-    public override void downspd()
-    {
-        if (spd <= -10) { overs("-10보다 작아질 수 없습니다"); return; }
-        base.downspd();
-    }
-
-    private void UpdateUI()
-    {
-        if (itText != null) itText.text = it.ToString();
-        if (atkText != null) atkText.text = atk.ToString();
-        if (maxhpText != null) maxhpText.text = maxhp.ToString();
-        if (spdText != null) spdText.text = spd.ToString();
-        if (statp != null) statp.text = "Points: " + maxstatpoint.ToString();
-    }
-
-    public void overs(string message)
-    {
-        if (overstat != null)
-        {
-            CancelInvoke("Hidelevelup"); // 기존 예약된 끄기 취소 (중첩 방지)
-            overstat.SetActive(true);
-            over.text = message;
-            Invoke("Hidelevelup", 1f);
-        }
-    }
-    public void levelup()
-    {
-        CancelInvoke("HideOverStat");
-        overstat.SetActive(true);
-        over.text = "LevelUp!";
-        Invoke("Hidelevelup", 1f);
-    }
-    private void HideOverStat()
-    {
-        overstat.SetActive(false);
+        if (overstatPopup != null) overstatPopup.SetActive(false);
     }
 }

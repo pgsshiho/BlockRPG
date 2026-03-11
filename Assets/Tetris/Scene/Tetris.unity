@@ -430,7 +430,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2078534756}
         m_TargetAssemblyTypeName: StatUI, Assembly-CSharp
-        m_MethodName: downspd
+        m_MethodName: Btn_DownAtk
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2199,9 +2199,9 @@ RectTransform:
   - {fileID: 591637098}
   - {fileID: 1743414353}
   - {fileID: 1711288958}
-  - {fileID: 1112927518}
   - {fileID: 152610433}
   - {fileID: 179017486}
+  - {fileID: 1112927518}
   m_Father: {fileID: 1396576926}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -6258,7 +6258,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2078534756}
         m_TargetAssemblyTypeName: StatUI, Assembly-CSharp
-        m_MethodName: downspd
+        m_MethodName: Btn_DownSpd
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11007,7 +11007,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2078534756}
         m_TargetAssemblyTypeName: StatUI, Assembly-CSharp
-        m_MethodName: upit
+        m_MethodName: Btn_UpIt
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -13829,7 +13829,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2078534756}
         m_TargetAssemblyTypeName: StatUI, Assembly-CSharp
-        m_MethodName: upspd
+        m_MethodName: Btn_UpSpd
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -15963,7 +15963,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2078534756}
         m_TargetAssemblyTypeName: StatUI, Assembly-CSharp
-        m_MethodName: upmaxhp
+        m_MethodName: Btn_UpMaxHp
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -21508,7 +21508,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2078534756}
         m_TargetAssemblyTypeName: StatUI, Assembly-CSharp
-        m_MethodName: downmaxhp
+        m_MethodName: Btn_DownMaxHp
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -22047,7 +22047,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2078534756}
         m_TargetAssemblyTypeName: StatUI, Assembly-CSharp
-        m_MethodName: downit
+        m_MethodName: Btn_DownIt
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -31451,7 +31451,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2078534756}
         m_TargetAssemblyTypeName: StatUI, Assembly-CSharp
-        m_MethodName: upatk
+        m_MethodName: Btn_UpAtk
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -32248,24 +32248,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e69f81557b68a604686447a2234ae60c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StatUI
-  difficult: 3
-  it: 0
-  atk: 0
-  spd: 0
-  maxstatpoint: 0
-  hp: 100
-  maxhp: 100
-  level: 1
-  ex: 0
   itText: {fileID: 1614224432}
   atkText: {fileID: 1653893291}
   maxhpText: {fileID: 1211493750}
   spdText: {fileID: 693372774}
-  statp: {fileID: 1967877619}
-  overstat: {fileID: 849373502}
-  over: {fileID: 765636042}
-  leveluppanel: {fileID: 1112927515}
-  levelupText: {fileID: 927835222}
+  statpText: {fileID: 1967877619}
+  overstatPopup: {fileID: 1112927515}
+  popupText: {fileID: 927835222}
 --- !u!1 &2085788235
 GameObject:
   m_ObjectHideFlags: 0
