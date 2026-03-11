@@ -5,12 +5,13 @@ public class Golbin : Enemybase
 {
     private Animator anim;
     Hold hold;
-
+    Sound sd;
     protected override void Start()
     {
         base.Start();
         anim = GetComponent<Animator>();
         hold = FindAnyObjectByType<Hold>();
+        sd = FindAnyObjectByType<Sound>();
     }
 
     public override void Attack()
@@ -34,11 +35,7 @@ public class Golbin : Enemybase
         hold.ishave = false;
         // hold.ishold = true; // 필요하다면 추가
     }
-
-    // 3. 데미지 입히기 (이미 base.Attack에서 수행한다면 중복 작성 x)
-    // if (st != null) st.damage(damage, gameObject.name);
-
-    // 4. 공격 애니메이션 대기 코루틴
+        sd.Goblin.Play();
     StartCoroutine(WaitAttackAnimation());
 }
 
@@ -59,7 +56,7 @@ IEnumerator WaitAttackAnimation()
 
         if (anim != null)
         {
-            anim.SetTrigger("dead");
+            anim.SetTrigger("Dead");
         }
         Collider2D col = GetComponent<Collider2D>();
         if (col != null) col.enabled = false;

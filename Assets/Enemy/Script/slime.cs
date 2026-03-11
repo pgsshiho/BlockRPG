@@ -4,11 +4,12 @@ using UnityEngine;
 public class slime : Enemybase
 {
     private Animator anim;
-
+    Sound sd;
     protected override void Start()
     {
         base.Start();
         anim = GetComponent<Animator>();
+        sd = FindAnyObjectByType<Sound>();
     }
 
     public override void Attack()
@@ -19,7 +20,7 @@ public class slime : Enemybase
         {
             anim.SetTrigger("Attack");
         }
-
+        sd.slimehit.Play();
         StartCoroutine(WaitAttackAnimation());
     }
 

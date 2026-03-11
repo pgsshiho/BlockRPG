@@ -12,7 +12,15 @@ public class Sound : MonoBehaviour
     public AudioSource drop;
     public AudioSource tspinSuccess;
     public AudioSource blockclear;
-
+    public AudioSource slimehit;
+    public AudioSource Goblin;
+    public AudioSource Golem;
+    public AudioSource night_knight;
+    public AudioSource ouger;
+    public AudioSource Prism_Dragon;
+    public AudioSource Shamen;
+    public AudioSource Kraken;
+    public AudioSource Yeti;
     [Header("Settings UI")]
     public AudioMixer mixer;
     public GameObject currentSceneUI;
