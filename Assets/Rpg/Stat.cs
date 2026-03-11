@@ -14,9 +14,11 @@ public class Stat : MonoBehaviour
     public int level = 1;
     public float ex = 0;
     public GameObject hpbar;
+    public GameObject expbar;
     StatUI su;
     Enemybase eb;
     EnemySpawn es;
+    float requiredEx;
     protected virtual void Awake() // virtual로 선언하여 자식에서 확장 가능하게 함
     {
         if (instance == null)
@@ -42,7 +44,7 @@ public class Stat : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
-
+    
     public virtual void upit()
     {
         if (maxstatpoint > 0 && it < 5)
@@ -100,24 +102,28 @@ public class Stat : MonoBehaviour
 
     private void Start()
     {
+        requiredEx = level * 30f;
+        expcal();
         hpcal();
     }
 
     public void GainExperience(float amount)
     {
         ex += amount;
+        expcal();
         LevelCheck();
     }
 
     public void LevelCheck()
     {
-        float requiredEx = level * 30f;
+        requiredEx = level * 30f;
         while (ex >= requiredEx)
         {
             ex -= requiredEx;
             level++;
             maxstatpoint += 1;
             requiredEx = level * 30f;
+            expcal();
             su.levelup();
         }
     }
@@ -138,12 +144,24 @@ public class Stat : MonoBehaviour
             hpbar.GetComponent<Image>().fillAmount = hpRatio;
         }
     }
-
+    public void expcal()
+    {
+        GameObject founde = GameObject.Find("EXBar");
+        if (founde != null)
+        {
+            expbar = founde;
+            float exRatio = (float)ex / requiredEx;
+            expbar.GetComponent<Image>().fillAmount = exRatio;
+        }
+    }
     public void OnEnable() { SceneManager.sceneLoaded += OnSceneLoaded; }
     public void OnDisable() { SceneManager.sceneLoaded -= OnSceneLoaded; }
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "Tetris") hpcal();
+        if (scene.name == "Tetris") {
+            hpcal();
+            expcal();
+                }
     }
 }

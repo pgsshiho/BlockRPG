@@ -52,7 +52,7 @@ IEnumerator WaitAttackAnimation()
 
         if (anim != null)
         {
-            anim.SetTrigger("dead");
+            anim.SetTrigger("Dead");
         }
         base.dead();
 

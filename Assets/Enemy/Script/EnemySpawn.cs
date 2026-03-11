@@ -21,7 +21,6 @@ public class EnemySpawn : MonoBehaviour
     {
         bc = FindAnyObjectByType<blockclear>();
         blockclear.ScoreForSpeed = 0;
-        // 게임 시작 시 첫 번째 적 소환! (이거 없으면 몬스터가 아예 안 나옵니다)
         isSpawning = false;
         i = 0;
         spawn();
