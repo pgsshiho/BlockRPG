@@ -77,27 +77,17 @@ public class Enemybase : MonoBehaviour
         if (isDead) return;
         isDead = true;
 
-        Debug.Log(gameObject.name + " 사망. 새 적 스폰 요청");
+        // 죽는 순간 콜라이더를 꺼서 추가 히트 판정 방지
+        Collider2D col = GetComponent<Collider2D>();
+        if (col != null) col.enabled = false;
 
-        if (bc != null)
-        {
-            bc.currentScore += 100;
-            bc.UpdateScoreUI();
-        }
-
-        // 스폰 요청
-        if (es != null) es.spawn();
-
+        // 점수 및 경험치 처리는 즉시 수행
+        if (bc != null) { bc.currentScore += 100; bc.UpdateScoreUI(); }
         st.GainExperience(ex);
         st.hp += 5;
         st.hpcal();
 
-        // 골블린의 경우 Coroutine에서 Destroy하므로 여기선 일단 비활성화만 하거나
-        // 콜라이더를 꺼서 중복 히트를 방지해야 합니다.
-        GetComponent<Collider2D>().enabled = false;
-
-        if (gameObject.name.Contains("Golbin")) return;
-        Destroy(gameObject);
+        // 실제 스폰 요청은 자식의 코루틴 끝에서 하도록 로직을 비워둡니다.
     }
 
     public void hit(int damage)

@@ -9,18 +9,20 @@ public class EnemyGroup
 
 public class EnemySpawn : MonoBehaviour
 {
+    public bool isSpawning = false;
     public EnemyGroup[] enemy;
 
     public int randomnenemy = 0;
     public int nowdif = 0;
     public GameObject spawnpoint;
     blockclear bc;
-
+    public int i = 0;
     void Start()
     {
         bc = FindAnyObjectByType<blockclear>();
 
         // 게임 시작 시 첫 번째 적 소환! (이거 없으면 몬스터가 아예 안 나옵니다)
+        i = 0;
         spawn();
     }
 
@@ -30,8 +32,10 @@ public class EnemySpawn : MonoBehaviour
 
     public void spawn()
     {
+        if (isSpawning) return;
+        isSpawning = true;
         int s = blockclear.ScoreForSpeed;
-        for (int i = 0; i < 19; i++)
+        for (i = 0; i < 19; i++)
         {
             if (s < (i + 1) * 2000)
             {

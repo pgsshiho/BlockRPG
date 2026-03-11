@@ -59,6 +59,13 @@ public class ouger : Enemybase
     IEnumerator WaitDeadAnimation()
     {
         yield return new WaitForSeconds(1.0f);
+
         base.dead();
+        if (es != null)
+        {
+            es.isSpawning = false; // 방어막 해제
+            es.spawn();            // 새 적 소환
+        }
+        Destroy(gameObject);
     }
 }
