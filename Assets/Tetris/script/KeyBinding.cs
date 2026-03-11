@@ -11,6 +11,8 @@ public class KeyBinding : MonoBehaviour
     public KeyCode aRotate = KeyCode.A;
     public KeyCode menu = KeyCode.Escape;
     public KeyCode openstat = KeyCode.K;
+    public KeyCode hold2 = KeyCode.C;
+    public KeyCode hold = KeyCode.LeftShift;
     public static KeyBinding instance;
     void Start()
     {

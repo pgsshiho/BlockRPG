@@ -169,7 +169,7 @@ public class BlockBase : MonoBehaviour
         {
             int speedStat = (Stat.instance != null) ? Stat.instance.spd : 0;
             float lockMod = Mathf.Pow(2, speedStat / 3f);
-            if (lockDelayTimer >= 0.5f * lockMod || trying >= 15) OnHardDropSettle();
+            if (lockDelayTimer >= 0.3f * lockMod || trying >= 15) OnHardDropSettle();
         }
     }
 

@@ -10,14 +10,16 @@ public class Hold : MonoBehaviour
     public GameObject holdob;
     public GameObject currentHoldVisual;
     public GameObject grayhold;
+    KeyBinding kb;
     void Awake()
     {
         cb = FindAnyObjectByType<Conebase>();
+        kb = FindAnyObjectByType<KeyBinding>();
     }
 
     void Update()
     {
-        if (ishold == true && Input.GetKeyDown(KeyCode.LeftShift))
+        if (ishold == true && Input.GetKeyDown(kb.hold) || ishold == true && Input.GetKeyDown(kb.hold2))
         {
             if (currentHoldVisual != null) Destroy(currentHoldVisual);
 
