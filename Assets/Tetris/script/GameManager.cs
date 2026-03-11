@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class GameManager : MonoBehaviour
     public bool isON = false;
     KeyBinding key;
     public GameObject statpanel;
+    public GameObject UIs;
     // 현재 화면과 조작이 반전된 상태인지 외부에서 확인할 수 있는 변수
     public bool IsMirrored { get; private set; }
 
@@ -65,14 +67,20 @@ public class GameManager : MonoBehaviour
     // 화면 반전 실행 함수
     public void SetMirrorMode(bool isMirrored)
     {
-        IsMirrored = isMirrored;
+        this.IsMirrored = isMirrored;
 
-        // 카메라의 스케일을 반전시켜 거울 효과 연출
         if (Camera.main != null)
         {
-            Vector3 scale = Camera.main.transform.localScale;
-            scale.x = isMirrored ? -1f : 1f;
-            Camera.main.transform.localScale = scale;
+            // 1. 카메라 행렬 초기화 (반드시 호출해야 함)
+            Camera.main.ResetProjectionMatrix();
+
+            if (isMirrored)
+            {
+                // 2. 현재 투영 행렬을 가져와서 X축을 -1배 시킴
+                Matrix4x4 mat = Camera.main.projectionMatrix;
+                mat *= Matrix4x4.Scale(new Vector3(-1, 1, 1));
+                Camera.main.projectionMatrix = mat;
+            }
         }
     }
     public void openstat()
