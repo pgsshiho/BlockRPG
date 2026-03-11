@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Collections; // 코루틴 사용을 위해 추가
 
 public class blockclear : MonoBehaviour
 {
@@ -14,10 +15,12 @@ public class blockclear : MonoBehaviour
     public int nowdamage = 0;
     public TextMeshProUGUI scoreText;
     public int combo = 0;
+
     Enemybase eb;
     BlockBase bb;
     Sound sd;
     string comboText = "";
+
     void Awake()
     {
         eb = FindAnyObjectByType<Enemybase>();
@@ -29,7 +32,6 @@ public class blockclear : MonoBehaviour
 
     public static Vector2Int PosToIndex(Vector3 pos)
     {
-        // 그리드 좌표를 인덱스로 변환하는 로직 (기존 유지하되 소수점 오차 방지)
         int x = Mathf.RoundToInt((pos.x + 4.5f) * 2f);
         int y = Mathf.RoundToInt((pos.y + 19f) * 2f);
         return new Vector2Int(x, y);
@@ -54,52 +56,25 @@ public class blockclear : MonoBehaviour
         {
             combo++;
             AddScore(linesCleared);
-            Debug.Log("Combo: " + combo);
-            if(sd.blockclear.pitch < 2)
-            {
-                sd.blockclear.pitch += 0.1f;
-            }
-
+            if (sd.blockclear.pitch < 2) sd.blockclear.pitch += 0.1f;
         }
         else
         {
-            // 줄을 하나도 못 지웠다면 콤보 초기화
             combo = 0;
             comboText = "";
             sd.blockclear.pitch = 1f;
             UpdateScoreUI();
         }
-
         CheckGameOver();
-    }
-
-    public void CheckGameOver()
-    {
-        // 19번 라인에 블록이 하나라도 있으면 즉시 게임오버
-        for (int x = 0; x < width; x++)
-        {
-            if (grid[x, 55] != null)
-            {
-                Time.timeScale = 1;
-                ScoreForSpeed = 0;
-                Gameover.killerName = "블럭";
-                SceneManager.LoadScene("Gameover");
-                return;
-            }
-        }
     }
 
     void AddScore(int lines)
     {
-        // 콤보 보너스 계산 (예: 콤보당 50점, 데미지 5씩 추가)
-        // 첫 번째 줄 제거(combo 1)일 때는 보너스가 없게 하려면 (combo - 1)을 사용합니다.
         int comboScoreBonus = (combo > 1) ? (combo - 1) * 50 : 0;
         int comboDamageBonus = (combo > 1) ? (combo - 1) * 5 : 0;
-
         int scoreBonus = 0;
         int damageBonus = 0;
 
-        // T-Spin 확인 로직 (기존 유지)
         if (bb != null && bb.Tspin)
         {
             bb.Tspin = false;
@@ -113,33 +88,70 @@ public class blockclear : MonoBehaviour
         int lineScore = (lines <= 4) ? bonusScore[lines] : lines * 100;
         int lineDamage = (lines <= 4) ? damageAmount[lines] : lines * 25;
 
-        // 콤보 보너스까지 합산
         currentScore += lineScore + scoreBonus + comboScoreBonus;
-        nowdamage = lineDamage + damageBonus + comboDamageBonus;
+        int totalDamageToApply = lineDamage + damageBonus + comboDamageBonus;
 
-        if (eb == null) eb = FindAnyObjectByType<Enemybase>();
-        if (eb != null) eb.hit(nowdamage);
-        Enemybase[] targets = FindObjectsByType<Enemybase>(FindObjectsSortMode.None);
-
-        foreach (Enemybase target in targets)
-        {
-            // 이미 죽고 있는 중인 적은 때리지 않음
-            target.hit(nowdamage);
-        }
+        // [중요] 코루틴으로 데미지 연쇄 처리 시작
+        StartCoroutine(ProcessDamageSequence(totalDamageToApply));
 
         ScoreForSpeed = currentScore;
         UpdateScoreUI();
     }
 
+    // 데미지 이월 처리 코루틴
+    IEnumerator ProcessDamageSequence(int remainingDamage)
+    {
+        while (remainingDamage > 0)
+        {
+            // 현재 살아있는 적 찾기
+            Enemybase target = null;
+            Enemybase[] enemies = FindObjectsByType<Enemybase>(FindObjectsSortMode.None);
+
+            foreach (var e in enemies)
+            {
+                if (!e.IsDead) { target = e; break; }
+            }
+
+            if (target != null)
+            {
+                // 스탯 기반 최종 데미지 배율 적용 전 원본 데미지로 계산
+                float multiplier = (Stat.instance != null) ? (1.0f + (Stat.instance.atk * 0.1f)) : 1f;
+                int enemyCurrentHp = target.hp;
+
+                // 이번 적에게 줄 수 있는 최대 실질 데미지
+                float potentialDamage = remainingDamage * multiplier;
+
+                if (potentialDamage >= enemyCurrentHp)
+                {
+                    // 적이 죽을 만큼 데미지가 충분함
+                    int damageConsumed = Mathf.CeilToInt(enemyCurrentHp / multiplier);
+                    target.hit(remainingDamage); // hit 내부에서 hp를 깎고 dead 호출
+                    remainingDamage -= damageConsumed;
+
+                    // 적이 죽고 다음 적이 스폰될 때까지 대기 (슬라임 애니메이션 시간 고려)
+                    yield return new WaitForSeconds(1.1f);
+                }
+                else
+                {
+                    // 적이 죽지 않을 정도면 남은 데미지 다 주고 종료
+                    target.hit(remainingDamage);
+                    remainingDamage = 0;
+                }
+            }
+            else
+            {
+                // 적이 아직 스폰 안 되었으면 잠시 대기
+                yield return new WaitForSeconds(0.1f);
+            }
+        }
+    }
+
+    // (기존 나머지 함수들 유지: IsLineFull, DeleteLine, DecreaseRowsAbove, CheckGameOver, UpdateScoreUI)
     public void UpdateScoreUI()
     {
         if (scoreText != null)
         {
             comboText = (combo > 1) ? $"\n{combo} COMBO!" : "";
-            if(combo == 0)
-            {
-                comboText = "";
-            }
             scoreText.text = "Score: " + currentScore + comboText;
         }
     }
@@ -147,10 +159,7 @@ public class blockclear : MonoBehaviour
     bool IsLineFull(int y)
     {
         int count = 0;
-        for (int x = 0; x < width; x++)
-        {
-            if (grid[x, y] != null) count++;
-        }
+        for (int x = 0; x < width; x++) { if (grid[x, y] != null) count++; }
         return count >= 10;
     }
 
@@ -158,11 +167,10 @@ public class blockclear : MonoBehaviour
     {
         for (int x = 0; x < width; x++)
         {
-            // [수정] grid[x, y]가 null이 아닐 때만 Destroy를 호출합니다.
             if (grid[x, y] != null)
             {
                 Destroy(grid[x, y].gameObject);
-                grid[x, y] = null; // 삭제 후 배열 칸을 비워줍니다.
+                grid[x, y] = null;
             }
         }
     }
@@ -179,6 +187,21 @@ public class blockclear : MonoBehaviour
                     grid[x, y] = null;
                     grid[x, y - 1].position += new Vector3(0, -0.5f, 0);
                 }
+            }
+        }
+    }
+
+    public void CheckGameOver()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            if (grid[x, 55] != null)
+            {
+                Time.timeScale = 1;
+                ScoreForSpeed = 0;
+                Gameover.killerName = "블럭";
+                SceneManager.LoadScene("Gameover");
+                return;
             }
         }
     }

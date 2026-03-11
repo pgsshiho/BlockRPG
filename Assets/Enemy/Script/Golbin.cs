@@ -42,33 +42,26 @@ public class Golbin : Enemybase
 IEnumerator WaitAttackAnimation()
 {
     // 여기서 대기하는 시간(1.0f) 동안은 isattack이 true라 frame이 쌓이지 않습니다.
-    yield return new WaitForSeconds(1.0f);
+    yield return new WaitForSeconds(0.8f);
     isattack = false; 
     // 이제 다시 FixedUpdate에서 frame이 0부터 쌓이기 시작합니다.
 }
-
-
-    // --- [죽음 파트] ---
     public override void dead()
     {
         if (isDead) return;
-        isDead = true;
 
         if (anim != null)
         {
-            anim.SetTrigger("Dead");
+            anim.SetTrigger("dead");
         }
-        Collider2D col = GetComponent<Collider2D>();
-        if (col != null) col.enabled = false;
+        base.dead();
 
         StartCoroutine(WaitDeadAnimation());
     }
 
     IEnumerator WaitDeadAnimation()
     {
-        yield return new WaitForSeconds(1.0f);
-
-        base.dead();
+        yield return new WaitForSeconds(0.8f);
         if (es != null)
         {
             es.isSpawning = false; // 방어막 해제

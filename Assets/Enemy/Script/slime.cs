@@ -29,22 +29,15 @@ public class slime : Enemybase
         yield return new WaitForSeconds(1.0f);
         isattack = false;
     }
-
-
-    // --- [죽음 파트] ---
     public override void dead()
     {
         if (isDead) return;
-        isDead = true;
 
         if (anim != null)
         {
             anim.SetTrigger("dead");
         }
-
-        // 추가 공격 방지
-        Collider2D col = GetComponent<Collider2D>();
-        if (col != null) col.enabled = false;
+        base.dead();
 
         StartCoroutine(WaitDeadAnimation());
     }
@@ -52,8 +45,6 @@ public class slime : Enemybase
     IEnumerator WaitDeadAnimation()
     {
         yield return new WaitForSeconds(1.0f);
-
-        base.dead();
         if (es != null)
         {
             es.isSpawning = false; // 방어막 해제

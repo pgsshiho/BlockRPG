@@ -43,7 +43,10 @@ public class Sound : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
+    private void Start()
+    {
+        RebindSliders();
+    }
     // 씬이 넘어갈 때마다 자동으로 호출됨
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {

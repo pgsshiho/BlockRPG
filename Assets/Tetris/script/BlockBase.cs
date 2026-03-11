@@ -78,8 +78,8 @@ public class BlockBase : MonoBehaviour
             if (!success)
             {
                 Vector3[] kickOffsets = gameObject.name.Contains("I") ?
-                    new Vector3[] { new Vector3(-0.5f, 0, 0), new Vector3(0.5f, 0, 0), new Vector3(0, 0.5f, 0), new Vector3(0, -0.5f, 0), new Vector3(-1f, 0, 0), new Vector3(1f, 0, 0) } :
-                    new Vector3[] { new Vector3(-0.5f, 0, 0), new Vector3(0.5f, 0, 0), new Vector3(0, -0.5f, 0), new Vector3(0, 0.5f, 0) };
+                    new Vector3[] { new Vector3(-0.5f, 0, 0), new Vector3(0.5f, 0, 0), new Vector3(0, 0.5f, 0), new Vector3(0, -0.5f, 0), new Vector3(-0.5f, -0.5f, 0), new Vector3(0.5f, -0.5f, 0), new Vector3(-1f, 0, 0), new Vector3(0, 1f, 0), new Vector3(1f, 0, 0) } :
+                    new Vector3[] { new Vector3(-0.5f, 0, 0), new Vector3(0.5f, 0, 0), new Vector3(0, -0.5f, 0), new Vector3(0, 0.5f, 0), new Vector3(-0.5f, -0.5f, 0), new Vector3(0.5f, -0.5f, 0), };
 
                 foreach (Vector3 offset in kickOffsets)
                 {
