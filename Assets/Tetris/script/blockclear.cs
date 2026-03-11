@@ -119,6 +119,13 @@ public class blockclear : MonoBehaviour
 
         if (eb == null) eb = FindAnyObjectByType<Enemybase>();
         if (eb != null) eb.hit(nowdamage);
+        Enemybase[] targets = FindObjectsByType<Enemybase>(FindObjectsSortMode.None);
+
+        foreach (Enemybase target in targets)
+        {
+            // 이미 죽고 있는 중인 적은 때리지 않음
+            target.hit(nowdamage);
+        }
 
         ScoreForSpeed = currentScore;
         UpdateScoreUI();

@@ -15,7 +15,8 @@ public class Stat : MonoBehaviour
     public float ex = 0;
     public GameObject hpbar;
     StatUI su;
-    private void Awake()
+    Enemybase eb;
+    protected virtual void Awake() // virtual로 선언하여 자식에서 확장 가능하게 함
     {
         if (instance == null)
         {
@@ -24,7 +25,7 @@ public class Stat : MonoBehaviour
         }
         else if (instance != this)
         {
-            // 1. 기존에 이미 존재하던 데이터(메인화면 등에서 온 것)를 현재 인스턴스로 복사
+            // [중요] 기존의 모든 데이터를 현재(새로운) 인스턴스로 복사
             this.it = instance.it;
             this.atk = instance.atk;
             this.spd = instance.spd;
@@ -33,11 +34,9 @@ public class Stat : MonoBehaviour
             this.maxhp = instance.maxhp;
             this.level = instance.level;
             this.ex = instance.ex;
+            this.difficult = instance.difficult;
 
-            // 2. 구버전(UI가 없을 수도 있는 오브젝트)을 삭제
             Destroy(instance.gameObject);
-
-            // 3. 현재 UI가 붙어있는 '나'를 새로운 대표(instance)로 설정
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
@@ -54,7 +53,7 @@ public class Stat : MonoBehaviour
 
     public virtual void upatk()
     {
-        if (maxstatpoint > 0)
+        if (maxstatpoint > 0 && atk < 100)
         {
             atk++;
             maxstatpoint--;
@@ -90,6 +89,8 @@ public class Stat : MonoBehaviour
         if (hp <= 0)
         {
             Gameover.killerName = name;
+            eb = FindAnyObjectByType<Enemybase>();
+            Destroy(eb.gameObject);
             SceneManager.LoadScene("Gameover");
         }
     }
@@ -114,6 +115,7 @@ public class Stat : MonoBehaviour
             level++;
             maxstatpoint += 1;
             requiredEx = level * 30f;
+            su.levelup();
         }
     }
 

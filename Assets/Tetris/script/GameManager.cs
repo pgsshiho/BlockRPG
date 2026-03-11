@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviour
     public bool isON = false;
     KeyBinding key;
     public GameObject statpanel;
-    public GameObject UIs;
     // 현재 화면과 조작이 반전된 상태인지 외부에서 확인할 수 있는 변수
     public bool IsMirrored { get; private set; }
 

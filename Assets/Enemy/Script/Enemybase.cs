@@ -19,7 +19,7 @@ public class Enemybase : MonoBehaviour
     public GameObject hpbar;
     public int baseHp = 40;     // 유니티 인스펙터에서 수정할 원본 체력
     public int baseDamage = 3;  // 유니티 인스펙터에서 수정할 원본 데미지
-
+    protected bool isDead = false; // 죽음 상태 추가
     protected virtual void Start()
     {
         st = Stat.instance;
@@ -74,26 +74,46 @@ public class Enemybase : MonoBehaviour
 
     public virtual void dead()
     {
+        if (isDead) return;
+        isDead = true;
+
+        Debug.Log(gameObject.name + " 사망. 새 적 스폰 요청");
+
         if (bc != null)
         {
             bc.currentScore += 100;
             bc.UpdateScoreUI();
         }
-        Debug.Log("죽음 확인");
+
+        // 스폰 요청
         if (es != null) es.spawn();
+
         st.GainExperience(ex);
         st.hp += 5;
         st.hpcal();
+
+        // 골블린의 경우 Coroutine에서 Destroy하므로 여기선 일단 비활성화만 하거나
+        // 콜라이더를 꺼서 중복 히트를 방지해야 합니다.
+        GetComponent<Collider2D>().enabled = false;
+
+        if (gameObject.name.Contains("Golbin")) return;
         Destroy(gameObject);
-        hpcal();
     }
 
     public void hit(int damage)
     {
-        hp -= damage;
-        Debug.Log("공격성공");
+        if (isDead) return;
+
+        float finalDamage = damage * (1.0f + (st.atk * 0.1f));
+        hp -= (int)finalDamage;
+        Debug.Log(gameObject.name + "가 데미지를 입음. 남은 HP: " + hp); // 로그 추가
+
         hpcal();
-        if (hp <= 0) dead();
+
+        if (hp <= 0)
+        {
+            dead();
+        }
     }
     public void hpcal()
     {
