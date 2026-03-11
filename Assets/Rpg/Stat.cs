@@ -7,7 +7,7 @@ public class Stat : MonoBehaviour
     public static Stat instance;
     public int difficult = 3;
 
-    public int it = 0, atk = 0, spd = 0;
+    public int it = 5, atk = 0, spd = 0;
     public int maxstatpoint = 0;
     public int hp = 100;
     public int maxhp = 100;

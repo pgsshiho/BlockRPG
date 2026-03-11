@@ -11,8 +11,8 @@ public class Conebase : MonoBehaviour
     Hold hhold;
     public GameObject currentBlock;
 
-    public int it = 5;
     public GameObject[] nextHoldObs;
+    Stat st;
     private List<GameObject> nextVisuals = new List<GameObject>();
 
     void Awake()
@@ -22,13 +22,15 @@ public class Conebase : MonoBehaviour
 
     void Start()
     {
+
+        st = FindAnyObjectByType<Stat>();
         fillbag();
         Clone();
     }
 
     public void Clone()
     {
-        if (c + it >= blockBag.Count) fillbag();
+        if (c + 5 >= blockBag.Count) fillbag();
 
         // 1. 블록 생성
         currentBlock = Instantiate(blockBag[c], spawnpoint.transform.position, Quaternion.identity);
@@ -66,7 +68,7 @@ public class Conebase : MonoBehaviour
         foreach (GameObject obj in nextVisuals) Destroy(obj);
         nextVisuals.Clear();
 
-        for (int i = 0; i < it; i++)
+        for (int i = 0; i < st.it; i++)
         {
             if (i >= nextHoldObs.Length) break;
 
