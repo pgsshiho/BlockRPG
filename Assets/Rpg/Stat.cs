@@ -16,6 +16,7 @@ public class Stat : MonoBehaviour
     public GameObject hpbar;
     StatUI su;
     Enemybase eb;
+    EnemySpawn es;
     protected virtual void Awake() // virtual로 선언하여 자식에서 확장 가능하게 함
     {
         if (instance == null)
@@ -90,6 +91,8 @@ public class Stat : MonoBehaviour
         {
             Gameover.killerName = name;
             eb = FindAnyObjectByType<Enemybase>();
+            es = FindAnyObjectByType<EnemySpawn>();
+            es.i = 0;
             Destroy(eb.gameObject);
             SceneManager.LoadScene("Gameover");
         }

@@ -13,15 +13,16 @@ public class EnemySpawn : MonoBehaviour
     public EnemyGroup[] enemy;
 
     public int randomnenemy = 0;
-    public int nowdif = 0;
+    public int nowdif = 0;  
     public GameObject spawnpoint;
     blockclear bc;
     public int i = 0;
     void Start()
     {
         bc = FindAnyObjectByType<blockclear>();
-
+        blockclear.ScoreForSpeed = 0;
         // 게임 시작 시 첫 번째 적 소환! (이거 없으면 몬스터가 아예 안 나옵니다)
+        isSpawning = false;
         i = 0;
         spawn();
     }
@@ -35,6 +36,7 @@ public class EnemySpawn : MonoBehaviour
         if (isSpawning) return;
         isSpawning = true;
         int s = blockclear.ScoreForSpeed;
+        Debug.Log($"현재i값 = {i}");
         for (i = 0; i < 19; i++)
         {
             if (s < (i + 1) * 2000)
@@ -50,8 +52,8 @@ public class EnemySpawn : MonoBehaviour
 
         if (enemy[nowdif].prefabs.Length > 0)
         {
-            Debug.Log("적을 스폰합니다");
             randomnenemy = Random.Range(0, enemy[nowdif].prefabs.Length);
+            Debug.Log($"적을 스폰합니다 name={enemy[nowdif].prefabs[randomnenemy].name}");
             Instantiate(enemy[nowdif].prefabs[randomnenemy], spawnpoint.transform.position, Quaternion.identity);
         }
         else

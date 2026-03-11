@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public bool isON = false;
     KeyBinding key;
     public GameObject statpanel;
+    EnemySpawn es;
     // 현재 화면과 조작이 반전된 상태인지 외부에서 확인할 수 있는 변수
     public bool IsMirrored { get; private set; }
 
@@ -60,6 +61,8 @@ public class GameManager : MonoBehaviour
     {
         // 씬 이동 전 시간 스케일 복구는 필수!
         Time.timeScale = 1;
+        es =FindAnyObjectByType<EnemySpawn>();
+        es.i = 0;
         SceneManager.LoadScene("Mainmenu");
     }
 

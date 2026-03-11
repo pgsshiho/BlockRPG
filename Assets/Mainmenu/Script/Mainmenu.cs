@@ -21,7 +21,7 @@ public class Mainmenu : MonoBehaviour
     }
     public void start()
     {
-        Time.timeScale = 1f; // 혹시라도 멈춰있을 시간을 재생
+        Time.timeScale = 1f; 
         if (Stat.instance != null)
         {
             Stat.instance.hp = Stat.instance.maxhp;
@@ -30,13 +30,15 @@ public class Mainmenu : MonoBehaviour
     }
     public void difup()
 {
-    if (st.difficult < 10)
+        st = FindAnyObjectByType<Stat>();
+        if (st.difficult < 10)
     {
         st.difficult++;
     }
 }
 public void difdown()
 {
+    st = FindAnyObjectByType<Stat>();
     if (st.difficult > 1)
     {
         st.difficult--;
@@ -44,12 +46,10 @@ public void difdown()
 }
     public void setting()
     {
-        // 1. 먼저 씬에서 "Canvas"라는 이름을 가진 오브젝트를 찾음
         GameObject canvas = GameObject.Find("Canvas");
 
         if (canvas != null)
         {
-            // 2. Canvas의 자식 중 "SoundUI"라는 이름을 가진 녀석을 찾음 (꺼져있어도 찾음)
             Transform t = canvas.transform.Find("SoundUI");
             if (t != null)
             {
