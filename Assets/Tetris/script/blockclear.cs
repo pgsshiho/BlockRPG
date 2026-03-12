@@ -114,6 +114,7 @@ public class blockclear : MonoBehaviour
 
             if (target != null)
             {
+                TakeDamage damageableTarget = target.GetComponent<TakeDamage>();
                 // 스탯 기반 최종 데미지 배율 적용 전 원본 데미지로 계산
                 float multiplier = (Stat.instance != null) ? (1.0f + (Stat.instance.atk * 0.1f)) : 1f;
                 int enemyCurrentHp = target.hp;

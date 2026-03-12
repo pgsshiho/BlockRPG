@@ -128,9 +128,5 @@ public class Conebase : MonoBehaviour
         {
             col.enabled = false;
         }
-
-        // 4. (추가) 디자인 변경용 오브젝트가 있다면 기본값으로 설정
-        // BlockBase가 삭제되었으므로 수동으로 첫 번째 자식(BaseDesign)만 켜둠
-        // 만약 구조가 다를 경우를 대비해 Try-Catch나 null 체크를 강화할 수 있습니다.
     }
 }

@@ -34,9 +34,6 @@ public class Mainmenu : MonoBehaviour
     {
         // 난이도 텍스트 업데이트
         if (st != null) dif.text = st.difficult.ToString();
-
-        // 키 바인딩 텍스트 실시간 업데이트
-        UpdateKeyUI();
     }
 
     // 현재 KeyBinding 인스턴스의 값을 텍스트에 동기화
@@ -149,7 +146,17 @@ public class Mainmenu : MonoBehaviour
             case 8: kb.aRotate = newKey; break;
             case 10: kb.openstat = newKey; break;
         }
+        // [최적화] 키가 바뀌었을 때만 UI를 한 번 업데이트합니다.
+        UpdateKeyUI();
+
+        // [저장] 실제 빌드에서도 유지되게 하려면 여기서 저장 로직을 추가합니다.
+        kb.SaveKeys();
     }
-    public void openkey() => keypanel.SetActive(true);
-    public void closekey() => keypanel.SetActive(false);
+    public void openkey() { 
+        keypanel.SetActive(true);
+        UpdateKeyUI();
+    }
+    public void closekey() { keypanel.SetActive(false);
+        UpdateKeyUI();
+    }
 }

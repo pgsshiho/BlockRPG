@@ -1,7 +1,8 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Enemybase : MonoBehaviour
+public class Enemybase : MonoBehaviour,TakeDamage
 {
     public float frame = 0f;
     public bool isattack = false;
@@ -57,9 +58,20 @@ public class Enemybase : MonoBehaviour
     {
         isattack = true;
         frame = 0f;
-        if (st != null) st.damage(damage, gameObject.name);
-    }
 
+        // Stat.instance(플레이어)가 인터페이스를 가지고 있는지 확인
+        TakeDamage player = Stat.instance.GetComponent<TakeDamage>();
+
+        if (player != null)
+        {
+            // 변수명을 player로 일치시킴
+            player.TakeDamage(damage, gameObject.name);
+        }
+    }
+    public void TakeDamage(int amount, string attackerName)
+    {
+        hit(amount); // 기존에 만들어둔 hit 로직 재사용 (아주 좋습니다!)
+    }
     public virtual void dead()
     {
         if (isDead) return;

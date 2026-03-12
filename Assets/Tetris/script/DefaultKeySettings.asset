@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04d69298f6a0f1c41b5bce976f34dc00, type: 3}
+  m_Name: DefaultKeySettings
+  m_EditorClassIdentifier: Assembly-CSharp::KeyData
+  rotate: 273
+  right: 275
+  left: 276
+  down: 274
+  hardDrop: 32
+  hold: 304
+  hold2: 99
+  zRotate: 122
+  aRotate: 97
+  openstat: 107

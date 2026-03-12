@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class Stat : MonoBehaviour
+public class Stat : MonoBehaviour, TakeDamage
 {
     public static Stat instance;
 
@@ -75,7 +75,10 @@ public class Stat : MonoBehaviour
         LevelCheck();
         expcal();
     }
-
+    public void TakeDamage(int amount, string attackerName)
+    {
+        damage(amount, attackerName);
+    }
     private void LevelCheck()
     {
         UpdateRequiredEx();

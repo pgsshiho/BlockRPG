@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         // 일시정지 로직
-        if (Input.GetKeyDown(key.menu))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (!isON) PauseGame();
             else ResumeGame();
