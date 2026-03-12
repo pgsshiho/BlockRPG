@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
     public GameObject panel;
     public bool isON = false;
     KeyBinding key;
@@ -15,6 +16,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        if (Instance == null) Instance = this;
         Time.timeScale = 1;
         isON = false;
         IsMirrored = false; // 초기화
@@ -30,7 +32,10 @@ public class GameManager : MonoBehaviour
     }
     void Update()
     {
-        // 일시정지 로직
+        // DialogueManager.Instance 대신 현재 게임 상태(isON 등)를 확인하거나
+        // EventChannel을 통해 대화 시작/종료 상태를 GameManager가 알고 있게 설계하는 것이 좋습니다.
+        if (isON) return;
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (!isON) PauseGame();
