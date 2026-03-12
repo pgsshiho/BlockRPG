@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -18,10 +19,11 @@ public class Stat : MonoBehaviour, TakeDamage
     public int maxhp = 100;
     public int level = 1;
     public float ex = 0;
-
+    public Action OnStatChanged;
     private float requiredEx;
     private Image hpBarImage;
     private Image expBarImage;
+    public Action OnLevelUp;
 
     protected virtual void Awake()
     {
@@ -45,16 +47,16 @@ public class Stat : MonoBehaviour, TakeDamage
     }
 
     // 스탯 상승 로직
-    public void upit() { if (maxstatpoint > 0 && it < 5) { it++; maxstatpoint--; } }
-    public void upatk() { if (maxstatpoint > 0 && atk < 20) { atk++; maxstatpoint--; } }
-    public void upmaxhp() { if (maxstatpoint > 0) { maxhp += 10; maxstatpoint--; hp = maxhp; hpcal(); } }
-    public void upspd() { if (maxstatpoint > 0 && spd < 10) { spd++; maxstatpoint--; } }
+    public void upit() { if (maxstatpoint > 0 && it < 5 ) { it++; maxstatpoint--; OnStatChanged?.Invoke(); } }
+    public void upatk() { if (maxstatpoint > 0 && atk < 20) { atk++; maxstatpoint--; OnStatChanged?.Invoke(); } }
+    public void upmaxhp() { if (maxstatpoint > 0) { maxhp += 10; maxstatpoint--; hp = maxhp; hpcal(); OnStatChanged?.Invoke(); } }
+    public void upspd() { if (maxstatpoint > 0 && spd < 10) { spd++; maxstatpoint--; OnStatChanged?.Invoke(); } }
 
     // 스탯 감소 로직
-    public void downit() { if (it > 0) { it--; maxstatpoint++; } }
-    public void downatk() { if (atk > 0) { atk--; maxstatpoint++; } }
-    public void downmaxhp() { if (maxhp > 10) { maxhp -= 10; hp = Mathf.Min(hp, maxhp); maxstatpoint++; hpcal(); } }
-    public void downspd() { if (spd > -10) { spd--; maxstatpoint++; } }
+    public void downit() { if (it > 0) { it--; maxstatpoint++; OnStatChanged?.Invoke(); } }
+    public void downatk() { if (atk > 0) { atk--; maxstatpoint++; OnStatChanged?.Invoke(); } }
+    public void downmaxhp() { if (maxhp > 10) { maxhp -= 10; hp = Mathf.Min(hp, maxhp); maxstatpoint++; hpcal(); OnStatChanged?.Invoke(); } }
+    public void downspd() { if (spd > -10) { spd--; maxstatpoint++; OnStatChanged?.Invoke(); } }
 
     public void damage(int Damage, string killerName)
     {
@@ -89,9 +91,11 @@ public class Stat : MonoBehaviour, TakeDamage
             maxstatpoint += 1;
             UpdateRequiredEx();
 
-            // UI에 레벨업 알림 보내기
-            StatUI su = FindFirstObjectByType<StatUI>();
-            if (su != null) su.ShowLevelUp();
+            // 1. 스탯값이 변했으니 UI 텍스트 갱신용 이벤트 호출
+            OnStatChanged?.Invoke();
+
+            // 2. 레벨업 자체를 알리는 이벤트 호출 (팝업, 사운드용)
+            OnLevelUp?.Invoke();
         }
     }
 

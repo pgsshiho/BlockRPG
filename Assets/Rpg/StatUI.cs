@@ -17,11 +17,23 @@ public class StatUI : MonoBehaviour
     private void Start()
     {
         if (overstatPopup != null) overstatPopup.SetActive(false);
-    }
+        if (Stat.instance != null)
+        {
+            Stat.instance.OnStatChanged += UpdateDisplay;
+            Stat.instance.OnLevelUp += ShowLevelUp;
+        }
 
-    private void Update()
-    {
+        // 초기 화면 세팅
         UpdateDisplay();
+    }
+    private void OnDestroy()
+    {
+        // 오브젝트가 사라질 때 구독 해제 (메모리 누수 방지)
+        if (Stat.instance != null)
+        {
+            Stat.instance.OnStatChanged -= UpdateDisplay;
+            Stat.instance.OnLevelUp -= ShowLevelUp;
+        }
     }
 
     private void UpdateDisplay()

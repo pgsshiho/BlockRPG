@@ -23,7 +23,11 @@ public class Conebase : MonoBehaviour
     void Start()
     {
 
-        st = FindAnyObjectByType<Stat>();
+        st = Stat.instance;
+        if (st != null)
+        {
+            st.OnStatChanged += UpdateNextVisuals;
+        }
         fillbag();
         Clone();
     }

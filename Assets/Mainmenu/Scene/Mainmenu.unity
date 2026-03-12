@@ -1469,7 +1469,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -296.59, y: -64.633}
+  m_AnchoredPosition: {x: -296.59, y: 17.367004}
   m_SizeDelta: {x: -410.796, y: -644.726}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &266529521
@@ -5565,7 +5565,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0045013, y: -56}
+  m_AnchoredPosition: {x: -0.0045013, y: 26}
   m_SizeDelta: {x: 449.26, y: 56.158}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1005927806
@@ -8694,8 +8694,6 @@ MonoBehaviour:
   Yeti: {fileID: 0}
   mixer: {fileID: 24100000, guid: e8c9381d7d190cd46b36d5825d2bf1e4, type: 2}
   currentSceneUI: {fileID: 659687326}
-  bgmSlider: {fileID: 1005927806}
-  sfxSlider: {fileID: 1837411934}
 --- !u!4 &1711379565
 Transform:
   m_ObjectHideFlags: 0
@@ -9252,7 +9250,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0045013, y: 28.079}
+  m_AnchoredPosition: {x: -0.0045013, y: -56}
   m_SizeDelta: {x: 449.26, y: 56.158}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1837411934
@@ -9559,7 +9557,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -296.59, y: 26.992}
+  m_AnchoredPosition: {x: -296.59, y: -57.087036}
   m_SizeDelta: {x: -410.796, y: -644.726}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1929344162
