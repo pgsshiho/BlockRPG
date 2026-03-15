@@ -1,34 +1,42 @@
-using System.Collections; // 코루틴을 위해 필요
+using System.Collections;
 using UnityEngine;
 
 public class slime : Enemybase
 {
     private Animator anim;
-    Sound sd;
+    private Sound sd;
+
     protected override void Start()
     {
-        base.Start();
+        base.Start(); // 부모(Enemybase)의 Start 실행
         anim = GetComponent<Animator>();
         sd = FindAnyObjectByType<Sound>();
     }
 
     public override void Attack()
     {
-        base.Attack();
+        base.Attack(); // 부모의 Attack(데미지 계산 등) 실행
 
         if (anim != null)
         {
             anim.SetTrigger("Attack");
         }
-        sd.slimehit.Play();
+
+        if (sd != null && sd.slimehit != null)
+        {
+            sd.slimehit.Play();
+        }
+
         StartCoroutine(WaitAttackAnimation());
     }
 
     IEnumerator WaitAttackAnimation()
     {
+        // WaitForSeconds는 Time.timeScale이 0이면 같이 멈춥니다.
         yield return new WaitForSeconds(1.0f);
         isattack = false;
     }
+
     public override void dead()
     {
         if (isDead) return;
@@ -37,7 +45,8 @@ public class slime : Enemybase
         {
             anim.SetTrigger("dead");
         }
-        base.dead();
+
+        base.dead(); // 부모의 dead(점수, 경험치 등) 실행
 
         StartCoroutine(WaitDeadAnimation());
     }
@@ -47,8 +56,8 @@ public class slime : Enemybase
         yield return new WaitForSeconds(1.0f);
         if (es != null)
         {
-            es.isSpawning = false; // 방어막 해제
-            es.spawn();            // 새 적 소환
+            es.isSpawning = false;
+            es.spawn();
         }
         Destroy(gameObject);
     }

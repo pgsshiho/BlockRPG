@@ -223,6 +223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb2c08e0bc588f1428a460c8a07ac855, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueTrigger
+  eventChannel: {fileID: 11400000, guid: 96627ce1f4339c04aba52c62cd699065, type: 2}
   dialogueGroups:
   - groupName: first
     lines:
@@ -241,6 +242,7 @@ MonoBehaviour:
       text: "\uC5EC\uAE30\uC11C \uB2F9\uC2E0\uC740 \uBE60\uC838\uB098\uAC08\uC218
         \uC788\uC744\uAE4C?"
       portrait: {fileID: 0}
+  nextScene: StoryTetris
 --- !u!4 &528699690
 Transform:
   m_ObjectHideFlags: 0
@@ -698,6 +700,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 381d6c69982ea004aab3bf67bbe9926e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueManager
+  eventChannel: {fileID: 11400000, guid: 96627ce1f4339c04aba52c62cd699065, type: 2}
   dialoguePanel: {fileID: 655851248}
   dialogueText: {fileID: 1177002140}
 --- !u!4 &1830662273
@@ -725,7 +728,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2039885896}
   - component: {fileID: 2039885895}
-  - component: {fileID: 2039885894}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -733,14 +735,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &2039885894
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2039885893}
-  m_Enabled: 1
 --- !u!20 &2039885895
 Camera:
   m_ObjectHideFlags: 0

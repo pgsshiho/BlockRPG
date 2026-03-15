@@ -2,13 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
 using System;
 
 // [중요] 클래스 외부로 빼고 [System.Serializable]을 붙여야 
@@ -27,19 +20,19 @@ public class DialogueGroup
     public string groupName; // 식별용 이름 (예: "Greeting", "AfterQuest")
     public DialogueLine[] lines; // 해당 그룹의 대사들
 }
-public class DialogueManager : MonoBehaviour, IDialogueHandler
+
+public class DialogueManager : MonoBehaviour
 {
-    [SerializeField] private DialogueEventChannel eventChannel; // 무전기 연결
+    [SerializeField] private DialogueEventChannel eventChannel;
     public GameObject dialoguePanel;
     public TextMeshProUGUI dialogueText;
 
     private Queue<DialogueLine> linesQueue = new Queue<DialogueLine>();
-    private bool isTyping = false;
     private Action onDialogueEnd;
 
-    void Awake() => linesQueue = new Queue<DialogueLine>();
+    void OnEnable() { if (eventChannel != null) eventChannel.OnDialogueRequested += StartDialogue; }
+    void OnDisable() { if (eventChannel != null) eventChannel.OnDialogueRequested -= StartDialogue; }
 
-    // 인터페이스 구현
     public void StartDialogue(DialogueLine[] lines, Action onComplete = null)
     {
         onDialogueEnd = onComplete;
@@ -49,44 +42,60 @@ public class DialogueManager : MonoBehaviour, IDialogueHandler
         foreach (var line in lines) linesQueue.Enqueue(line);
         DisplayNextSentence();
     }
-    void OnEnable()
-    {
-        // 이벤트 구독 시작
-        if (eventChannel != null) eventChannel.OnDialogueRequested += StartDialogue;
-    }
 
-    void OnDisable()
-    {
-        // 메모리 누수 방지를 위해 해제
-        if (eventChannel != null) eventChannel.OnDialogueRequested -= StartDialogue;
-    }
     void Update()
     {
-        if (dialoguePanel.activeSelf && !isTyping && Input.anyKeyDown)
+        if (!dialoguePanel.activeSelf) return;
+
+        // 대사가 더 남아있을 때만 클릭으로 넘김
+        if (linesQueue.Count > 0 && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)))
+        {
             DisplayNextSentence();
+        }
     }
 
     public void DisplayNextSentence()
     {
-        if (linesQueue.Count == 0) { EndDialogue(); return; }
-        StartCoroutine(TypeSentence(linesQueue.Dequeue().text));
-    }
+        if (linesQueue.Count == 0) return;
 
-    IEnumerator TypeSentence(string sentence)
-    {
-        isTyping = true;
-        dialogueText.text = "";
-        foreach (char letter in sentence)
+        DialogueLine line = linesQueue.Dequeue();
+        dialogueText.text = ProcessDialogueText(line.text);
+
+        if (linesQueue.Count == 0)
         {
-            dialogueText.text += letter;
-            yield return new WaitForSecondsRealtime(0.02f);
+            // [수정] 즉시 호출하지 않고 코루틴으로 한 프레임 뒤에 호출하여 
+            // 현재 프레임의 클릭/키 입력을 초기화함
+            StartCoroutine(DelayedRaiseEvent());
         }
-        isTyping = false;
     }
 
-    void EndDialogue()
+    IEnumerator DelayedRaiseEvent()
+    {
+        yield return null; // 현재 프레임 끝날 때까지 대기
+        var callback = onDialogueEnd;
+        onDialogueEnd = null;
+        if (callback != null) callback.Invoke();
+    }
+    public void ClosePanel()
     {
         dialoguePanel.SetActive(false);
-        onDialogueEnd?.Invoke();
+    }
+
+    private string ProcessDialogueText(string originalText)
+    {
+        var keys = KeyBinding.instance;
+        if (keys == null) return originalText;
+
+        return originalText
+            .Replace("{Left}", $"<color=#FFD700>{keys.left}</color>")
+            .Replace("{Right}", $"<color=#FFD700>{keys.right}</color>")
+            .Replace("{Rotate}", $"<color=#FFD700>{keys.rotate}</color>")
+            .Replace("{ZRotate}", $"<color=#FFD700>{keys.zRotate}</color>")
+            .Replace("{ARotate}", $"<color=#FFD700>{keys.aRotate}</color>")
+            .Replace("{Hold}", $"<color=#FFD700>{keys.hold}</color>")
+            .Replace("{Hold2}", $"<color=#FFD700>{keys.hold2}</color>")
+            .Replace("{Down}", $"<color=#FFD700>{keys.down}</color>")
+            .Replace("{HardDrop}", $"<color=#FFD700>{keys.hardDrop}</color>")
+            .Replace("{Stat}", $"<color=#FFD700>{keys.openstat}</color>");
     }
 }

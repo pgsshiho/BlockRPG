@@ -159,4 +159,8 @@ public class Mainmenu : MonoBehaviour
     public void closekey() { keypanel.SetActive(false);
         UpdateKeyUI();
     }
+    public void StoryStart()
+    {
+        SceneManager.LoadScene("StoryTetris");
+    }
 }

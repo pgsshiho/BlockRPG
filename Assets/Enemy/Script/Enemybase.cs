@@ -2,8 +2,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Enemybase : MonoBehaviour,TakeDamage
+public class Enemybase : MonoBehaviour, TakeDamage
 {
+    [Header("Status")]
     public float frame = 0f;
     public bool isattack = false;
     public float baseTargetFrame = 500f;
@@ -12,6 +13,8 @@ public class Enemybase : MonoBehaviour,TakeDamage
     public int hp = 40;
     public int damage;
     public int ex;
+
+    [Header("Settings")]
     public GameObject hpbar;
     public int baseHp = 40;
     public int baseDamage = 3;
@@ -21,7 +24,6 @@ public class Enemybase : MonoBehaviour,TakeDamage
     protected Stat st;
     protected bool isDead = false;
 
-    // 외부에서 죽음 상태를 확인하기 위한 프로퍼티
     public bool IsDead => isDead;
 
     protected virtual void Start()
@@ -29,6 +31,10 @@ public class Enemybase : MonoBehaviour,TakeDamage
         st = Stat.instance;
         es = FindAnyObjectByType<EnemySpawn>();
         bc = FindAnyObjectByType<blockclear>();
+
+        // HP바 캐싱 (매번 Update에서 찾지 않도록 Start로 이동)
+        if (hpbar == null) hpbar = GameObject.Find("enemyHPBar");
+
         maxhp = baseHp * st.difficult;
         hp = maxhp;
         damage = baseDamage;
@@ -38,12 +44,19 @@ public class Enemybase : MonoBehaviour,TakeDamage
 
     void Update()
     {
+        // 1. 게임이 멈춰있거나 죽었다면 로직 중단
+        if (GameManager.Instance != null && GameManager.Instance.isON) return;
+        if (isDead) return;
+
         UpdateTargetFrame();
-        if (frame >= targetFrame && !isattack && !isDead) Attack();
+        if (frame >= targetFrame && !isattack) Attack();
     }
 
     private void FixedUpdate()
     {
+        // 2. 물리/프레임 카운트 중단
+        if (GameManager.Instance != null && GameManager.Instance.isON) return;
+
         if (!isattack && !isDead) frame++;
     }
 
@@ -59,19 +72,18 @@ public class Enemybase : MonoBehaviour,TakeDamage
         isattack = true;
         frame = 0f;
 
-        // Stat.instance(플레이어)가 인터페이스를 가지고 있는지 확인
         TakeDamage player = Stat.instance.GetComponent<TakeDamage>();
-
         if (player != null)
         {
-            // 변수명을 player로 일치시킴
             player.TakeDamage(damage, gameObject.name);
         }
     }
+
     public void TakeDamage(int amount, string attackerName)
     {
-        hit(amount); // 기존에 만들어둔 hit 로직 재사용 (아주 좋습니다!)
+        hit(amount);
     }
+
     public virtual void dead()
     {
         if (isDead) return;
@@ -81,22 +93,25 @@ public class Enemybase : MonoBehaviour,TakeDamage
         if (col != null) col.enabled = false;
 
         if (bc != null) { bc.currentScore += 100; bc.UpdateScoreUI(); }
-        st.GainExperience(ex);
-        st.hp += 5;
-        Debug.Log("피를채웁니다");
-        st.hpcal();
+
+        if (st != null)
+        {
+            st.GainExperience(ex);
+            st.hp += 5;
+            st.hpcal();
+        }
     }
 
     public void hit(int damageAmount)
     {
-        if (isDead) return;
+        if (isDead || (GameManager.Instance != null && GameManager.Instance.isON)) return;
 
         float finalDamage = damageAmount * (1.0f + (st.atk * 0.1f));
         hp -= (int)finalDamage;
 
         if (hp <= 0)
         {
-            hp = 0; // UI를 위해 0으로 고정
+            hp = 0;
             hpcal();
             dead();
         }
@@ -108,7 +123,6 @@ public class Enemybase : MonoBehaviour,TakeDamage
 
     public void hpcal()
     {
-        if (hpbar == null) hpbar = GameObject.Find("enemyHPBar");
         if (hpbar == null) return;
 
         float hpRatio = (float)hp / maxhp;
