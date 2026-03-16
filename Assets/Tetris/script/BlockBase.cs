@@ -237,14 +237,42 @@ public class BlockBase : MonoBehaviour
 
     void UpdateLevelSpeed()
     {
-        int s = blockclear.ScoreForSpeed, speedStat = (Stat.instance != null) ? Stat.instance.spd : 0;
+        int s = blockclear.ScoreForSpeed;
+        int speedStat = (Stat.instance != null) ? Stat.instance.spd : 0;
         int d = (Stat.instance != null) ? Stat.instance.difficult : 3;
+
+        // 기본 프레임 테이블
         int[] frames = { 60, 50, 42, 35, 30, 25, 20, 16, 13, 10, 8, 7, 6, 5, 4, 3, 2, 2, 1 };
-        float baseFrame = frames[Mathf.Min(s / 1000, frames.Length - 1)] - (d - 3) * 5;
+
+        // 현재 점수에 따른 베이스 프레임 (점수가 테이블을 넘어가면 더 줄어들도록 설정)
+        float levelIndex = s / 1000f;
+        float baseFrame;
+
+        if (levelIndex < frames.Length)
+        {
+            baseFrame = frames[Mathf.FloorToInt(levelIndex)];
+        }
+        else
+        {
+            // 테이블을 넘어설 경우 점수에 비례해서 프레임이 계속 낮아지도록 계산 (무한 가속의 핵심)
+            baseFrame = 1f / (levelIndex - frames.Length + 1);
+        }
+
+        baseFrame -= (d - 3) * 5;
         float finalFrame = baseFrame * Mathf.Pow(2, speedStat / 3f);
 
-        if (finalFrame >= 1f) { frame = Mathf.RoundToInt(finalFrame); dropDistance = 1; }
-        else { frame = 1; dropDistance = Mathf.Min(Mathf.CeilToInt(1f / Mathf.Max(0.01f, finalFrame)), 20); }
+        if (finalFrame >= 1f)
+        {
+            frame = Mathf.RoundToInt(finalFrame);
+            dropDistance = 1;
+        }
+        else
+        {
+            // 1프레임보다 빨라질 경우: 1프레임당 이동 거리(dropDistance)를 무한히 증가시킴
+            frame = 1;
+            // Mathf.Min(..., 20)을 제거하여 제한을 없앰
+            dropDistance = Mathf.CeilToInt(1f / Mathf.Max(0.0001f, finalFrame));
+        }
     }
 
     private void OnEnable() { AllBlocks.Add(this); }

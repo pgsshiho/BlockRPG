@@ -95,10 +95,20 @@ public class GameManager : MonoBehaviour
             Camera.main.ResetProjectionMatrix();
             if (isMirrored)
             {
+                // 투영 행렬 반전
                 Matrix4x4 mat = Camera.main.projectionMatrix;
                 mat *= Matrix4x4.Scale(new Vector3(-1, 1, 1));
                 Camera.main.projectionMatrix = mat;
             }
         }
+    }
+    void OnPreRender()
+    {
+        if (IsMirrored) GL.invertCulling = true;
+    }
+
+    void OnPostRender()
+    {
+        GL.invertCulling = false;
     }
 }

@@ -5,7 +5,7 @@ public class ouger : Enemybase
 {
     private Animator anim;
     GameManager gm;
-    public float mirrorDuration = 3.0f; // 디버프 지속 시간
+    public float mirrorDuration = 6.0f; // 디버프 지속 시간
 
     protected override void Start()
     {
@@ -33,7 +33,7 @@ public class ouger : Enemybase
         gm.SetMirrorMode(false);
         Debug.Log("좌우 반전 디버프 종료");
 
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.8f);
         isattack = false;
     }
 
@@ -58,7 +58,7 @@ public class ouger : Enemybase
 
     IEnumerator WaitDeadAnimation()
     {
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.8f);
 
         base.dead();
         if (es != null)

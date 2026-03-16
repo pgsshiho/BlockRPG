@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3592925113459077540}
   - component: {fileID: 2687023725783516068}
   m_Layer: 0
-  m_Name: Goblin_0
+  m_Name: Goblin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -136,4 +136,4 @@ MonoBehaviour:
   ex: 7
   hpbar: {fileID: 0}
   baseHp: 40
-  baseDamage: 3
+  baseDamage: 4

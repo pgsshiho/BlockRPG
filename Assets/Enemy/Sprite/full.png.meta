@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 64903e3977f80704285343a3aa69c2aa
+guid: 10fc96d6ad4ccc84b8063bab97fe77ce
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 256
+  spritePixelsToUnits: 180
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -97,12 +97,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: demon_sprite_transparent_0
+      name: full_0
       rect:
         serializedVersion: 2
-        x: 24
+        x: 244
         y: 481
-        width: 294
+        width: 293
         height: 441
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -112,20 +112,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c82d2ee1afde5ef4fb3d7649f57e27f9
-      internalID: -782481406
+      spriteID: e5ea8df1cb883574eb2724cd746dca77
+      internalID: 1036391771
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: demon_sprite_transparent_1
+      name: full_1
       rect:
         serializedVersion: 2
-        x: 423
-        y: 464
+        x: 838
+        y: 491
         width: 376
-        height: 539
+        height: 538
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -134,20 +134,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8c8a4e247e0776548ac0e82d54264b5b
-      internalID: 1243572842
+      spriteID: 0d42e12b73d298f4eae2bf60658c609b
+      internalID: 1543122567
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: demon_sprite_transparent_2
+      name: full_2
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 219
+        y: 57
         width: 445
-        height: 417
+        height: 360
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -156,8 +156,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0a0b8c721d92f8f45bc72737c00c601f
-      internalID: -262639004
+      spriteID: 9ca069d6faefe1348a1a349dad45f40d
+      internalID: -669537944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: full_3
+      rect:
+        serializedVersion: 2
+        x: 783
+        y: 62
+        width: 449
+        height: 331
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dadada9599a766d4dbb766ded640ab9a
+      internalID: -1409019996
       vertices: []
       indices: 
       edges: []
@@ -166,7 +188,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: f45a76e3a85d74246b2b9564b514191a
+    spriteID: 2b8cc3b5d14caa54bb5c063b15e2d020
     internalID: 0
     vertices: []
     indices: 
@@ -176,11 +198,12 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":2.0,"y":2.0},"gridSpriteSize":{"x":456.0,"y":548.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":2.0,"y":2.0},"gridSpriteSize":{"x":675.0,"y":548.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      demon_sprite_transparent_0: -782481406
-      demon_sprite_transparent_1: 1243572842
-      demon_sprite_transparent_2: -262639004
+      full_0: 1036391771
+      full_1: 1543122567
+      full_2: -669537944
+      full_3: -1409019996
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
