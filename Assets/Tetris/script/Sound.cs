@@ -22,6 +22,7 @@ public class Sound : MonoBehaviour
     public AudioSource Shamen;
     public AudioSource Kraken;
     public AudioSource Yeti;
+    public AudioSource combo;
     [Header("Settings UI")]
     public AudioMixer mixer;
     public GameObject currentSceneUI;
