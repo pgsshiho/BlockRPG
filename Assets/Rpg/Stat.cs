@@ -19,11 +19,14 @@ public class Stat : MonoBehaviour, TakeDamage
     public int maxhp = 100;
     public int level = 1;
     public float ex = 0;
-    public Action OnStatChanged;
-    private float requiredEx;
+
+    [Header("UI References")]
     private Image hpBarImage;
     private Image expBarImage;
+
+    public Action OnStatChanged;
     public Action OnLevelUp;
+    private float requiredEx;
 
     protected virtual void Awake()
     {
@@ -31,10 +34,10 @@ public class Stat : MonoBehaviour, TakeDamage
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
+            LoadData(); // 게임 시작 시 데이터 로드
         }
         else
         {
-            // 기존 인스턴스가 있다면 새 객체를 파괴하여 데이터 유지
             Destroy(gameObject);
             return;
         }
@@ -46,18 +49,62 @@ public class Stat : MonoBehaviour, TakeDamage
         RefreshUI();
     }
 
-    // 스탯 상승 로직
-    public void upit() { if (maxstatpoint > 0 && it < 5 ) { it++; maxstatpoint--; OnStatChanged?.Invoke(); } }
-    public void upatk() { if (maxstatpoint > 0 && atk < 20) { atk++; maxstatpoint--; OnStatChanged?.Invoke(); } }
-    public void upmaxhp() { if (maxstatpoint > 0) { maxhp += 10; maxstatpoint--; hp = maxhp; hpcal(); OnStatChanged?.Invoke(); } }
-    public void upspd() { if (maxstatpoint > 0 && spd < 10) { spd++; maxstatpoint--; OnStatChanged?.Invoke(); } }
+    // --- [ 데이터 저장 및 로드 시스템 ] ---
+    public void SaveData()
+    {
+        PlayerPrefs.SetInt("Saved_Level", level);
+        PlayerPrefs.SetFloat("Saved_Ex", ex);
+        PlayerPrefs.SetInt("Saved_MaxStatPoint", maxstatpoint);
+        PlayerPrefs.SetInt("Saved_ATK", atk);
+        PlayerPrefs.SetInt("Saved_SPD", spd);
+        PlayerPrefs.SetInt("Saved_IT", it);
+        PlayerPrefs.SetInt("Saved_MaxHP", maxhp);
+        PlayerPrefs.Save(); // 물리적인 저장소에 즉시 기록
+        Debug.Log("데이터가 저장되었습니다.");
+    }
 
-    // 스탯 감소 로직
-    public void downit() { if (it > 0) { it--; maxstatpoint++; OnStatChanged?.Invoke(); } }
-    public void downatk() { if (atk > 0) { atk--; maxstatpoint++; OnStatChanged?.Invoke(); } }
-    public void downmaxhp() { if (maxhp > 10) { maxhp -= 10; hp = Mathf.Min(hp, maxhp); maxstatpoint++; hpcal(); OnStatChanged?.Invoke(); } }
-    public void downspd() { if (spd > -10) { spd--; maxstatpoint++; OnStatChanged?.Invoke(); } }
+    public void LoadData()
+    {
+        // 저장된 데이터가 있을 때만 불러오고, 없으면 기본값(뒤의 숫자)을 사용
+        level = PlayerPrefs.GetInt("Saved_Level", 1);
+        ex = PlayerPrefs.GetFloat("Saved_Ex", 0);
+        maxstatpoint = PlayerPrefs.GetInt("Saved_MaxStatPoint", 0);
+        atk = PlayerPrefs.GetInt("Saved_ATK", 0);
+        spd = PlayerPrefs.GetInt("Saved_SPD", 0);
+        it = PlayerPrefs.GetInt("Saved_IT", 5);
+        maxhp = PlayerPrefs.GetInt("Saved_MaxHP", 100);
 
+        hp = maxhp; // 시작 시 체력 풀로 채움
+        UpdateRequiredEx();
+    }
+
+    // 환생 등을 위한 데이터 초기화 메서드
+    public void ResetAllData()
+    {
+        PlayerPrefs.DeleteAll();
+        Debug.Log("모든 데이터가 초기화되었습니다.");
+    }
+
+    // --- [ 스탯 조작 로직 ] ---
+    // 공통적으로 스탯이 변할 때마다 SaveData()를 호출하여 자동 저장합니다.
+
+    public void upit() { if (maxstatpoint > 0 && it < 5) { it++; maxstatpoint--; SaveAndNotify(); } }
+    public void upatk() { if (maxstatpoint > 0 && atk < 20) { atk++; maxstatpoint--; SaveAndNotify(); } }
+    public void upmaxhp() { if (maxstatpoint > 0) { maxhp += 10; maxstatpoint--; hp = maxhp; hpcal(); SaveAndNotify(); } }
+    public void upspd() { if (maxstatpoint > 0 && spd < 10) { spd++; maxstatpoint--; SaveAndNotify(); } }
+
+    public void downit() { if (it > 0) { it--; maxstatpoint++; SaveAndNotify(); } }
+    public void downatk() { if (atk > 0) { atk--; maxstatpoint++; SaveAndNotify(); } }
+    public void downmaxhp() { if (maxhp > 10) { maxhp -= 10; hp = Mathf.Min(hp, maxhp); maxstatpoint++; hpcal(); SaveAndNotify(); } }
+    public void downspd() { if (spd > -10) { spd--; maxstatpoint++; SaveAndNotify(); } }
+
+    private void SaveAndNotify()
+    {
+        OnStatChanged?.Invoke();
+        SaveData();
+    }
+
+    // --- [ 전투 및 레벨 로직 ] ---
     public void damage(int Damage, string killerName)
     {
         hp -= Damage * difficult;
@@ -76,31 +123,39 @@ public class Stat : MonoBehaviour, TakeDamage
         ex += amount;
         LevelCheck();
         expcal();
+        SaveData(); // 경험치 획득 시에도 저장 (진행도 보존)
     }
+
     public void TakeDamage(int amount, string attackerName)
     {
         damage(amount, attackerName);
     }
+
     private void LevelCheck()
     {
         UpdateRequiredEx();
+        bool isLeveledUp = false;
         while (ex >= requiredEx)
         {
             ex -= requiredEx;
             level++;
             maxstatpoint += 1;
             UpdateRequiredEx();
+            isLeveledUp = true;
+        }
 
-            // 1. 스탯값이 변했으니 UI 텍스트 갱신용 이벤트 호출
+        if (isLeveledUp)
+        {
             OnStatChanged?.Invoke();
-
-            // 2. 레벨업 자체를 알리는 이벤트 호출 (팝업, 사운드용)
             OnLevelUp?.Invoke();
+            // 레벨업 직후 상태 저장
+            SaveData();
         }
     }
 
     private void UpdateRequiredEx() => requiredEx = level * 30f;
 
+    // --- [ UI 업데이트 로직 ] ---
     public void hpcal()
     {
         if (hpBarImage == null) FindUIBars();
@@ -135,5 +190,6 @@ public class Stat : MonoBehaviour, TakeDamage
         FindUIBars();
         hpcal();
         expcal();
+        OnStatChanged?.Invoke(); // 씬 이동 후 스탯 텍스트 갱신용
     }
 }

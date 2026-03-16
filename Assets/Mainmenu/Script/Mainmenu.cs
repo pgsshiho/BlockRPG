@@ -11,6 +11,8 @@ public class Mainmenu : MonoBehaviour
     public GameObject select;
     public TextMeshProUGUI statusText;
     public GameObject keypanel;
+    public GameObject ResetWarning;
+    public GameObject custumpanel;
     private bool isWaitingForKey = false;
 
     [Header("Key Display Texts (연결 필수)")]
@@ -162,5 +164,38 @@ public class Mainmenu : MonoBehaviour
     public void StoryStart()
     {
         SceneManager.LoadScene("StoryTetris");
+    }
+    public void ResetLevelCheck()
+    {
+        ResetWarning.SetActive(true);
+    }
+    public void ResetLevel()
+    {
+        PlayerPrefs.DeleteAll();
+        if (Stat.instance != null)
+        {
+            Stat.instance.difficult = 3;
+            Stat.instance.it = 5;
+            Stat.instance.atk = 0;
+            Stat.instance.spd = 0;
+            Stat.instance.maxstatpoint = 0;
+            Stat.instance.hp = 100;
+            Stat.instance.maxhp = 100;
+            Stat.instance.level = 1;
+            Stat.instance.ex = 0;
+        }
+        ResetWarning.SetActive(false);
+    }
+    public void CancelReset()
+    {
+        ResetWarning.SetActive(false);
+    }
+    public void OpenCustum()
+    {
+        custumpanel.SetActive(true);
+    }
+    public void CloseCustum()
+    {
+        custumpanel.SetActive(false);
     }
 }

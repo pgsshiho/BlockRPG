@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 
     private KeyBinding key;
     private EnemySpawn es;
-
+    public GameObject blackpanel;
     public bool IsMirrored { get; private set; }
 
     void Awake()
@@ -110,5 +110,13 @@ public class GameManager : MonoBehaviour
     void OnPostRender()
     {
         GL.invertCulling = false;
+    }
+    public void dechange()
+    {
+        blackpanel.SetActive(false);
+    }
+    public void change()
+    {
+        blackpanel.SetActive(true);
     }
 }

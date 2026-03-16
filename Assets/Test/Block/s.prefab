@@ -168,10 +168,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BlockBase
   ghost: {fileID: 0}
   isground: 0
-  trying: 0
   Tspin: 0
   rightclock: 0
   rightleft: 0
+  Irotate: 0
+  trying: 0
+  BaseDesigh: {fileID: 0}
+  ChangeDesigh: {fileID: 0}
 --- !u!1 &4018287208481321013
 GameObject:
   m_ObjectHideFlags: 0
