@@ -11,7 +11,7 @@ public class Prism_Dragon : Enemybase
     {
         base.Start();
         anim = GetComponent<Animator>();
-        GM = GetComponent<GameManager>();
+        GM = FindAnyObjectByType<GameManager>();
     }
 
     public override void Attack()
@@ -35,7 +35,7 @@ public class Prism_Dragon : Enemybase
     IEnumerator ChangeAttackSequence()
     {
         // 블록 상태 변환 발동
-        if (GM != null) 
+        if (GM != null) GM.change();
         Debug.Log("프리즘 드래곤: 블록 변환 시작!");
 
         // 지속 시간 동안 대기
@@ -46,7 +46,7 @@ public class Prism_Dragon : Enemybase
         Debug.Log("프리즘 드래곤: 블록 복구 완료");
 
         // 공격 후딜레이 마무리 (애니메이션 마무리 대기)
-        yield return new WaitForSeconds(0.8f);
+        yield return new WaitForSeconds(1.0f);
         isattack = false;
     }
 

@@ -128,13 +128,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Prism_Dragon
   frame: 0
   isattack: 0
-  baseTargetFrame: 500
-  targetFrame: 0
-  maxhp: 40
-  hp: 40
-  damage: 0
+  baseTargetFrame: 800
+  targetFrame: 800
+  maxhp: 50
+  hp: 50
+  damage: 5
   ex: 0
   hpbar: {fileID: 0}
-  baseHp: 40
-  baseDamage: 3
-  changeDuration: 6
+  baseHp: 50
+  baseDamage: 5
+  changeDuration: 4
