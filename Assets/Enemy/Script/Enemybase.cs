@@ -91,17 +91,12 @@ public class Enemybase : MonoBehaviour, TakeDamage
         if (isDead) return;
         isDead = true;
 
-        // 특수 공격 효과 제거 (인터페이스가 있는 경우)
-        if (this is ISpecialAttack special)
-        {
-            special.RemoveEffect();
-        }
-
+        // 물리 충돌 끄기 (시체에 블록이 닿지 않게)
         Collider2D col = GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
 
+        // 점수 및 경험치 처리
         if (bc != null) { bc.currentScore += 100; bc.UpdateScoreUI(); }
-
         if (st != null)
         {
             st.GainExperience(ex);
@@ -109,17 +104,7 @@ public class Enemybase : MonoBehaviour, TakeDamage
             st.hpcal();
         }
 
-        if (newEs != null)
-        {
-            newEs.spawn();
-        }
-        // 2순위: 새로운 시스템이 없고 기존 시스템만 있다면 실행
-        else if (es != null)
-        {
-            es.spawn();
-        }
-
-        Destroy(gameObject, 0.5f);
+        // 여기서 es.spawn()을 절대 부르지 마세요! (이게 원인입니다)
     }
 
     public void hit(int damageAmount)

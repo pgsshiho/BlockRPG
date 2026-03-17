@@ -33368,6 +33368,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::blockclear
   currentScore: 0
+  nowdamage: 0
   scoreText: {fileID: 1711288959}
   combo: 0
 --- !u!114 &2078534755

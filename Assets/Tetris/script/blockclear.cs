@@ -83,7 +83,7 @@ public class blockclear : MonoBehaviour
         }
 
         int[] bonusScore = { 0, 50, 100, 200, 400 };
-        int[] damageAmount = { 0, 10, 30, 55, 100 };
+        int[] damageAmount = { 0, 5, 25, 50, 80 };
 
         int lineScore = (lines <= 4) ? bonusScore[lines] : lines * 100;
         int lineDamage = (lines <= 4) ? damageAmount[lines] : lines * 25;
