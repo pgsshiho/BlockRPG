@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,7 +19,11 @@ public class Enemybase : MonoBehaviour, TakeDamage
     public int baseDamage = 3;
 
     protected blockclear bc;
+
+    // [기존/신규 스폰 시스템 모두 대응]
     protected EnemySpawn es;
+    protected CustomCloneBase newEs;
+
     protected Stat st;
     protected bool isDead = false;
 
@@ -29,13 +32,15 @@ public class Enemybase : MonoBehaviour, TakeDamage
     protected virtual void Start()
     {
         st = Stat.instance;
-        es = FindAnyObjectByType<EnemySpawn>();
         bc = FindAnyObjectByType<blockclear>();
 
-        // HP바 캐싱 (매번 Update에서 찾지 않도록 Start로 이동)
+        // 두 종류의 스폰 매니저를 모두 찾아봅니다.
+        es = FindAnyObjectByType<EnemySpawn>();
+        newEs = FindAnyObjectByType<CustomCloneBase>();
+
         if (hpbar == null) hpbar = GameObject.Find("enemyHPBar");
 
-        maxhp = baseHp * st.difficult;
+        maxhp = baseHp * (st != null ? st.difficult : 1);
         hp = maxhp;
         damage = baseDamage;
         UpdateTargetFrame();
@@ -44,7 +49,6 @@ public class Enemybase : MonoBehaviour, TakeDamage
 
     void Update()
     {
-        // 1. 게임이 멈춰있거나 죽었다면 로직 중단
         if (GameManager.Instance != null && GameManager.Instance.isON) return;
         if (isDead) return;
 
@@ -54,9 +58,7 @@ public class Enemybase : MonoBehaviour, TakeDamage
 
     private void FixedUpdate()
     {
-        // 2. 물리/프레임 카운트 중단
         if (GameManager.Instance != null && GameManager.Instance.isON) return;
-
         if (!isattack && !isDead) frame++;
     }
 
@@ -89,6 +91,12 @@ public class Enemybase : MonoBehaviour, TakeDamage
         if (isDead) return;
         isDead = true;
 
+        // 특수 공격 효과 제거 (인터페이스가 있는 경우)
+        if (this is ISpecialAttack special)
+        {
+            special.RemoveEffect();
+        }
+
         Collider2D col = GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
 
@@ -100,13 +108,26 @@ public class Enemybase : MonoBehaviour, TakeDamage
             st.hp += 5;
             st.hpcal();
         }
+
+        if (newEs != null)
+        {
+            newEs.spawn();
+        }
+        // 2순위: 새로운 시스템이 없고 기존 시스템만 있다면 실행
+        else if (es != null)
+        {
+            es.spawn();
+        }
+
+        Destroy(gameObject, 0.5f);
     }
 
     public void hit(int damageAmount)
     {
         if (isDead || (GameManager.Instance != null && GameManager.Instance.isON)) return;
 
-        float finalDamage = damageAmount * (1.0f + (st.atk * 0.1f));
+        float multiplier = (st != null) ? (1.0f + (st.atk * 0.1f)) : 1f;
+        float finalDamage = damageAmount * multiplier;
         hp -= (int)finalDamage;
 
         if (hp <= 0)
@@ -124,7 +145,6 @@ public class Enemybase : MonoBehaviour, TakeDamage
     public void hpcal()
     {
         if (hpbar == null) return;
-
         float hpRatio = (float)hp / maxhp;
         Image img = hpbar.GetComponent<Image>();
         if (img != null) img.fillAmount = hpRatio;

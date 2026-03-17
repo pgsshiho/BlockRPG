@@ -1,10 +1,10 @@
 using System.Collections;
 using UnityEngine;
 
-public class Prism_Dragon : Enemybase, ISpecialAttack
+public class Chraken : Enemybase, ISpecialAttack
 {
     private Animator anim;
-    public float changeDuration = 6.0f;
+    public float holdDuration = 6.0f;
 
     protected override void Start()
     {
@@ -12,8 +12,8 @@ public class Prism_Dragon : Enemybase, ISpecialAttack
         anim = GetComponent<Animator>();
     }
 
-    public void ApplyEffect() => GameManager.Instance?.change();
-    public void RemoveEffect() => GameManager.Instance?.dechange();
+    public void ApplyEffect() => GameManager.Instance?.closehold();
+    public void RemoveEffect() => GameManager.Instance?.openhold();
 
     public override void Attack()
     {
@@ -27,10 +27,10 @@ public class Prism_Dragon : Enemybase, ISpecialAttack
     IEnumerator SpecialAttackSequence()
     {
         ApplyEffect();
-        yield return new WaitForSeconds(changeDuration);
+        yield return new WaitForSeconds(holdDuration);
         RemoveEffect();
 
-        yield return new WaitForSeconds(1.0f); // 후딜레이
+        yield return new WaitForSeconds(1.0f);
         isattack = false;
     }
 }
