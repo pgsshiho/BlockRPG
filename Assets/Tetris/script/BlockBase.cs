@@ -414,13 +414,35 @@ public class BlockBase : MonoBehaviour
 
     public void change()
     {
-        BaseDesigh.SetActive(false);
-        ChangeDesigh.SetActive(true);
+        // 1. 본체 디자인 변경
+        if (BaseDesigh != null) BaseDesigh.SetActive(false);
+        if (ChangeDesigh != null) ChangeDesigh.SetActive(true);
+
+        // 2. 고스트 가이드라인 디자인 동기화
+        if (ghost != null)
+        {
+            Transform gBase = ghost.transform.Find(BaseDesigh.name);
+            Transform gChange = ghost.transform.Find(ChangeDesigh.name);
+
+            if (gBase != null) gBase.gameObject.SetActive(false);
+            if (gChange != null) gChange.gameObject.SetActive(true);
+        }
     }
 
     public void dechange()
     {
-        BaseDesigh.SetActive(true);
-        ChangeDesigh.SetActive(false);
+        // 1. 본체 디자인 복원
+        if (BaseDesigh != null) BaseDesigh.SetActive(true);
+        if (ChangeDesigh != null) ChangeDesigh.SetActive(false);
+
+        // 2. 고스트 가이드라인 디자인 동기화
+        if (ghost != null)
+        {
+            Transform gBase = ghost.transform.Find(BaseDesigh.name);
+            Transform gChange = ghost.transform.Find(ChangeDesigh.name);
+
+            if (gBase != null) gBase.gameObject.SetActive(true);
+            if (gChange != null) gChange.gameObject.SetActive(false);
+        }
     }
 }

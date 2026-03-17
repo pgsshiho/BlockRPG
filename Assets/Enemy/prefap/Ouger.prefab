@@ -130,11 +130,11 @@ MonoBehaviour:
   isattack: 0
   baseTargetFrame: 650
   targetFrame: 0
-  maxhp: 100
-  hp: 100
-  damage: 0
+  maxhp: 50
+  hp: 50
+  damage: 3
   ex: 0
   hpbar: {fileID: 0}
-  baseHp: 100
+  baseHp: 50
   baseDamage: 3
   mirrorDuration: 6

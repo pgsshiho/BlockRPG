@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     private KeyBinding key;
     private EnemySpawn es;
     public GameObject blackpanel;
+    public GameObject hiddenhold;
     public bool IsMirrored { get; private set; }
 
     void Awake()
@@ -118,5 +119,13 @@ public class GameManager : MonoBehaviour
     public void change()
     {
         blackpanel.SetActive(true);
+    }
+    public void openhold()
+    {
+        hiddenhold.SetActive(false);
+    }
+    public void closehold()
+    {
+        hiddenhold.SetActive(true);
     }
 }

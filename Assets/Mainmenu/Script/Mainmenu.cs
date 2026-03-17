@@ -26,7 +26,6 @@ public class Mainmenu : MonoBehaviour
     public TextMeshProUGUI zRotateTxt;
     public TextMeshProUGUI aRotateTxt;
     public TextMeshProUGUI openstatTxt;
-
     void Start()
     {
         st = FindAnyObjectByType<Stat>();
