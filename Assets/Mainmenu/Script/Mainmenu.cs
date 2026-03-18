@@ -185,4 +185,5 @@ public class Mainmenu : MonoBehaviour
     public void CancelReset() => ResetWarning.SetActive(false);
     public void OpenCustum() => custumpanel.SetActive(true);
     public void CloseCustum() => custumpanel.SetActive(false);
+    public void StartCUstom() => SceneManager.LoadScene("custom");
 }

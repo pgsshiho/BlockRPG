@@ -8107,19 +8107,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomCloneBase
   isSpawning: 0
-  spawnpoint: {fileID: 2078534750}
+  spawnpoint: {fileID: 521377086}
   kindenemy:
   - {fileID: 1448637777611033761, guid: c040c045e269ba940a7b8447f6227448, type: 3}
   - {fileID: 7462931420846577997, guid: ee6f59429ed07964e963d35c072c57d4, type: 3}
   - {fileID: 6530622555415057534, guid: c3e2176e1fddc1a42be0e53259abeb98, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1294530757546344420, guid: 84856eb72d27ab144b551209440a10a9, type: 3}
+  - {fileID: 7029290780005241018, guid: 4dbb87cb3b7bd2348ae9b67bd4a9b21b, type: 3}
+  - {fileID: 8977964420841106831, guid: a7d4aacfa39f1ba4cb92337f333859e5, type: 3}
+  - {fileID: 2631568864362008782, guid: fca2823290eae094b8fb0e1cdeff9303, type: 3}
   - {fileID: 6876322424552787787, guid: ed3a32a4e0b0b5d4d995df247f3cfb3e, type: 3}
-  - {fileID: 6876322424552787787, guid: ed3a32a4e0b0b5d4d995df247f3cfb3e, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8720090673311545054, guid: b58221496d54645409b6c65e3bc24d42, type: 3}
+  - {fileID: 4172438498408542321, guid: e632d994646efb34ca749a975671bac3, type: 3}
+  - {fileID: 3846797886056510335, guid: 8b2cf44d08c00f94bb8c29963da52972, type: 3}
   spawns:
   - {fileID: 0}
   - {fileID: 0}
@@ -33936,6 +33936,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::blockclear
   currentScore: 0
+  nowdamage: 0
   scoreText: {fileID: 1711288959}
   combo: 0
 --- !u!114 &2078534755

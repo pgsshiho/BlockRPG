@@ -101,6 +101,9 @@ public class Enemybase : MonoBehaviour, TakeDamage
         {
             st.GainExperience(ex);
             st.hp += 5;
+            if (st.hp >= st.maxhp) {
+                st.hp = st.maxhp;
+            }
             st.hpcal();
         }
 

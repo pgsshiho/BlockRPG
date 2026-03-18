@@ -4,39 +4,45 @@ using UnityEngine;
 public class night_Knight : Enemybase
 {
     private Animator anim;
-    BlockBase bb;
-    Conebase cb;
+    private Conebase cb;
 
     protected override void Start()
     {
         base.Start();
         anim = GetComponent<Animator>();
-        bb = FindAnyObjectByType<BlockBase>();
         cb = FindAnyObjectByType<Conebase>();
     }
 
     public override void Attack()
     {
-        if (isattack)
+        if (isattack) return; // 중복 실행 방지
+        base.Attack();
+
+        if (anim != null) anim.SetTrigger("Attack");
+
+        // [수정] 모든 블록이 아니라 '현재 조종 중인' 블록만 찾아 파괴
+        BlockBase target = GetActiveBlock();
+        if (target != null)
         {
-            anim?.SetTrigger("Attack");
-            
-            for (int i = BlockBase.AllBlocks.Count - 1; i >= 0; i--)
-            {
-                BlockBase targetBlock = BlockBase.AllBlocks[i];
-                
-                if (targetBlock != null)
-                {
-                    if (targetBlock.ghost != null) Destroy(targetBlock.ghost);
+            if (target.ghost != null) Destroy(target.ghost);
+            Destroy(target.gameObject);
 
-                    Destroy(targetBlock.gameObject);
-                    cb?.Clone(); 
-                }
-            }
-
-            StartCoroutine(WaitAttackAnimation());
-            base.Attack();
+            // 새 블록 즉시 소환
+            cb?.Clone();
         }
+
+        StartCoroutine(WaitAttackAnimation());
+    }
+
+    private BlockBase GetActiveBlock()
+    {
+        foreach (var b in BlockBase.AllBlocks)
+        {
+            // 조종 중인 블록 필터링 (활성화되어 있고 설치되지 않은 것)
+            if (b.enabled && b.GetComponent<Rigidbody2D>().simulated && !b.CompareTag("Block"))
+                return b;
+        }
+        return null;
     }
 
     IEnumerator WaitAttackAnimation()
@@ -45,33 +51,19 @@ public class night_Knight : Enemybase
         isattack = false;
     }
 
-
-    // --- [죽음 파트] ---
     public override void dead()
     {
         if (isDead) return;
         isDead = true;
-
-        if (anim != null)
-        {
-            anim.SetTrigger("dead");
-        }
-        Collider2D col = GetComponent<Collider2D>();
-        if (col != null) col.enabled = false;
-
+        if (anim != null) anim.SetTrigger("dead");
+        base.dead();
         StartCoroutine(WaitDeadAnimation());
     }
 
     IEnumerator WaitDeadAnimation()
     {
         yield return new WaitForSeconds(1.0f);
-
-        base.dead();
-        if (es != null)
-        {
-            es.isSpawning = false; // 방어막 해제
-            es.spawn();            // 새 적 소환
-        }
+        if (es != null) { es.isSpawning = false; es.spawn(); }
         Destroy(gameObject);
     }
 }
