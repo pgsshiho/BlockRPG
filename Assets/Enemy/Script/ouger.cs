@@ -5,7 +5,7 @@ public class ouger : Enemybase, ISpecialAttack
 {
     private Animator anim;
     public float mirrorDuration = 6.0f;
-    // 사운드 추가 (필요시)
+    public FIndEnemy enemyData;
     private Sound sd;
 
     protected override void Start()
@@ -13,6 +13,7 @@ public class ouger : Enemybase, ISpecialAttack
         base.Start();
         anim = GetComponent<Animator>();
         sd = Sound.instance; // 싱글톤 참조
+        if (enemyData != null) enemyData.golem = true;
     }
 
     public void ApplyEffect() => GameManager.Instance?.SetMirrorMode(true);

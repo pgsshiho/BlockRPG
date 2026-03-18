@@ -5,12 +5,15 @@ public class night_Knight : Enemybase
 {
     private Animator anim;
     private Conebase cb;
-
+    private Sound sd;
+    public FIndEnemy enemyData;
     protected override void Start()
     {
         base.Start();
         anim = GetComponent<Animator>();
         cb = FindAnyObjectByType<Conebase>();
+        sd = FindAnyObjectByType<Sound>();
+        if (enemyData != null) enemyData.knight_night = true;
     }
 
     public override void Attack()
@@ -20,14 +23,13 @@ public class night_Knight : Enemybase
 
         if (anim != null) anim.SetTrigger("Attack");
 
-        // [수정] 모든 블록이 아니라 '현재 조종 중인' 블록만 찾아 파괴
+        sd.night_knight.Play();
         BlockBase target = GetActiveBlock();
         if (target != null)
         {
             if (target.ghost != null) Destroy(target.ghost);
             Destroy(target.gameObject);
 
-            // 새 블록 즉시 소환
             cb?.Clone();
         }
 

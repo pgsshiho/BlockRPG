@@ -5,11 +5,13 @@ public class Chraken : Enemybase, ISpecialAttack
 {
     private Animator anim;
     public float holdDuration = 6.0f;
-
+    public FIndEnemy enemyData;
     protected override void Start()
     {
         base.Start();
         anim = GetComponent<Animator>();
+        if (enemyData != null) enemyData.chraken = true;
+
     }
 
     public void ApplyEffect() => GameManager.Instance?.closehold();

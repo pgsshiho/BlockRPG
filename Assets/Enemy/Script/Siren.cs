@@ -6,7 +6,8 @@ public class Siren : Enemybase
     private Animator anim;
     private KeyBinding key;
     private bool isConfusionActive = false; // 중복 공격 및 키 꼬임 방지용
-
+    private Sound sd;
+    public FIndEnemy enemyData;
     protected override void Start()
     {
         base.Start(); // 부모(Enemybase)의 Start 실행 (HP설정, 스폰매니저 찾기 등)
@@ -14,6 +15,8 @@ public class Siren : Enemybase
 
         // 키 설정을 바꾸기 위해 KeyBinding 스크립트를 찾습니다.
         key = Object.FindAnyObjectByType<KeyBinding>();
+        sd = FindAnyObjectByType<Sound>();
+        if (enemyData != null) enemyData.siren = true;
     }
 
     public override void Attack()
@@ -21,15 +24,32 @@ public class Siren : Enemybase
         // 이미 혼란을 걸고 있다면 중복 공격 방지
         if (isConfusionActive) return;
 
-        base.Attack(); // 부모의 Attack 실행 (플레이어에게 데미지 전달)
+        base.Attack();
 
         if (anim != null)
         {
             anim.SetTrigger("Attack");
         }
 
-        // 세이렌만의 특수 능력: 키 혼란 코루틴 시작
+        // --- 사운드 재생 부분 수정 ---
+        if (sd != null && sd.siren != null)
+        {
+            StopCoroutine("PlaySirenShort"); // 혹시 재생 중이면 멈추고 새로 시작
+            StartCoroutine(PlaySirenShort(3.0f)); // 3초만 재생하는 코루틴 호출
+        }
+
         StartCoroutine(ConfusionRoutine());
+    }
+
+    // [추가] 지정된 시간만큼만 사운드를 재생하는 코루틴
+    IEnumerator PlaySirenShort(float duration)
+    {
+        sd.siren.time = 0f; // 사운드 처음(0초)부터 시작
+        sd.siren.Play();
+
+        yield return new WaitForSeconds(duration); // 3초 대기
+
+        sd.siren.Stop(); // 사운드 정지
     }
 
     IEnumerator ConfusionRoutine()

@@ -6,13 +6,14 @@ public class Crown : Enemybase
     private Animator anim;
     private Hold hold;
     private Sound sd;
-
+    public FIndEnemy enemyData;
     protected override void Start()
     {
         base.Start();
         anim = GetComponent<Animator>();
         hold = FindAnyObjectByType<Hold>();
         sd = Sound.instance;
+        if (enemyData != null) enemyData.crown = true;
     }
 
     public override void Attack()

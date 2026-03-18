@@ -10,6 +10,7 @@ public class Ghost : Enemybase, ISpecialAttack
     // 현재 공격 대상이 된 블록과 그 고스트를 기억합니다.
     private BlockBase targetBB;
     private GameObject targetGhost;
+    public FIndEnemy enemyData;
 
     protected override void Start()
     {
@@ -17,6 +18,7 @@ public class Ghost : Enemybase, ISpecialAttack
         anim = GetComponent<Animator>();
         sd = Sound.instance;
         cb = FindAnyObjectByType<Conebase>();
+        if (enemyData != null) enemyData.ghost = true;
     }
 
     public void ApplyEffect()
