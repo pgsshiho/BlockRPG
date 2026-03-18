@@ -21,8 +21,9 @@ public class Sound : MonoBehaviour
     public AudioSource Prism_Dragon;
     public AudioSource Shamen;
     public AudioSource Kraken;
-    public AudioSource Yeti;
+    public AudioSource Jester;
     public AudioSource combo;
+    public AudioSource siren;
     [Header("Settings UI")]
     public AudioMixer mixer;
     public GameObject currentSceneUI;

@@ -5,12 +5,14 @@ public class slime : Enemybase
 {
     private Animator anim;
     private Sound sd;
-
+    public FIndEnemy enemyData;
     protected override void Start()
     {
+
         base.Start(); // 부모(Enemybase)의 Start 실행
         anim = GetComponent<Animator>();
         sd = FindAnyObjectByType<Sound>();
+        if (enemyData != null) enemyData.slime = true;
     }
 
     public override void Attack()

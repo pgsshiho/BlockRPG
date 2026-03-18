@@ -6,12 +6,14 @@ public class Golbin : Enemybase
     private Animator anim;
     Hold hold;
     Sound sd;
+    public FIndEnemy enemyData;
     protected override void Start()
     {
         base.Start();
         anim = GetComponent<Animator>();
         hold = FindAnyObjectByType<Hold>();
         sd = FindAnyObjectByType<Sound>();
+        if (enemyData != null) enemyData.goblin = true;
     }
 
     public override void Attack()

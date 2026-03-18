@@ -6,12 +6,14 @@ public class Prism_Dragon : Enemybase, ISpecialAttack
     private Animator anim;
     private Sound sd; // 사운드 추가
     public float changeDuration = 6.0f;
+    public FIndEnemy enemyData;
 
     protected override void Start()
     {
         base.Start();
         anim = GetComponent<Animator>();
         sd = Sound.instance;
+        if (enemyData != null) enemyData.dragon = true;
     }
 
     public void ApplyEffect() => GameManager.Instance?.change();

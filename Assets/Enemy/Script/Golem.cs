@@ -12,13 +12,14 @@ public class Golem : Enemybase, ISpecialAttack
 
     private Coroutine shakeCoroutine;
     private Quaternion originalRotation;
-
+    public FIndEnemy enemyData;
     protected override void Start()
     {
         base.Start();
         anim = GetComponent<Animator>();
         sd = Sound.instance;
         originalRotation = Camera.main.transform.rotation;
+        if (enemyData != null) enemyData.golem = true;
     }
 
     // ISpecialAttack 인터페이스 구현
