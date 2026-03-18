@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class Mainmenu : MonoBehaviour
 {
-    Stat st;
+    private Stat st; // Stat.instance를 캐싱
     public GameObject panel;
     public TextMeshProUGUI dif;
     public GameObject select;
@@ -15,7 +16,7 @@ public class Mainmenu : MonoBehaviour
     public GameObject custumpanel;
     private bool isWaitingForKey = false;
 
-    [Header("Key Display Texts (연결 필수)")]
+    [Header("Key Display Texts")]
     public TextMeshProUGUI rotateTxt;
     public TextMeshProUGUI rightTxt;
     public TextMeshProUGUI leftTxt;
@@ -26,23 +27,27 @@ public class Mainmenu : MonoBehaviour
     public TextMeshProUGUI zRotateTxt;
     public TextMeshProUGUI aRotateTxt;
     public TextMeshProUGUI openstatTxt;
+
     void Start()
     {
-        st = FindAnyObjectByType<Stat>();
+        // 싱글톤 인스턴스를 우선 참조
+        st = Stat.instance;
+        if (st == null) st = FindAnyObjectByType<Stat>();
+
+        UpdateKeyUI();
     }
 
     void Update()
     {
-        // 난이도 텍스트 업데이트
-        if (st != null) dif.text = st.difficult.ToString();
+        // 난이도 텍스트 업데이트 (st가 null이 아닐 때만)
+        if (st != null && dif != null)
+            dif.text = st.difficult.ToString();
     }
 
-    // 현재 KeyBinding 인스턴스의 값을 텍스트에 동기화
-    void UpdateKeyUI()
+    public void UpdateKeyUI()
     {
         if (KeyBinding.instance == null) return;
 
-        // null 체크를 통해 연결되지 않은 텍스트가 있어도 에러가 나지 않게 방지
         if (rotateTxt) rotateTxt.text = KeyBinding.instance.rotate.ToString();
         if (rightTxt) rightTxt.text = KeyBinding.instance.right.ToString();
         if (leftTxt) leftTxt.text = KeyBinding.instance.left.ToString();
@@ -64,15 +69,8 @@ public class Mainmenu : MonoBehaviour
         SceneManager.LoadScene("Tetris");
     }
 
-    public void difup()
-    {
-        if (st != null && st.difficult < 10) st.difficult++;
-    }
-
-    public void difdown()
-    {
-        if (st != null && st.difficult > 1) st.difficult--;
-    }
+    public void difup() { if (st != null && st.difficult < 10) st.difficult++; }
+    public void difdown() { if (st != null && st.difficult > 1) st.difficult--; }
 
     public void setting()
     {
@@ -111,7 +109,6 @@ public class Mainmenu : MonoBehaviour
             {
                 foreach (KeyCode kcode in System.Enum.GetValues(typeof(KeyCode)))
                 {
-                    // 마우스 클릭은 제외하고 키보드 입력만 받음
                     if (Input.GetKeyDown(kcode) && kcode != KeyCode.None && !kcode.ToString().Contains("Mouse"))
                     {
                         ApplyKey(keyIndex, kcode);
@@ -124,8 +121,8 @@ public class Mainmenu : MonoBehaviour
         }
 
         if (statusText != null) statusText.text = "Saved!";
-        yield return new WaitForSeconds(0.5f); // 잠깐 보여주고
-        if (statusText != null) statusText.text = ""; // 텍스트 지우기
+        yield return new WaitForSeconds(0.5f);
+        if (statusText != null) statusText.text = "";
         isWaitingForKey = false;
     }
 
@@ -147,30 +144,22 @@ public class Mainmenu : MonoBehaviour
             case 8: kb.aRotate = newKey; break;
             case 10: kb.openstat = newKey; break;
         }
-        // [최적화] 키가 바뀌었을 때만 UI를 한 번 업데이트합니다.
         UpdateKeyUI();
-
-        // [저장] 실제 빌드에서도 유지되게 하려면 여기서 저장 로직을 추가합니다.
         kb.SaveKeys();
     }
-    public void openkey() { 
-        keypanel.SetActive(true);
-        UpdateKeyUI();
-    }
-    public void closekey() { keypanel.SetActive(false);
-        UpdateKeyUI();
-    }
-    public void StoryStart()
-    {
-        SceneManager.LoadScene("StoryTetris");
-    }
-    public void ResetLevelCheck()
-    {
-        ResetWarning.SetActive(true);
-    }
+
+    public void openkey() { keypanel.SetActive(true); UpdateKeyUI(); }
+    public void closekey() { keypanel.SetActive(false); UpdateKeyUI(); }
+    public void StoryStart() => SceneManager.LoadScene("StoryTetris");
+
+    public void ResetLevelCheck() => ResetWarning.SetActive(true);
+
     public void ResetLevel()
     {
+        // 1. 저장된 모든 데이터 삭제
         PlayerPrefs.DeleteAll();
+
+        // 2. 메모리 상의 Stat 초기화
         if (Stat.instance != null)
         {
             Stat.instance.difficult = 3;
@@ -182,19 +171,19 @@ public class Mainmenu : MonoBehaviour
             Stat.instance.maxhp = 100;
             Stat.instance.level = 1;
             Stat.instance.ex = 0;
+
+            // 3. 초기화된 상태를 다시 저장 (덮어쓰기)
+            Stat.instance.SaveData();
+            // 4. UI 갱신 (StatUI 등이 있다면 호출됨)
+            Stat.instance.RefreshUI();
         }
+
         ResetWarning.SetActive(false);
+        Debug.Log("모든 데이터가 초기화 및 재저장되었습니다.");
     }
-    public void CancelReset()
-    {
-        ResetWarning.SetActive(false);
-    }
-    public void OpenCustum()
-    {
-        custumpanel.SetActive(true);
-    }
-    public void CloseCustum()
-    {
-        custumpanel.SetActive(false);
-    }
+
+    public void CancelReset() => ResetWarning.SetActive(false);
+    public void OpenCustum() => custumpanel.SetActive(true);
+    public void CloseCustum() => custumpanel.SetActive(false);
+    public void StartCUstom() => SceneManager.LoadScene("custom");
 }

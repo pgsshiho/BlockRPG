@@ -4,36 +4,49 @@ using UnityEngine;
 public class Shaman : Enemybase
 {
     private Animator anim;
-    Conebase cb;
-    public GameObject block;
+    private Conebase cb;
+    public GameObject specialBlock; // 교체할 프리팹
+
     protected override void Start()
     {
         base.Start();
         anim = GetComponent<Animator>();
-        cb = GetComponent<Conebase>();
+        cb = FindAnyObjectByType<Conebase>(); // 수정: GetComponent가 아닌 Find
     }
 
     public override void Attack()
     {
-        if (isattack)
+        if (isattack) return;
+        base.Attack();
+
+        if (anim != null) anim.SetTrigger("Attack");
+
+        BlockBase target = GetActiveBlock();
+        if (target != null)
         {
-            anim?.SetTrigger("Attack");
+            if (target.ghost != null) Destroy(target.ghost);
+            Destroy(target.gameObject);
 
-            for (int i = BlockBase.AllBlocks.Count - 1; i >= 0; i--)
+            // 지정된 특수 블록을 스폰 지점에 생성
+            if (cb != null && specialBlock != null)
             {
-                BlockBase targetBlock = BlockBase.AllBlocks[i];
-
-                if (targetBlock != null)
-                {
-                    if (targetBlock.ghost != null) Destroy(targetBlock.ghost);
-
-                    Destroy(targetBlock.gameObject);
-                    Instantiate(block, cb.spawnpoint.transform.position, Quaternion.identity);
-                }
+                GameObject newObj = Instantiate(specialBlock, cb.spawnpoint.transform.position, Quaternion.identity);
+                // 새 블록의 고스트 생성 및 연결을 위해 seeclone 호출
+                cb.seeclone(specialBlock, newObj);
             }
-            StartCoroutine(WaitAttackAnimation());
-            base.Attack();
         }
+
+        StartCoroutine(WaitAttackAnimation());
+    }
+
+    private BlockBase GetActiveBlock()
+    {
+        foreach (var b in BlockBase.AllBlocks)
+        {
+            if (b.enabled && b.GetComponent<Rigidbody2D>().simulated && !b.CompareTag("Block"))
+                return b;
+        }
+        return null;
     }
 
     IEnumerator WaitAttackAnimation()
@@ -42,36 +55,19 @@ public class Shaman : Enemybase
         isattack = false;
     }
 
-
-    // --- [죽음 파트] ---
     public override void dead()
     {
-
         if (isDead) return;
         isDead = true;
-
-        if (anim != null)
-        {
-            anim.SetTrigger("dead");
-        }
-
-        // 추가 공격 방지
-        Collider2D col = GetComponent<Collider2D>();
-        if (col != null) col.enabled = false;
-
+        if (anim != null) anim.SetTrigger("dead");
+        base.dead();
         StartCoroutine(WaitDeadAnimation());
     }
 
     IEnumerator WaitDeadAnimation()
     {
         yield return new WaitForSeconds(1.0f);
-
-        base.dead();
-        if (es != null)
-        {
-            es.isSpawning = false; // 방어막 해제
-            es.spawn();            // 새 적 소환
-        }
+        if (es != null) { es.isSpawning = false; es.spawn(); }
         Destroy(gameObject);
     }
 }

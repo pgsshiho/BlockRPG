@@ -4,48 +4,82 @@ using UnityEngine;
 public class Ghost : Enemybase, ISpecialAttack
 {
     private Animator anim;
-    private BlockBase bb;
     private Sound sd;
+    private Conebase cb;
 
-    private bool isEffectActive = false;
-
-    [Header("Ghost Settings")]
-    public float hideDuration = 5.0f; // 만약 시간 제한을 쓰고 싶다면 이 시간을 조절
+    // 현재 공격 대상이 된 블록과 그 고스트를 기억합니다.
+    private BlockBase targetBB;
+    private GameObject targetGhost;
 
     protected override void Start()
     {
         base.Start();
         anim = GetComponent<Animator>();
-        bb = FindAnyObjectByType<BlockBase>();
-        sd = FindAnyObjectByType<Sound>();
+        sd = Sound.instance;
+        cb = FindAnyObjectByType<Conebase>();
     }
 
-    // [ISpecialAttack 구현] 블록 숨기기
     public void ApplyEffect()
     {
-        if (bb == null || isEffectActive) return;
+        // 1. 조종 중인 블록을 정밀하게 찾습니다.
+        targetBB = GetActiveControlBlock();
 
-        foreach (Transform child in bb.transform)
+        if (targetBB != null)
         {
-            SpriteRenderer sr = child.GetComponent<SpriteRenderer>();
-            if (sr != null) sr.enabled = false;
+            // 2. BlockBase 코드에 이미 연결된 ghost 오브젝트를 가져옵니다.
+            targetGhost = targetBB.ghost;
+
+            // 3. 해당 블록이 바닥에 닿을 때까지 숨기는 코루틴 시작
+            StartCoroutine(KeepHidingUntilSettle(targetBB, targetGhost));
         }
-        isEffectActive = true;
-        Debug.Log("고스트: 블록 투명화 발동");
     }
 
-    // [ISpecialAttack 구현] 블록 다시 보이기 (죽거나 시간이 다 되면 호출)
+    // [중요] 세 가지 블록을 구분하여 '조종 중인' 것만 반환하는 함수
+    private BlockBase GetActiveControlBlock()
+    {
+        BlockBase[] allBlocks = FindObjectsByType<BlockBase>(FindObjectsSortMode.None);
+        foreach (var b in allBlocks)
+        {
+            if (b.enabled && b.GetComponent<Rigidbody2D>().simulated && !b.CompareTag("Block"))
+            {
+                // 추가 필터링: 부모가 없는 최상위 객체 (Next/Hold 시각화 블록 제외)
+                if (b.transform.parent == null)
+                {
+                    return b;
+                }
+            }
+        }
+        return null;
+    }
+
+    // 블록이 바닥에 닿아 고정될 때까지 독립적으로 투명화를 유지합니다.
+    IEnumerator KeepHidingUntilSettle(BlockBase bb, GameObject ghost)
+    {
+        // bb가 파괴되지 않았고, 여전히 조종 중(simulated)일 때만 반복
+        while (bb != null && bb.enabled && bb.GetComponent<Rigidbody2D>().simulated)
+        {
+            // 본체 숨기기
+            foreach (var sr in bb.GetComponentsInChildren<SpriteRenderer>())
+                sr.enabled = false;
+
+            // 가이드라인 숨기기
+            if (ghost != null)
+            {
+                foreach (var gsr in ghost.GetComponentsInChildren<SpriteRenderer>())
+                    gsr.enabled = false;
+            }
+
+            yield return new WaitForSeconds(0.1f); // 0.1초마다 상태 갱신
+        }
+
+        // 블록이 설치되었거나(bb.enabled = false) 파괴되었다면 투명화 로직 종료
+        // (설치된 블록은 어차피 새로 생성된 자식들로 구성되므로 여기서 끝내면 됩니다)
+    }
+
     public void RemoveEffect()
     {
-        if (bb == null || !isEffectActive) return;
-
-        foreach (Transform child in bb.transform)
-        {
-            SpriteRenderer sr = child.GetComponent<SpriteRenderer>();
-            if (sr != null) sr.enabled = true;
-        }
-        isEffectActive = false;
-        Debug.Log("고스트: 블록 투명화 해제");
+        // Independent 루프가 스스로 종료되므로 특별한 처리가 필요 없으나,
+        // 필요 시 현재 타겟들을 강제로 보이게 할 수 있습니다.
     }
 
     public override void Attack()
@@ -54,7 +88,7 @@ public class Ghost : Enemybase, ISpecialAttack
         base.Attack();
 
         if (anim != null) anim.SetTrigger("Attack");
-        if (sd != null) sd.Goblin.Play();
+        if (sd != null && sd.Goblin != null) sd.Goblin.Play();
 
         StartCoroutine(GhostAttackSequence());
     }
@@ -62,16 +96,7 @@ public class Ghost : Enemybase, ISpecialAttack
     IEnumerator GhostAttackSequence()
     {
         ApplyEffect();
-
-        // ---------------------------------------------------------
-        // [옵션: 시간 지나면 다시 보이게 하고 싶을 때 아래 주석 해제]
-        /*
-        yield return new WaitForSeconds(hideDuration);
-        RemoveEffect(); 
-        */
-        // ---------------------------------------------------------
-
-        yield return new WaitForSeconds(0.8f); // 공격 애니메이션 후딜레이
+        yield return new WaitForSeconds(0.8f);
         isattack = false;
     }
 
@@ -79,22 +104,21 @@ public class Ghost : Enemybase, ISpecialAttack
     {
         if (isDead) return;
 
-        // Enemybase.dead()에서 special.RemoveEffect()를 호출하므로 
-        // 죽을 때 자동으로 블록이 다시 나타납니다.
-        base.dead();
+        // 고스트가 죽어도 이미 투명해진 블록은 끝까지 안 보이게 하고 싶다면 
+        // StopAllCoroutines()를 호출하지 마세요. 
+        // 만약 죽었을 때 블록이 다시 보여야 한다면 아래 줄의 주석을 푸세요.
+        // StopAllCoroutines(); 
 
         if (anim != null) anim.SetTrigger("Dead");
+
+        base.dead();
         StartCoroutine(WaitDeadAnimation());
     }
 
     IEnumerator WaitDeadAnimation()
     {
         yield return new WaitForSeconds(0.8f);
-        if (es != null)
-        {
-            es.isSpawning = false;
-            es.spawn();
-        }
+        if (es != null) { es.isSpawning = false; es.spawn(); }
         Destroy(gameObject);
     }
 }
