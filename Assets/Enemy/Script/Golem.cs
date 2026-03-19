@@ -12,7 +12,7 @@ public class Golem : Enemybase, ISpecialAttack
 
     private Coroutine shakeCoroutine;
     private Quaternion originalRotation;
-    public FIndEnemy enemyData;
+    public FindEnemy enemyData;
     protected override void Start()
     {
         base.Start();

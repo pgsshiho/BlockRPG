@@ -21,7 +21,7 @@ public class Mainmenu : MonoBehaviour
     [Header("MainPage / Bestiary")]
     public GameObject[] Page;        // 도감 각 페이지 오브젝트
     public GameObject[] PageHide;    // 도감 각 페이지를 가리고 있는 '잠금/물음표' 오브젝트
-    public FIndEnemy enemyData;      // ScriptableObject 할당용
+    public FindEnemy enemyData;      // ScriptableObject 할당용
 
     [Header("Key Display Texts")]
     public TextMeshProUGUI rotateTxt;

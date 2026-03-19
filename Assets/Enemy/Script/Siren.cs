@@ -7,7 +7,7 @@ public class Siren : Enemybase
     private KeyBinding key;
     private bool isConfusionActive = false; // 중복 공격 및 키 꼬임 방지용
     private Sound sd;
-    public FIndEnemy enemyData;
+    public FindEnemy enemyData;
     protected override void Start()
     {
         base.Start(); // 부모(Enemybase)의 Start 실행 (HP설정, 스폰매니저 찾기 등)

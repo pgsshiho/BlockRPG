@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "FIndEnemy", menuName = "Scriptable Objects/FIndEnemy")]
-public class FIndEnemy : ScriptableObject
+[CreateAssetMenu(fileName = "FindEnemy", menuName = "Scriptable Objects/FindEnemy")]
+public class FindEnemy : ScriptableObject
 {
     public bool slime = false;
     public bool goblin = false;

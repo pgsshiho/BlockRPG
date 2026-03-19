@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e26aefcdd5dd1804cbedd5083793f3a8, type: 3}
+  m_Name: FindEnemy
+  m_EditorClassIdentifier: Assembly-CSharp::FindEnemy
+  slime: 0
+  goblin: 0
+  ouger: 0
+  siren: 0
+  golem: 0
+  chraken: 0
+  ghost: 0
+  dragon: 0
+  crown: 0
+  shaman: 0
+  knight_night: 0
+  boss: 0

@@ -196,7 +196,7 @@ public class blockclear : MonoBehaviour
     {
         for (int x = 0; x < width; x++)
         {
-            if (grid[x, 56] != null)
+            if (grid[x, 57] != null)
             {
                 Time.timeScale = 1;
                 ScoreForSpeed = 0;
