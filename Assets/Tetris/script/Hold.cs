@@ -65,6 +65,7 @@ public class Hold : MonoBehaviour
             DisableBlockFunctions(currentHoldVisual);
 
             ishold = false;
+            Grayhold();
         }
         else
         {
@@ -83,15 +84,20 @@ public class Hold : MonoBehaviour
 
             cb.Clone();
             ishold = false;
+            Grayhold();
         }
         ishave = true;
-        if(ishold == true)
+    }
+    public void Grayhold()
+    {
+        if (ishold == true)
         {
-        grayhold.SetActive(false);
+            grayhold.SetActive(false);
         }
         else
         {
-        grayhold.SetActive(true);
+            grayhold.SetActive(true);
         }
     }
+
 }

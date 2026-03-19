@@ -107,7 +107,6 @@ public class Enemybase : MonoBehaviour, TakeDamage
             st.hpcal();
         }
 
-        // 여기서 es.spawn()을 절대 부르지 마세요! (이게 원인입니다)
     }
 
     public void hit(int damageAmount)
