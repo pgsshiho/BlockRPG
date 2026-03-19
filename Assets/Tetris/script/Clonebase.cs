@@ -48,6 +48,7 @@ public class Conebase : MonoBehaviour
         UpdateNextVisuals();
 
         if (hhold != null) hhold.ishold = true;
+        hhold.Grayhold();
     }
 
     public void fillbag()

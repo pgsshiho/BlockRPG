@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d6df9b1c9efec6a4aa437aa83c226e3a
+guid: 239b4e3df54c82949ae3db32c9261ae3
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 54
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -69,7 +69,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 1024
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: prism_dragon_transparent_0
+      name: jester_attack_0
       rect:
         serializedVersion: 2
-        x: 19
-        y: 213
-        width: 729
-        height: 613
+        x: 100
+        y: 308
+        width: 92
+        height: 172
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -112,20 +112,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f06dc3bab62c6984eabe136d559b4d1d
-      internalID: -950320581
+      spriteID: be9a541948562864192c2ba2ea1f24b2
+      internalID: -1780772280
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: prism_dragon_transparent_2
+      name: jester_attack_1
       rect:
         serializedVersion: 2
-        x: 1183
-        y: 246
-        width: 4
-        height: 4
+        x: 348
+        y: 312
+        width: 96
+        height: 168
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -134,20 +134,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 96f4faae05a961b4fa29693bb1dfc69a
-      internalID: 787256589
+      spriteID: 5ac8e79eae2670547bc43032ce6e2eba
+      internalID: 456599988
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: prism_dragon_transparent_1
+      name: jester_attack_2
       rect:
         serializedVersion: 2
-        x: 787
-        y: 214
-        width: 729
-        height: 647
+        x: 96
+        y: 56
+        width: 161
+        height: 168
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -156,20 +156,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cdd22ec75b4cb7047beed0bd7c897f91
-      internalID: -1865108620
+      spriteID: e147ef5ac99993a4d9ebda08683fddf9
+      internalID: 1861993861
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: prism_dragon_transparent_4
+      name: jester_attack_5
       rect:
         serializedVersion: 2
-        x: 415
-        y: 211
-        width: 4
-        height: 4
+        x: 344
+        y: 56
+        width: 92
+        height: 168
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -178,30 +178,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ce739ae2fedff344a9d8fdf97c5cd60b
-      internalID: -1342195032
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: prism_dragon_transparent_5
-      rect:
-        serializedVersion: 2
-        x: 411
-        y: 191
-        width: 9
-        height: 10
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1cc5514c05014bc43b591ea361dff963
-      internalID: 7353327
+      spriteID: 4ac2da80d35c2c44ca8dd28bf5e351f9
+      internalID: 539663098
       vertices: []
       indices: 
       edges: []
@@ -210,7 +188,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 82fdca5a17400ee4893dffdd160f9ad5
+    spriteID: 434e0400d580ad947b2eddeab47aebfe
     internalID: 0
     vertices: []
     indices: 
@@ -222,12 +200,13 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      prism_dragon_transparent_0: -950320581
-      prism_dragon_transparent_1: -1865108620
-      prism_dragon_transparent_2: 787256589
-      prism_dragon_transparent_3: -389786084
-      prism_dragon_transparent_4: -1342195032
-      prism_dragon_transparent_5: 7353327
+      jester_attack_0: -1780772280
+      jester_attack_1: 456599988
+      jester_attack_2: 1861993861
+      jester_attack_3: -2027456416
+      jester_attack_4: 1239618147
+      jester_attack_5: 539663098
+      jester_attack_6: 825386258
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

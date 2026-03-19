@@ -19,13 +19,14 @@ public class Crown : Enemybase
     public override void Attack()
     {
         if (isattack) return;
-        base.Attack(); // frame 초기화 및 isattack = true
 
+        Holdc();
+        base.Attack();
+        base.damage = base.baseDamage;
         if (anim != null) anim.SetTrigger("Attack");
-        if (sd != null && sd.Goblin != null) sd.Goblin.Play();
 
-        // 홀드 강제 실행
-        if (hold != null) hold.Holding();
+        if (sd != null && sd.Goblin != null) sd.Jester.Play();
+        
 
         StartCoroutine(WaitAttackAnimation());
     }
@@ -48,5 +49,11 @@ public class Crown : Enemybase
         yield return new WaitForSeconds(0.8f);
         if (es != null) { es.isSpawning = false; es.spawn(); }
         Destroy(gameObject);
+    }public void Holdc()
+    {
+        if (hold != null) {
+            if (!hold.ishold == false) hold.Holding();
+            else base.damage += 3;
+        }
     }
 }
