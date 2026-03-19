@@ -59,7 +59,6 @@ public class Mainmenu : MonoBehaviour
             return;
         }
 
-        // ScriptableObject의 bool 값이 true(발견)면 Hide 오브젝트를 끔(해제)
         PageHide[0].SetActive(!enemyData.slime);
         PageHide[1].SetActive(!enemyData.goblin);
         PageHide[2].SetActive(!enemyData.ouger);
