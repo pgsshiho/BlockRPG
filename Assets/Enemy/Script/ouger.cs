@@ -5,7 +5,7 @@ public class ouger : Enemybase, ISpecialAttack
 {
     private Animator anim;
     public float mirrorDuration = 6.0f;
-    public FIndEnemy enemyData;
+    public FindEnemy enemyData;
     private Sound sd;
 
     protected override void Start()

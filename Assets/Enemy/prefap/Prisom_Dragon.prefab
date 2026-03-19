@@ -138,3 +138,4 @@ MonoBehaviour:
   baseHp: 50
   baseDamage: 5
   changeDuration: 4
+  enemyData: {fileID: 11400000, guid: 25a1d081ca08e2d4898a87400d2a0baa, type: 2}

@@ -139,3 +139,4 @@ MonoBehaviour:
   baseDamage: 3
   shakeDuration: 1.5
   shakeMagnitude: 2
+  enemyData: {fileID: 11400000, guid: 25a1d081ca08e2d4898a87400d2a0baa, type: 2}

@@ -5,7 +5,7 @@ public class slime : Enemybase
 {
     private Animator anim;
     private Sound sd;
-    public FIndEnemy enemyData;
+    public FindEnemy enemyData;
     protected override void Start()
     {
 

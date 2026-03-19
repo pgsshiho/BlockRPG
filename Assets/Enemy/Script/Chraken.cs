@@ -5,7 +5,7 @@ public class Chraken : Enemybase, ISpecialAttack
 {
     private Animator anim;
     public float holdDuration = 6.0f;
-    public FIndEnemy enemyData;
+    public FindEnemy enemyData;
     protected override void Start()
     {
         base.Start();

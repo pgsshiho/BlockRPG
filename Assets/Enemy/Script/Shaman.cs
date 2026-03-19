@@ -6,7 +6,7 @@ public class Shaman : Enemybase
     private Animator anim;
     private Conebase cb;
     public GameObject specialBlock; // 교체할 프리팹
-    public FIndEnemy enemyData;
+    public FindEnemy enemyData;
     protected override void Start()
     {
         base.Start();

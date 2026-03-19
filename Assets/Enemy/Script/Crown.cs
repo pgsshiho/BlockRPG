@@ -6,7 +6,7 @@ public class Crown : Enemybase
     private Animator anim;
     private Hold hold;
     private Sound sd;
-    public FIndEnemy enemyData;
+    public FindEnemy enemyData;
     protected override void Start()
     {
         base.Start();

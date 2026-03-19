@@ -6,7 +6,7 @@ public class night_Knight : Enemybase
     private Animator anim;
     private Conebase cb;
     private Sound sd;
-    public FIndEnemy enemyData;
+    public FindEnemy enemyData;
     protected override void Start()
     {
         base.Start();

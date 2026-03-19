@@ -137,3 +137,4 @@ MonoBehaviour:
   hpbar: {fileID: 0}
   baseHp: 30
   baseDamage: 1
+  enemyData: {fileID: 11400000, guid: 25a1d081ca08e2d4898a87400d2a0baa, type: 2}

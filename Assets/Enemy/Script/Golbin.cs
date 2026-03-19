@@ -6,7 +6,7 @@ public class Golbin : Enemybase
     private Animator anim;
     Hold hold;
     Sound sd;
-    public FIndEnemy enemyData;
+    public FindEnemy enemyData;
     protected override void Start()
     {
         base.Start();
