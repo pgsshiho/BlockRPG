@@ -12,7 +12,7 @@ public class Stat : MonoBehaviour, TakeDamage
     public int difficult = 3;
 
     [Header("Status Values")]
-    public int it = 5;
+    public int it = 0;
     public int atk = 0;
     public int spd = 0;
     public int maxstatpoint = 0;
@@ -68,7 +68,7 @@ public class Stat : MonoBehaviour, TakeDamage
         maxstatpoint = PlayerPrefs.GetInt("Saved_MaxStatPoint", 0);
         atk = PlayerPrefs.GetInt("Saved_ATK", 0);
         spd = PlayerPrefs.GetInt("Saved_SPD", 0);
-        it = PlayerPrefs.GetInt("Saved_IT", 5);
+        it = PlayerPrefs.GetInt("Saved_IT", 0);
         maxhp = PlayerPrefs.GetInt("Saved_MaxHP", 100);
         hp = maxhp;
         UpdateRequiredEx();
@@ -100,11 +100,7 @@ public class Stat : MonoBehaviour, TakeDamage
     {
         hp -= Damage * difficult;
         hpcal();
-        if (hp <= 0)
-        {
-            Gameover.killerName = killerName;
-            SceneManager.LoadScene("Gameover");
-        }
+        diecheck(Damage, killerName);
     }
 
     public void GainExperience(float amount)
@@ -169,5 +165,13 @@ public class Stat : MonoBehaviour, TakeDamage
         hpcal();
         expcal();
         SafeNotify();
+    }
+    public void diecheck(int Damage, string killerName)
+    {
+        if (hp <= 0)
+        {
+            Gameover.killerName = killerName;
+            SceneManager.LoadScene("Gameover");
+        }
     }
 }
