@@ -7916,7 +7916,7 @@ MonoBehaviour:
   isSpawning: 0
   enemy:
   - prefabs:
-    - {fileID: 1448637777611033761, guid: c040c045e269ba940a7b8447f6227448, type: 3}
+    - {fileID: 9152031737813657521, guid: f8498a5a591f95f4e91b54baee475c29, type: 3}
   - prefabs:
     - {fileID: 1448637777611033761, guid: c040c045e269ba940a7b8447f6227448, type: 3}
   - prefabs:
