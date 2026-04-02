@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Siren : Enemybase
 {
@@ -83,7 +84,6 @@ public class Siren : Enemybase
         key.down = temp;
     }
 
-    // --- [죽음 파트] ---
     public override void dead()
     {
         if (isDead) return;
@@ -117,5 +117,22 @@ public class Siren : Enemybase
 
         yield return new WaitForSeconds(1.0f);
         Destroy(gameObject);
+    }
+    void OnEnable()
+    {
+        // 씬 로드 이벤트 등록
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        // 이벤트 해제 (메모리 누수 방지)
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        SwapKeys();
+        Debug.Log("Siren: Keys Restored!");
+        isConfusionActive = false;
     }
 }

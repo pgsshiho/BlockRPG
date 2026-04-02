@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: fbba90f022b40ac4a819d7876b37622e
+guid: 352486b25f2e99e4cbaf9cc6702a81ac
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: darkknightattacking_2_0
+      name: "ChatGPT Image 2026\uB144 4\uC6D4 1\uC77C \uC624\uD6C4 03_07_43-Photoroom_0"
       rect:
         serializedVersion: 2
-        x: 0
-        y: 850
-        width: 550
-        height: 850
+        x: 170
+        y: 464
+        width: 470
+        height: 264
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -112,20 +112,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a9552682060340641a73f0e7aee59400
-      internalID: 455489477
+      spriteID: f3d91bd16d69a4d429c08fd4f29d5fcd
+      internalID: -1628313032
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: darkknightattacking_2_1
+      name: "ChatGPT Image 2026\uB144 4\uC6D4 1\uC77C \uC624\uD6C4 03_07_43-Photoroom_1"
       rect:
         serializedVersion: 2
-        x: 550
-        y: 850
-        width: 550
-        height: 850
+        x: 639
+        y: 464
+        width: 447
+        height: 283
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -134,20 +134,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ef2d5a9f7530fb945aa66cb00e1cdd95
-      internalID: 965007128
+      spriteID: bef35f14773656c428be8afbf3cf5188
+      internalID: -1550512563
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: darkknightattacking_2_2
+      name: "ChatGPT Image 2026\uB144 4\uC6D4 1\uC77C \uC624\uD6C4 03_07_43-Photoroom_2"
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 550
-        height: 850
+        x: 136
+        y: 171
+        width: 504
+        height: 225
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -156,20 +156,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2e75f32333109214ca9b1618aee98cc8
-      internalID: 2091946927
+      spriteID: 56df8205946e17c48ba2b936b57c37c4
+      internalID: -675752213
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: darkknightattacking_2_3
+      name: "ChatGPT Image 2026\uB144 4\uC6D4 1\uC77C \uC624\uD6C4 03_07_43-Photoroom_3"
       rect:
         serializedVersion: 2
-        x: 550
-        y: 0
-        width: 550
-        height: 850
+        x: 640
+        y: 171
+        width: 482
+        height: 211
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -178,8 +178,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 841dd93d90a933f4fb11621c49c2ae5c
-      internalID: 68568446
+      spriteID: 29fe28d24b9dc974b8f18b970d66b9b4
+      internalID: -51938759
       vertices: []
       indices: 
       edges: []
@@ -188,7 +188,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 47c26c25ede519744a621709f911b48e
+    spriteID: 0cbfa6f5886c1c944b2a8ab609f53edf
     internalID: 0
     vertices: []
     indices: 
@@ -198,12 +198,13 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":2.0,"y":2.0},"gridSpriteSize":{"x":550.0,"y":850.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      darkknightattacking_2_0: 455489477
-      darkknightattacking_2_1: 965007128
-      darkknightattacking_2_2: 2091946927
-      darkknightattacking_2_3: 68568446
+      "ChatGPT Image 2026\uB144 4\uC6D4 1\uC77C \uC624\uD6C4 03_07_43-Photoroom_0": -1628313032
+      "ChatGPT Image 2026\uB144 4\uC6D4 1\uC77C \uC624\uD6C4 03_07_43-Photoroom_1": -1550512563
+      "ChatGPT Image 2026\uB144 4\uC6D4 1\uC77C \uC624\uD6C4 03_07_43-Photoroom_2": -675752213
+      "ChatGPT Image 2026\uB144 4\uC6D4 1\uC77C \uC624\uD6C4 03_07_43-Photoroom_3": -51938759
+      "ChatGPT Image 2026\uB144 4\uC6D4 1\uC77C \uC624\uD6C4 03_07_43-Photoroom_4": -358804809
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

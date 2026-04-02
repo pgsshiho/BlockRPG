@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 884ac1db07839434b939ff799b0ca79b
+guid: 2ccf34118ffb78a46bc0627cecf72b7e
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 90
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: darkknightdying_1_0
+      name: darknight2_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 1024
-        width: 512
-        height: 512
+        y: 271
+        width: 159
+        height: 188
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -112,20 +112,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0b9f439c717372c4c92325a32b05fdb7
-      internalID: -1934861239
+      spriteID: 1aa69fbcde4c2724899f776428fffe94
+      internalID: -963481990
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: darkknightdying_1_1
+      name: darknight2_1
       rect:
         serializedVersion: 2
-        x: 512
-        y: 1024
-        width: 512
-        height: 512
+        x: 158
+        y: 276
+        width: 159
+        height: 182
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -134,20 +134,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 42f452aaa05508145aeaac5357114793
-      internalID: 1619599474
+      spriteID: b15eace279921104c9ed18daab10c2d4
+      internalID: -1838786274
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: darkknightdying_1_2
+      name: darknight2_2
       rect:
         serializedVersion: 2
         x: 0
-        y: 512
-        width: 512
-        height: 512
+        y: 142
+        width: 148
+        height: 129
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -156,20 +156,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 30ea157dd5fde594dbc80629a4cc22f5
-      internalID: 578679561
+      spriteID: a5d9e27876b6cf642b4ad84f421cd2e9
+      internalID: 1067817155
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: darkknightdying_1_3
+      name: darknight2_3
       rect:
         serializedVersion: 2
-        x: 512
-        y: 512
-        width: 512
-        height: 512
+        x: 150
+        y: 140
+        width: 159
+        height: 135
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -178,20 +178,42 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f8e2d605de864ff4387b64bb2c85294a
-      internalID: 1692352403
+      spriteID: 15839e3c1b8aa6b41947ee2b8c14a7ff
+      internalID: 402137217
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: darkknightdying_1_4
+      name: darknight2_4
+      rect:
+        serializedVersion: 2
+        x: 309
+        y: 140
+        width: 159
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6e43eb100a67eec4b830c409cff9d784
+      internalID: -2038503067
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: darknight2_5
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 512
-        height: 512
+        width: 159
+        height: 139
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -200,8 +222,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3860b8f4a9621524fa7404afb419d615
-      internalID: -279692171
+      spriteID: ad9f8a041d5f24049bd21d34aa1abe82
+      internalID: 1011996908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: darknight2_6
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 0
+        width: 159
+        height: 138
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ef15e37eb59da5a45b86f50dbcd23ce4
+      internalID: -799664265
       vertices: []
       indices: 
       edges: []
@@ -210,7 +254,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 1e75d4b7f9ede624987c21336fc9594e
+    spriteID: 90573c627651e8042aaad48359e29048
     internalID: 0
     vertices: []
     indices: 
@@ -220,13 +264,16 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":2.0,"y":3.0},"gridSpriteSize":{"x":512.0,"y":512.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":3.0,"y":3.0},"gridSpriteSize":{"x":159.0,"y":153.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      darkknightdying_1_0: -1934861239
-      darkknightdying_1_1: 1619599474
-      darkknightdying_1_2: 578679561
-      darkknightdying_1_3: 1692352403
-      darkknightdying_1_4: -279692171
+      darknight2_0: -963481990
+      darknight2_1: -1838786274
+      darknight2_2: 1067817155
+      darknight2_3: 402137217
+      darknight2_4: -2038503067
+      darknight2_5: 1011996908
+      darknight2_6: -799664265
+      darknight2_7: 582185159
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

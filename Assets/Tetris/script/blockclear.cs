@@ -138,6 +138,7 @@ public class blockclear : MonoBehaviour
         {
             st.hp -= newHoleGroupCount * (3 * st.difficult);
             Debug.Log($"새로운 구멍 덩어리 {newHoleGroupCount}개 발견! 데미지 적용.");
+            st.hpcal();
         }
     }
 

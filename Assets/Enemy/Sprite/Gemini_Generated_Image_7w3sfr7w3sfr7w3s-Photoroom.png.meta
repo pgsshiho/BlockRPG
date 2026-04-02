@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 8cb8dcc3057673640b4fd18b1fa74f65
+guid: 0d7c4821b465bad4e877f1c6f0d49c39
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -21,7 +21,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 200
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -97,13 +97,57 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Shaman_attack 1_0
+      name: Gemini_Generated_Image_7w3sfr7w3sfr7w3s-Photoroom_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 421
+        width: 632
+        height: 421
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d001dd57e7bbffe419366f1e30911ff6
+      internalID: 96810545
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gemini_Generated_Image_7w3sfr7w3sfr7w3s-Photoroom_1
+      rect:
+        serializedVersion: 2
+        x: 632
+        y: 421
+        width: 632
+        height: 421
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8802816b034883f4caf563c54423d290
+      internalID: 1556564736
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gemini_Generated_Image_7w3sfr7w3sfr7w3s-Photoroom_2
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 330
-        height: 800
+        width: 632
+        height: 421
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -112,20 +156,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 08dbec80791309e4da9eee7a0b78bb26
-      internalID: 73604862
+      spriteID: bd86a6f27cdb9ee41b2fb500089324c2
+      internalID: -64826827
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Shaman_attack 1_1
+      name: Gemini_Generated_Image_7w3sfr7w3sfr7w3s-Photoroom_3
       rect:
         serializedVersion: 2
-        x: 330
+        x: 632
         y: 0
-        width: 404
-        height: 800
+        width: 632
+        height: 421
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -134,52 +178,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4b6667ccd90a7a94fa25b309884eb18f
-      internalID: 2057936714
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Shaman_attack 1_2
-      rect:
-        serializedVersion: 2
-        x: 732
-        y: 0
-        width: 373
-        height: 800
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ec56c36bd80eab4468f4aada29dc624d
-      internalID: -1413304969
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Shaman_attack 1_3
-      rect:
-        serializedVersion: 2
-        x: 1106
-        y: 0
-        width: 390
-        height: 800
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: cfc1b9f714ab97543950b98e7ce34bdc
-      internalID: -1857385931
+      spriteID: 0783dab513103b04ca1283ecedae057e
+      internalID: -1064445837
       vertices: []
       indices: 
       edges: []
@@ -188,7 +188,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 0d7962b779ec99c4fac057ebb90a7368
+    spriteID: b31732d10a79ef34f904070c397f0c5f
     internalID: 0
     vertices: []
     indices: 
@@ -198,12 +198,12 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":4.0,"y":1.0},"gridSpriteSize":{"x":402.0,"y":1073.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":2.0,"y":2.0},"gridSpriteSize":{"x":632.0,"y":421.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Shaman_attack 1_0: 73604862
-      Shaman_attack 1_1: 2057936714
-      Shaman_attack 1_2: -1413304969
-      Shaman_attack 1_3: -1857385931
+      Gemini_Generated_Image_7w3sfr7w3sfr7w3s-Photoroom_0: 96810545
+      Gemini_Generated_Image_7w3sfr7w3sfr7w3s-Photoroom_1: 1556564736
+      Gemini_Generated_Image_7w3sfr7w3sfr7w3s-Photoroom_2: -64826827
+      Gemini_Generated_Image_7w3sfr7w3sfr7w3s-Photoroom_3: -1064445837
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

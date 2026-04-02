@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 0e18f462c1d0a2549b188e0f0b91f0c8
+guid: fc2884b32f81aed4c8101f6868ce830e
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -21,7 +21,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: darkknightidle_0
+      name: Gemini_Generated_Image_5l44tk5l44tk5l44-Photoroom_0
       rect:
         serializedVersion: 2
-        x: 190
-        y: 512
-        width: 322
-        height: 512
+        x: 0
+        y: 421
+        width: 632
+        height: 421
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -112,20 +112,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d19076d553196994cb634b5da824d4ce
-      internalID: 1946939370
+      spriteID: a3c3fc8e6b9ab204d8b78a7bb1b6636f
+      internalID: -967228610
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: darkknightidle_1
+      name: Gemini_Generated_Image_5l44tk5l44tk5l44-Photoroom_1
       rect:
         serializedVersion: 2
-        x: 190
-        y: 0
-        width: 320
-        height: 512
+        x: 632
+        y: 421
+        width: 632
+        height: 421
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -134,8 +134,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c590907816302e449b253e3897530975
-      internalID: 1053698665
+      spriteID: c5b6b0a2e610bbd4b8e22c3f908ef805
+      internalID: -1934019692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gemini_Generated_Image_5l44tk5l44tk5l44-Photoroom_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 728
+        height: 421
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 13086e01896d4f044a32b2275b1b2232
+      internalID: -221580172
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gemini_Generated_Image_5l44tk5l44tk5l44-Photoroom_3
+      rect:
+        serializedVersion: 2
+        x: 729
+        y: 0
+        width: 535
+        height: 421
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bdbcdb096d38b3642b118150bcfa93f1
+      internalID: 1178188688
       vertices: []
       indices: 
       edges: []
@@ -144,7 +188,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 704dcf05637d98f42a53d32c4acfb791
+    spriteID: c3d7f9b10d051be40830889e76579910
     internalID: 0
     vertices: []
     indices: 
@@ -154,10 +198,12 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":2.0},"gridSpriteSize":{"x":512.0,"y":512.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":2.0,"y":2.0},"gridSpriteSize":{"x":632.0,"y":421.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      darkknightidle_0: 1946939370
-      darkknightidle_1: 1053698665
+      Gemini_Generated_Image_5l44tk5l44tk5l44-Photoroom_0: -967228610
+      Gemini_Generated_Image_5l44tk5l44tk5l44-Photoroom_1: -1934019692
+      Gemini_Generated_Image_5l44tk5l44tk5l44-Photoroom_2: -221580172
+      Gemini_Generated_Image_5l44tk5l44tk5l44-Photoroom_3: 1178188688
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
