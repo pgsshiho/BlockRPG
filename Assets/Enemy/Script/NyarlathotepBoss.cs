@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
 public class NyarlathotepBoss : Enemybase
 {
@@ -15,7 +16,6 @@ public class NyarlathotepBoss : Enemybase
     private List<Action> patterns = new List<Action>();
     private bool isPatternActive = false;
 
-    // 샤먼 패턴용 프리팹 (인스펙터에서 할당)
     public GameObject specialBlock;
 
     protected override void Start()
@@ -195,6 +195,8 @@ public class NyarlathotepBoss : Enemybase
     {
         yield return new WaitForSeconds(1.5f); // 죽는 애니메이션 대기
         if (es != null) { es.isSpawning = false; es.spawn(); }
+        SceneManager.LoadScene("GameClear");
+        Gameclear.score = blockclear.currentScore;
         Destroy(gameObject);
     }
 }

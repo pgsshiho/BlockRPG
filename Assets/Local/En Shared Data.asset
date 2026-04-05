@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: En Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: En
+  m_TableCollectionNameGuidString: 4011844a6fca3f8488675c3ebf296a70
+  m_Entries:
+  - m_Id: 746645323776
+    m_Key: infiniteex
+    m_Metadata:
+      m_Items: []
+  - m_Id: 749015105536
+    m_Key: custumex
+    m_Metadata:
+      m_Items: []
+  - m_Id: 751166783488
+    m_Key: dungeonex
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1476185784320
+    m_Key: resetex
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1948154036224
+    m_Key: prismex
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2489982615552
+    m_Key: Shamanex
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2607750283264
+    m_Key: Ghostex
+    m_Metadata:
+      m_Items: []
+  - m_Id: 199070866440192
+    m_Key: Darkex
+    m_Metadata:
+      m_Items: []
+  - m_Id: 199616826408960
+    m_Key: Jesterex
+    m_Metadata:
+      m_Items: []
+  - m_Id: 200683349835776
+    m_Key: Krakenex
+    m_Metadata:
+      m_Items: []
+  - m_Id: 200832096632832
+    m_Key: Golemex
+    m_Metadata:
+      m_Items: []
+  - m_Id: 248065106083840
+    m_Key: Ougerex
+    m_Metadata:
+      m_Items: []
+  - m_Id: 248068100816896
+    m_Key: slime
+    m_Metadata:
+      m_Items: []
+  - m_Id: 249417882370048
+    m_Key: goblin
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 1262709992322236759
+  references:
+    version: 2
+    RefIds:
+    - rid: 1262709992322236759
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1775131566128

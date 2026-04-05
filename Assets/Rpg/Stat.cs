@@ -9,7 +9,7 @@ public class Stat : MonoBehaviour, TakeDamage
     public static Stat instance;
 
     [Header("Settings")]
-    public int difficult = 3;
+    public int difficult = 2;
 
     [Header("Status Values")]
     public int it = 0;

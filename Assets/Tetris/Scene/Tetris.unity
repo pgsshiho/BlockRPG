@@ -8031,8 +8031,6 @@ MonoBehaviour:
     - {fileID: 4846710699954580213, guid: e95c83e9ece089b4dbceb353ff026bdc, type: 3}
     - {fileID: 2631568864362008782, guid: fca2823290eae094b8fb0e1cdeff9303, type: 3}
     - {fileID: 6876322424552787787, guid: ed3a32a4e0b0b5d4d995df247f3cfb3e, type: 3}
-  - prefabs:
-    - {fileID: 6913842145000370419, guid: 9a3f5a0c4fc87a84ba8cc84f02c02db3, type: 3}
   randomnenemy: 0
   nowdif: 0
   spawnpoint: {fileID: 521377086}
@@ -33475,7 +33473,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa459628fab574b48975087cc6a847eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::blockclear
-  currentScore: 0
   nowdamage: 0
   scoreText: {fileID: 1711288959}
   combo: 0

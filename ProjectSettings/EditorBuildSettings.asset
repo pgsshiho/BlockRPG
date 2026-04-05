@@ -24,6 +24,10 @@ EditorBuildSettings:
     path: Assets/Tetris/Scene/custom.unity
     guid: c75f44cad400050498f893b3a5dc805f
   m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: 10f3ecefb02abc94c8f63d01ab82cc1e,
+      type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100,
       type: 3}
+    com.unity.localization.settings: {fileID: 11400000, guid: 4383b6b137440b2458a108c1dcf3828f,
+      type: 2}
   m_UseUCBPForAssetBundles: 0

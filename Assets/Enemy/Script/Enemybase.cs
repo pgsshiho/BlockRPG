@@ -96,7 +96,7 @@ public class Enemybase : MonoBehaviour, TakeDamage
         if (col != null) col.enabled = false;
 
         // 점수 및 경험치 처리
-        if (bc != null) { bc.currentScore += 100; bc.UpdateScoreUI(); }
+        if (bc != null) { blockclear.currentScore += 100; bc.UpdateScoreUI(); }
         if (st != null)
         {
             st.GainExperience(ex);
