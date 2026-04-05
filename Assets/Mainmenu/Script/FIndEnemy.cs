@@ -6,7 +6,6 @@ public class FindEnemy : ScriptableObject
     public bool slime = false;
     public bool goblin = false;
     public bool ouger = false;
-    public bool siren = false;
     public bool golem = false;
     public bool chraken = false;
     public bool ghost = false;
@@ -17,7 +16,7 @@ public class FindEnemy : ScriptableObject
     public bool boss = false;
     public void ResetAll()
     {
-        slime = goblin = ouger = siren = golem = chraken =
+        slime = goblin = ouger =  golem = chraken =
         ghost = dragon = crown = shaman = knight_night = boss = false;
     }
 }

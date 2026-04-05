@@ -53,33 +53,31 @@ public class Mainmenu : MonoBehaviour
     // --- [도감 해제 로직] ---
     public void UpdateEnemyDiscovery()
     {
-        if (enemyData == null || PageHide == null || PageHide.Length < 12)
+        // 세이렌 제거로 인해 총 11개로 체크 범위를 변경함
+        if (enemyData == null || PageHide == null || PageHide.Length < 11)
         {
-            Debug.LogWarning("FIndEnemy 데이터나 PageHide 배열 설정이 부족합니다.");
+            Debug.LogWarning("FindEnemy 데이터나 PageHide 배열 설정이 부족합니다. (필요 개수: 11)");
             return;
         }
 
         PageHide[0].SetActive(!enemyData.slime);
         PageHide[1].SetActive(!enemyData.goblin);
         PageHide[2].SetActive(!enemyData.ouger);
-        PageHide[3].SetActive(!enemyData.siren);
-        PageHide[4].SetActive(!enemyData.golem);
-        PageHide[5].SetActive(!enemyData.chraken);
-        PageHide[6].SetActive(!enemyData.ghost);
-        PageHide[7].SetActive(!enemyData.dragon);
-        PageHide[8].SetActive(!enemyData.crown);
-        PageHide[9].SetActive(!enemyData.shaman);
-        PageHide[10].SetActive(!enemyData.knight_night);
-        PageHide[11].SetActive(!enemyData.boss);
+        PageHide[3].SetActive(!enemyData.golem);
+        PageHide[4].SetActive(!enemyData.chraken);
+        PageHide[5].SetActive(!enemyData.ghost);
+        PageHide[6].SetActive(!enemyData.dragon);
+        PageHide[7].SetActive(!enemyData.crown);
+        PageHide[8].SetActive(!enemyData.shaman);
+        PageHide[9].SetActive(!enemyData.knight_night);
+        PageHide[10].SetActive(!enemyData.boss);
     }
 
     // --- [페이지 제어] ---
     public void OpenPage()
     {
-        // 도감을 열 때 실시간으로 잠금 해제 상태를 확인
         UpdateEnemyDiscovery();
 
-        // 페이지 범위 체크 (배열 초과 방지)
         if (nowpage < Page.Length)
         {
             Page[nowpage].SetActive(true);
@@ -106,7 +104,7 @@ public class Mainmenu : MonoBehaviour
         }
     }
 
-    // --- [기존 로직 유지] ---
+    // --- [기존 로직] ---
     public void qu() => Application.Quit();
 
     public void infinitestart()
@@ -206,7 +204,7 @@ public class Mainmenu : MonoBehaviour
     public void openkey() { keypanel.SetActive(true); UpdateKeyUI(); }
     public void closekey() { keypanel.SetActive(false); UpdateKeyUI(); }
     public void StoryStart() => SceneManager.LoadScene("StoryTetris");
-
+    public void DungeonStart() => SceneManager.LoadScene("Dungeon");
     public void ResetLevelCheck() => ResetWarning.SetActive(true);
 
     public void ResetLevel()
@@ -227,10 +225,10 @@ public class Mainmenu : MonoBehaviour
             Stat.instance.RefreshUI();
         }
 
-        // 도감 데이터도 함께 리셋
+        // 도감 데이터 리셋 (세이렌 제외)
         if (enemyData != null)
         {
-            enemyData.slime = enemyData.goblin = enemyData.ouger = enemyData.siren =
+            enemyData.slime = enemyData.goblin = enemyData.ouger =
             enemyData.golem = enemyData.chraken = enemyData.ghost = enemyData.dragon =
             enemyData.crown = enemyData.shaman = enemyData.knight_night = enemyData.boss = false;
         }

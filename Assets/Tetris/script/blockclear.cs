@@ -16,7 +16,7 @@ public class blockclear : MonoBehaviour
     public static int ScoreForSpeed = 0;
 
     [Header("Score Settings")]
-    public int currentScore = 0;
+    public static int currentScore = 0;
     public int nowdamage = 0;
     public TextMeshProUGUI scoreText;
     public int combo = 0;
@@ -136,8 +136,11 @@ public class blockclear : MonoBehaviour
         // 3. 데미지 처리
         if (newHoleGroupCount > 0)
         {
-            st.hp -= newHoleGroupCount * (3 * st.difficult);
+            int curruntdamage = newHoleGroupCount * (3 * st.difficult);
+            st.hp -= curruntdamage;
+            st.diecheck(curruntdamage, "Gem");
             Debug.Log($"새로운 구멍 덩어리 {newHoleGroupCount}개 발견! 데미지 적용.");
+            st.hpcal();
         }
     }
 
@@ -295,7 +298,7 @@ public class blockclear : MonoBehaviour
             {
                 Time.timeScale = 1;
                 ScoreForSpeed = 0;
-                Gameover.killerName = "블럭";
+                Gameover.killerName = "Gem";
                 SceneManager.LoadScene("Gameover");
                 return;
             }
