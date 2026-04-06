@@ -22,7 +22,6 @@ public class Siren : Enemybase
 
     public override void Attack()
     {
-        // 이미 혼란을 걸고 있다면 중복 공격 방지
         if (isConfusionActive) return;
 
         base.Attack();
@@ -35,7 +34,7 @@ public class Siren : Enemybase
         // --- 사운드 재생 부분 수정 ---
         if (sd != null && sd.siren != null)
         {
-            StopCoroutine("PlaySirenShort"); // 혹시 재생 중이면 멈추고 새로 시작
+            StopCoroutine("PlaySirenShort");
             StartCoroutine(PlaySirenShort(3.0f)); // 3초만 재생하는 코루틴 호출
         }
 
@@ -45,8 +44,7 @@ public class Siren : Enemybase
     // [추가] 지정된 시간만큼만 사운드를 재생하는 코루틴
     IEnumerator PlaySirenShort(float duration)
     {
-        sd.siren.time = 0f; // 사운드 처음(0초)부터 시작
-        sd.siren.Play();
+        sd.night_knight.Play();
 
         yield return new WaitForSeconds(duration); // 3초 대기
 
@@ -87,35 +85,36 @@ public class Siren : Enemybase
     public override void dead()
     {
         if (isDead) return;
+        isDead = true; // 중복 실행 방지 필수!
 
-        // 1. 만약 키가 바뀐 상태에서 죽는다면 즉시 복구
+        // 1. 키 복구 (사이렌 전용 로직)
         if (isConfusionActive)
         {
             SwapKeys();
             isConfusionActive = false;
         }
 
-        // 2. 애니메이션 실행
-        if (anim != null)
-        {
-            anim.SetTrigger("dead");
-        }
+        // 2. 애니메이션
+        if (anim != null) anim.SetTrigger("dead");
 
-        // 3. 부모의 dead()를 호출하여 점수/경험치/스폰 신호를 즉시 처리
-        // base.dead() 안에서 newEs.spawn() 또는 es.spawn()이 호출됩니다.
+        // 3. 부모 로직 실행 (점수 등)
         base.dead();
 
-        // 4. 애니메이션이 끝날 시간을 벌어준 뒤 오브젝트 파괴
+        // 4. 스폰 관리는 코루틴에게 맡김
         StartCoroutine(WaitDeadAnimation());
     }
 
     IEnumerator WaitDeadAnimation()
     {
-        // 콜라이더를 꺼서 죽은 애니메이션 중에 다시 맞지 않게 함
-        Collider2D col = GetComponent<Collider2D>();
-        if (col != null) col.enabled = false;
-
         yield return new WaitForSeconds(1.0f);
+
+        // 여기서 확실하게 플래그를 풀고 스폰을 호출합니다.
+        if (es != null)
+        {
+            es.isSpawning = false; // 여기서 풀어줘야 다음 spawn()의 return에 안 걸림
+            es.spawn();
+        }
+
         Destroy(gameObject);
     }
     void OnEnable()

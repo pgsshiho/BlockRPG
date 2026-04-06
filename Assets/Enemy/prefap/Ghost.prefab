@@ -132,9 +132,9 @@ MonoBehaviour:
   targetFrame: 0
   maxhp: 20
   hp: 20
-  damage: 6
+  damage: 5
   ex: 10
   hpbar: {fileID: 0}
   baseHp: 20
-  baseDamage: 6
+  baseDamage: 5
   enemyData: {fileID: 11400000, guid: 25a1d081ca08e2d4898a87400d2a0baa, type: 2}

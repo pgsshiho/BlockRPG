@@ -16,7 +16,7 @@ public class Stat : MonoBehaviour, TakeDamage
     public int atk = 0;
     public int spd = 0;
     public int maxstatpoint = 0;
-    public int hp = 100;
+    public float hp = 100;
     public int maxhp = 100;
     public int level = 1;
     public float ex = 0;
@@ -98,7 +98,7 @@ public class Stat : MonoBehaviour, TakeDamage
 
     public void damage(int Damage, string killerName)
     {
-        hp -= Damage * difficult;
+        hp -= Damage * difficult * 0.7f;
         hpcal();
         diecheck(Damage, killerName);
     }

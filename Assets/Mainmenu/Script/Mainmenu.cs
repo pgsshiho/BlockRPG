@@ -111,6 +111,7 @@ public class Mainmenu : MonoBehaviour
     {
         Time.timeScale = 1f;
         if (Stat.instance != null) Stat.instance.hp = Stat.instance.maxhp;
+        blockclear.currentScore = 0;
         SceneChanger.BG("Tetris");
     }
 
@@ -204,7 +205,9 @@ public class Mainmenu : MonoBehaviour
     public void openkey() { keypanel.SetActive(true); UpdateKeyUI(); }
     public void closekey() { keypanel.SetActive(false); UpdateKeyUI(); }
     public void StoryStart() => SceneChanger.BG("StoryTetris");
-    public void DungeonStart() => SceneChanger.BG("Dungeon");
+    public void DungeonStart() {
+        blockclear.currentScore = 0;
+        SceneChanger.BG("Dungeon"); }
     public void ResetLevelCheck() => ResetWarning.SetActive(true);
 
     public void ResetLevel()
@@ -240,7 +243,11 @@ public class Mainmenu : MonoBehaviour
     public void CancelReset() => ResetWarning.SetActive(false);
     public void OpenCustum() => custumpanel.SetActive(true);
     public void CloseCustum() => custumpanel.SetActive(false);
-    public void StartCUstom() => SceneChanger.BG("custom");
+    public void StartCUstom()
+    {
+        blockclear.currentScore = 0;
+        SceneChanger.BG("custom");
+    }
     public void OpenStat() => Statpanel.SetActive(true);
     public void CloseStat() => Statpanel.SetActive(false);
 }

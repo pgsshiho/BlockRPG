@@ -2408,7 +2408,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC2AC\uB77C\uC784"
+  m_text: Slime
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fba23b1587819e247941482d3b2524d7, type: 2}
   m_sharedMaterial: {fileID: -8357874112233415561, guid: fba23b1587819e247941482d3b2524d7,
@@ -20922,8 +20922,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -865.4904, y: 445.49048}
-  m_SizeDelta: {x: 189.019, y: 189.019}
+  m_AnchoredPosition: {x: -901.1474, y: 476.00696}
+  m_SizeDelta: {x: 126.1464, y: 126.1464}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1114884902
 MonoBehaviour:
@@ -26234,7 +26234,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uACE0\uBE14\uB9B0"
+  m_text: Goblin
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fba23b1587819e247941482d3b2524d7, type: 2}
   m_sharedMaterial: {fileID: -8357874112233415561, guid: fba23b1587819e247941482d3b2524d7,
@@ -33122,8 +33122,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -676.47, y: 445.48}
-  m_SizeDelta: {x: 189.019, y: 189.019}
+  m_AnchoredPosition: {x: -775, y: 476}
+  m_SizeDelta: {x: 126.1464, y: 126.1464}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1835533579
 MonoBehaviour:
