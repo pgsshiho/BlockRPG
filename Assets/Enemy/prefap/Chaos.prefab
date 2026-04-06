@@ -130,12 +130,12 @@ MonoBehaviour:
   isattack: 0
   baseTargetFrame: 800
   targetFrame: 0
-  maxhp: 300
-  hp: 300
+  maxhp: 400
+  hp: 400
   damage: 6
   ex: 0
   hpbar: {fileID: 0}
-  baseHp: 300
+  baseHp: 400
   baseDamage: 6
   specialBlock: {fileID: 573880280774149007, guid: 88ac8a20781d1a041a17214afb92a17a,
     type: 3}

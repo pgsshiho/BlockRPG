@@ -76,15 +76,19 @@ public class CustomStat : MonoBehaviour
     {
         if (DataHolder.instance != null)
         {
-            int[] counts = { Slime, Goblin, Ouger, Siren, Golem, Chraken, Ghost, Dragon, Crown, Shaman, Knight_night,Boss };
+            int[] counts = { Slime, Goblin, Ouger, Siren, Golem, Chraken, Ghost, Dragon, Crown, Shaman, Knight_night, Boss };
+
             for (int i = 0; i < counts.Length; i++)
+            {
                 DataHolder.instance.monsterCounts[i] = counts[i];
+            }
+            Debug.Log($"[데이터 전송 완료] 0번 슬라임: {DataHolder.instance.monsterCounts[0]}마리");
 
             SceneChanger.BG("custom");
         }
         else
         {
-            Debug.LogError("DataHolder가 씬에 없습니다!");
+            Debug.LogError("DataHolder 인스턴스가 없습니다! 메인메뉴부터 시작했는지 확인하세요.");
         }
     }
 }

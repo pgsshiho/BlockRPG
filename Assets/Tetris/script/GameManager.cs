@@ -84,7 +84,14 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1;
         es = FindAnyObjectByType<EnemySpawn>();
-        if (es != null) es.i = 0;
+        if (es != null)
+        {
+            es.i = 0; 
+            es.isSpawning = false;
+        }
+        blockclear.ScoreForSpeed = 0;
+        blockclear.currentScore = 0;
+
         SceneChanger.BG("Mainmenu");
     }
 
