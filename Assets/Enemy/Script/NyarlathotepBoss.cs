@@ -23,10 +23,12 @@ public class NyarlathotepBoss : Enemybase
         base.Start();
         anim = GetComponent<Animator>();
         sd = Sound.instance;
+        FindEnemy enemyData;
+        enemyData = FindAnyObjectByType<FindEnemy>();
         key = FindAnyObjectByType<KeyBinding>();
         hold = FindAnyObjectByType<Hold>();
         cb = FindAnyObjectByType<Conebase>();
-
+        if (enemyData != null) enemyData.boss = true;
         // --- 8가지 패턴 등록 ---
         patterns.Add(Pattern_Siren);      // 1. 키 교체
         patterns.Add(Pattern_Slime);      // 2. 일반 강타
@@ -195,7 +197,7 @@ public class NyarlathotepBoss : Enemybase
     {
         yield return new WaitForSeconds(1.5f); // 죽는 애니메이션 대기
         if (es != null) { es.isSpawning = false; es.spawn(); }
-        SceneManager.LoadScene("GameClear");
+        SceneChanger.BG("GameClear");
         Gameclear.score = blockclear.currentScore;
         Destroy(gameObject);
     }

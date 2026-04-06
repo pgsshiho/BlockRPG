@@ -23,13 +23,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 749015105536
-    m_Localized: "This is Custom Mode. \nYou can adjust the enemy \nsummoning probability
-      \nas you wish."
+    m_Localized: "You can adjust the enemy \nsummoning probability \nas you wish."
     m_Metadata:
       m_Items: []
   - m_Id: 751166783488
-    m_Localized: "This is Dungeon Mode.\r\nGo to the end of the dungeon and \ndefeat
-      the last enemy."
+    m_Localized: "Go to the end of the dungeon and \ndefeat the last enemy."
     m_Metadata:
       m_Items: []
   - m_Id: 1476185784320
@@ -110,6 +108,12 @@ MonoBehaviour:
       what you have saved for the future
 
       (Takes away your stock)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1274621840556032
+    m_Localized: He finds far greater value in your self-destruction than in your
+      death. As an Outer God, he is the master of all existence, wielding every power
+      imaginable.
     m_Metadata:
       m_Items: []
   references:

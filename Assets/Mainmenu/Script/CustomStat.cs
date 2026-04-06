@@ -77,7 +77,7 @@ public class CustomStat : MonoBehaviour
             for (int i = 0; i < counts.Length; i++)
                 DataHolder.instance.monsterCounts[i] = counts[i];
 
-            SceneManager.LoadScene("GameScene");
+            SceneChanger.BG("GameScene");
         }
         else
         {

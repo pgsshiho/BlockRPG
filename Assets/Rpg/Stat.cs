@@ -171,7 +171,7 @@ public class Stat : MonoBehaviour, TakeDamage
         if (hp <= 0)
         {
             Gameover.killerName = killerName;
-            SceneManager.LoadScene("Gameover");
+            SceneChanger.BG("Gameover");
         }
     }
 }

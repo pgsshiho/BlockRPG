@@ -20,7 +20,7 @@ public class DialogueTrigger : MonoBehaviour
             // 매니저를 찾지 않고 에셋에 신호를 보냄 (매우 빠름)
             eventChannel.RaiseEvent(group.lines, () => {
                 Debug.Log("대화 끝!");
-                SceneManager.LoadScene(nextScene);
+                SceneChanger.BG(nextScene);
             });
         }
     }

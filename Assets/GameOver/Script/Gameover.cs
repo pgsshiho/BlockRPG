@@ -25,6 +25,7 @@ public class Gameover : MonoBehaviour
     }
     public void backmenu()
     {
-        SceneManager.LoadScene("Mainmenu");
+
+        SceneChanger.BG("Mainmenu");
     }
 }

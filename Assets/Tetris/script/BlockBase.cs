@@ -29,15 +29,6 @@ public class BlockBase : MonoBehaviour
         key = FindAnyObjectByType<KeyBinding>();
         SnapToGrid();
     }
-
-    void LateUpdate()
-    {
-        if (ghost != null && !gm.isON)
-        {
-            UpdateGhostPosition();
-        }
-    }
-
     void Update()
     {
         if (gm.isON) return;
@@ -64,6 +55,14 @@ public class BlockBase : MonoBehaviour
         if (Input.GetKeyUp(key.right) || Input.GetKeyUp(key.left) || Input.GetKeyUp(key.down))
         {
             moveTimer = 0;
+        }
+        // Update 함수 마지막 부분 수정
+        if (Input.anyKey) // 아무 키나 눌렸을 때만 고스트 업데이트 (최적화)
+        {
+            if (ghost != null && !gm.isON)
+            {
+                UpdateGhostPosition();
+            }
         }
     }
 
@@ -293,8 +292,12 @@ public class BlockBase : MonoBehaviour
             Vector2Int idx = blockclear.PosToIndex(child.position);
             if (idx.x >= 0 && idx.x < blockclear.width && idx.y >= 0 && idx.y < blockclear.height)
             {
-                blockclear.grid[idx.x, idx.y] = child;
-                child.tag = "Block";
+                // 이미 블록이 있는 자리에 겹쳐 쓰지 않도록 방지
+                if (blockclear.grid[idx.x, idx.y] == null)
+                {
+                    blockclear.grid[idx.x, idx.y] = child;
+                    child.tag = "Block";
+                }
             }
         }
 
@@ -309,15 +312,19 @@ public class BlockBase : MonoBehaviour
         foreach (Transform child in transform)
         {
             Vector2 targetPos = (Vector2)child.position + (Vector2)direction * 0.5f;
-            Collider2D hit = Physics2D.OverlapBox(targetPos, new Vector2(0.45f, 0.45f), 0);
+            Vector2Int idx = blockclear.PosToIndex(targetPos);
+            if (idx.x < 0 || idx.x >= blockclear.width || idx.y < 0) return false;
+            if (idx.y < blockclear.height)
+            {
+                if (blockclear.grid[idx.x, idx.y] != null) return false;
+            }
 
-            if (hit != null && hit.transform.parent != transform && hit.transform != transform && (hit.CompareTag("Floor") || hit.CompareTag("Block")))
+            // 3. 물리 체크 (보조용)
+            Collider2D hit = Physics2D.OverlapBox(targetPos, new Vector2(0.4f, 0.4f), 0); // 크기를 0.45 -> 0.4로 줄여서 오차 방지
+            if (hit != null && hit.transform.parent != transform && (hit.CompareTag("Floor") || hit.CompareTag("Block")))
             {
                 return false;
             }
-
-            Vector2Int idx = blockclear.PosToIndex(targetPos);
-            if (idx.x < 0 || idx.x >= blockclear.width || idx.y < 0) return false;
         }
         return true;
     }
@@ -366,13 +373,16 @@ public class BlockBase : MonoBehaviour
     void HardDrop()
     {
         int loop = 0;
-        while (canmove(Vector3.down) && loop < 50)
+        while (canmove(Vector3.down) && loop < 80)
         {
             transform.position += new Vector3(0, -0.5f, 0);
             loop++;
         }
         SnapToGrid();
-        OnHardDropSettle();
+        if (!canmove(Vector3.down))
+        {
+            OnHardDropSettle();
+        }
     }
 
     void UpdateLevelSpeed()
