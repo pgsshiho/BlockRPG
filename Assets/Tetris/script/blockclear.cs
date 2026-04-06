@@ -33,8 +33,10 @@ public class blockclear : MonoBehaviour
         bb = FindAnyObjectByType<BlockBase>();
         sd = FindAnyObjectByType<Sound>();
         st = FindAnyObjectByType<Stat>();
+
+        // 씬 전환 시 배열 초기화
         grid = new Transform[width, height];
-        isDamagedHole = new bool[width, height]; // 배열 초기화
+        isDamagedHole = new bool[width, height];
         UpdateScoreUI();
     }
 
@@ -48,15 +50,16 @@ public class blockclear : MonoBehaviour
     public void DeleteFullLines()
     {
         int linesCleared = 0;
+
+        // 아래쪽 라인부터 검사 (테트리스 표준 방식)
         for (int y = 0; y < height; y++)
         {
             if (IsLineFull(y))
             {
                 DeleteLine(y);
                 DecreaseRowsAbove(y + 1);
-                y--;
+                y--; // 라인이 내려왔으므로 현재 줄을 다시 검사
                 linesCleared++;
-                sd.blockclear.Play();
             }
         }
 
@@ -64,13 +67,19 @@ public class blockclear : MonoBehaviour
         {
             combo++;
             AddScore(linesCleared);
-            if (sd.blockclear.pitch < 2) sd.blockclear.pitch += 0.1f;
+
+            // 사운드 처리: 루프 밖에서 한 번만 재생하여 소리 겹침 방지
+            if (sd != null && sd.blockclear != null)
+            {
+                if (sd.blockclear.pitch < 2f) sd.blockclear.pitch += 0.1f;
+                sd.blockclear.Play();
+            }
         }
         else
         {
             combo = 0;
             comboText = "";
-            sd.blockclear.pitch = 1f;
+            if (sd != null && sd.blockclear != null) sd.blockclear.pitch = 1f;
             UpdateScoreUI();
         }
 
@@ -123,23 +132,21 @@ public class blockclear : MonoBehaviour
         {
             for (int x = 0; x < width; x++)
             {
-                // [조건] 비어있음 + 하늘과 연결 안됨 + 이번 루프 미방문 + **이전에 데미지 안 입힘**
                 if (grid[x, y] == null && !isAccessible[x, y] && !currentLoopVisit[x, y] && !isDamagedHole[x, y])
                 {
                     newHoleGroupCount++;
-                    // 해당 덩어리 전체를 '데미지 입음' 상태로 마킹
                     MarkAndRegisterHole(x, y, isAccessible, currentLoopVisit);
                 }
             }
         }
 
         // 3. 데미지 처리
-        if (newHoleGroupCount > 0)
+        if (newHoleGroupCount > 0 && st != null)
         {
             int curruntdamage = newHoleGroupCount * (3 * st.difficult);
             st.hp -= curruntdamage;
             st.diecheck(curruntdamage, "Gem");
-            Debug.Log($"새로운 구멍 덩어리 {newHoleGroupCount}개 발견! 데미지 적용.");
+            Debug.Log($"새로운 구멍 덩어리 {newHoleGroupCount}개 발견! 데미지 {curruntdamage} 적용.");
             st.hpcal();
         }
     }
@@ -149,7 +156,7 @@ public class blockclear : MonoBehaviour
         Queue<Vector2Int> q = new Queue<Vector2Int>();
         q.Enqueue(new Vector2Int(startX, startY));
         currentVisit[startX, startY] = true;
-        isDamagedHole[startX, startY] = true; // 영구 기록에 등록
+        isDamagedHole[startX, startY] = true;
 
         Vector2Int[] directions = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
 
@@ -164,7 +171,7 @@ public class blockclear : MonoBehaviour
                     if (!accessible[next.x, next.y] && grid[next.x, next.y] == null && !currentVisit[next.x, next.y])
                     {
                         currentVisit[next.x, next.y] = true;
-                        isDamagedHole[next.x, next.y] = true; // 덩어리 전체 등록
+                        isDamagedHole[next.x, next.y] = true;
                         q.Enqueue(next);
                     }
                 }
@@ -252,8 +259,13 @@ public class blockclear : MonoBehaviour
     bool IsLineFull(int y)
     {
         int count = 0;
-        for (int x = 0; x < width; x++) { if (grid[x, y] != null) count++; }
-        return count >= 10;
+        // 게임판 가로가 10칸이므로 가로 전체(width)를 돌며 체크하거나
+        // 특정 플레이 영역(예: 6~15)만 체크하도록 수정할 수 있습니다.
+        for (int x = 0; x < width; x++)
+        {
+            if (grid[x, y] != null) count++;
+        }
+        return count >= 10; // 10칸 이상이면 가득 찬 것으로 간주
     }
 
     void DeleteLine(int y)
@@ -265,7 +277,6 @@ public class blockclear : MonoBehaviour
                 Destroy(grid[x, y].gameObject);
                 grid[x, y] = null;
             }
-            // 라인이 지워진 자리는 구멍 상태 해제
             isDamagedHole[x, y] = false;
         }
     }
@@ -276,7 +287,7 @@ public class blockclear : MonoBehaviour
         {
             for (int x = 0; x < width; x++)
             {
-                // 구멍 기록도 블록과 함께 아래로 한 칸 이동
+                // 구멍 기록 이동
                 isDamagedHole[x, y - 1] = isDamagedHole[x, y];
                 isDamagedHole[x, y] = false;
 

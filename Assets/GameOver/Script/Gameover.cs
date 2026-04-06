@@ -19,12 +19,13 @@ public class Gameover : MonoBehaviour
     public void GAmeover()
     {
         // killerName에서 "(Clone)" 문자열을 찾아서 빈 문자열("")로 바꿉니다.
-        string cleanName = killerName.Replace("_0(Clone)", "").Trim();
-        cleanName = killerName.Replace("_1(Clone)", "").Trim();
+        string cleanName = killerName.Replace("(Clone)", "").Trim();
+        cleanName = killerName.Replace("(Clone)", "").Trim();
         gameover.text = "Died to" + cleanName;
     }
     public void backmenu()
     {
-        SceneManager.LoadScene("Mainmenu");
+
+        SceneChanger.BG("Mainmenu");
     }
 }

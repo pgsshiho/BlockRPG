@@ -108,6 +108,6 @@ public class forstorytriggrt : MonoBehaviour
 
         int nextPhase = phase + 1;
         if (nextPhase < dialogueGroups.Count) StartPhase(nextPhase);
-        else SceneManager.LoadScene("Mainmenu");
+        else SceneChanger.BG("Mainmenu");
     }
 }

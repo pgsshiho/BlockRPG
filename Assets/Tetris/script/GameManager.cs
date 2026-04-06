@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         es = FindAnyObjectByType<EnemySpawn>();
         if (es != null) es.i = 0;
-        SceneManager.LoadScene("Mainmenu");
+        SceneChanger.BG("Mainmenu");
     }
 
     public void SetMirrorMode(bool isMirrored)

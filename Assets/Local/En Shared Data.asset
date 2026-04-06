@@ -71,6 +71,10 @@ MonoBehaviour:
     m_Key: goblin
     m_Metadata:
       m_Items: []
+  - m_Id: 1274621840556032
+    m_Key: chaosex
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
