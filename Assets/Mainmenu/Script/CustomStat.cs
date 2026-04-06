@@ -6,12 +6,12 @@ public class CustomStat : MonoBehaviour
 {
     [Header("Monster Counts")]
     public int Slime;
-    public int Goblin, Ouger, Siren, Golem, Chraken, Ghost, Dragon, Crown, Shaman, Knight_night;
+    public int Goblin, Ouger, Siren, Golem, Chraken, Ghost, Dragon, Crown, Shaman, Knight_night,Boss;
 
     [Header("UI Text References")]
     // 각 숫자를 표시할 텍스트 객체들을 인스펙터에서 드래그해서 넣어주세요.
     public TextMeshProUGUI txtSlime;
-    public TextMeshProUGUI txtGoblin, txtOuger, txtSiren, txtGolem, txtChraken, txtGhost, txtDragon, txtCrown, txtShaman, txtKnight;
+    public TextMeshProUGUI txtGoblin, txtOuger, txtSiren, txtGolem, txtChraken, txtGhost, txtDragon, txtCrown, txtShaman, txtKnight,txtBoss;
 
     void Start()
     {
@@ -34,6 +34,7 @@ public class CustomStat : MonoBehaviour
             case 8: Crown = Mathf.Clamp(Crown + amount, 0, 10); break;
             case 9: Shaman = Mathf.Clamp(Shaman + amount, 0, 10); break;
             case 10: Knight_night = Mathf.Clamp(Knight_night + amount, 0, 10); break;
+            case 11: Boss = Mathf.Clamp(Boss + amount, 0, 10); break;
         }
 
         // 값이 바뀌었으므로 텍스트 갱신
@@ -53,6 +54,7 @@ public class CustomStat : MonoBehaviour
     public void Btn_Crown(int amount) => ChangeMonsterCount(8, amount);
     public void Btn_Shaman(int amount) => ChangeMonsterCount(9, amount);
     public void Btn_Knight(int amount) => ChangeMonsterCount(10, amount);
+    public void Btn_Boss(int amount) => ChangeMonsterCount(11, amount);
     // 모든 텍스트 UI를 변수값에 맞춰 업데이트하는 함수
     public void UpdateAllTexts()
     {
@@ -67,17 +69,18 @@ public class CustomStat : MonoBehaviour
         if (txtCrown != null) txtCrown.text = Crown.ToString();
         if (txtShaman != null) txtShaman.text = Shaman.ToString();
         if (txtKnight != null) txtKnight.text = Knight_night.ToString();
+        if (txtBoss != null) txtBoss.text = Boss.ToString();
     }
 
     public void enter()
     {
         if (DataHolder.instance != null)
         {
-            int[] counts = { Slime, Goblin, Ouger, Siren, Golem, Chraken, Ghost, Dragon, Crown, Shaman, Knight_night };
+            int[] counts = { Slime, Goblin, Ouger, Siren, Golem, Chraken, Ghost, Dragon, Crown, Shaman, Knight_night,Boss };
             for (int i = 0; i < counts.Length; i++)
                 DataHolder.instance.monsterCounts[i] = counts[i];
 
-            SceneChanger.BG("GameScene");
+            SceneChanger.BG("custom");
         }
         else
         {
