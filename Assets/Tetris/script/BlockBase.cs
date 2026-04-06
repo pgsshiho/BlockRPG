@@ -289,15 +289,19 @@ public class BlockBase : MonoBehaviour
 
         foreach (Transform child in transform)
         {
-            Vector2Int idx = blockclear.PosToIndex(child.position);
+            Vector3 refinedPos = new Vector3(
+                Mathf.Round(child.position.x * 2f) / 2f,
+                Mathf.Round(child.position.y * 2f) / 2f,
+                0
+            );
+
+            Vector2Int idx = blockclear.PosToIndex(refinedPos);
+
             if (idx.x >= 0 && idx.x < blockclear.width && idx.y >= 0 && idx.y < blockclear.height)
             {
-                // 이미 블록이 있는 자리에 겹쳐 쓰지 않도록 방지
-                if (blockclear.grid[idx.x, idx.y] == null)
-                {
-                    blockclear.grid[idx.x, idx.y] = child;
-                    child.tag = "Block";
-                }
+                blockclear.grid[idx.x, idx.y] = child;
+                child.tag = "Block";
+                child.position = refinedPos;
             }
         }
 
