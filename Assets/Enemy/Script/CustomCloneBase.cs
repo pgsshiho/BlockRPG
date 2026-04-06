@@ -1,45 +1,83 @@
 using UnityEngine;
 
-public class CustomCloneBase : MonoBehaviour, Iswap
+public class CustomCloneBase : MonoBehaviour
 {
     public bool isSpawning = false;
     public GameObject spawnpoint;
-    public GameObject[] kindenemy; // 인스펙터에서 11종 프리팹 할당
-    public GameObject[] spawns = new GameObject[120];
+
+    [Header("프리팹 12종을 순서대로 넣어주세요")]
+    public GameObject[] kindenemy; // 인스펙터에서 반드시 Size를 12로 설정해야 함
+
+    public GameObject[] spawns = new GameObject[144]; // 12종 * 최대 12마리 대비 여유있게 설정
     private int activeEnemyCount = 0;
 
     void Start()
     {
-        // 씬 시작 시 데이터 로드
+        // 0.1초 뒤에 LateStart 호출
+        Invoke("LateStart", 0.1f);
+    }
+
+    void LateStart()
+    {
         if (DataHolder.instance != null)
         {
             int[] c = DataHolder.instance.monsterCounts;
-            Swap(c[0], c[1], c[2], c[3], c[4], c[5], c[6], c[7], c[8], c[9], c[10], c[11]);
+
+            // 여기서도 로그 확인
+            Debug.Log($"[소환지점 로드] 0번 데이터: {c[0]}");
+
+            Swap(c);
+            spawn();
         }
         else
         {
-            Swap(10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0); // 기본값 슬라임
+            Debug.LogError("소환 지점에서 DataHolder를 찾지 못했습니다.");
         }
-        spawn();
     }
-
-    public void Swap(int slime, int Goblin, int ouger, int siren, int Golem, int Chraken, int Ghost, int Prism_Dragon, int Crown, int Shaman, int Knight_night, int chaos)
+    // 매개변수를 배열로 받도록 수정하여 관리가 편하게 변경
+    public void Swap(int[] counts)
     {
         int currentIndex = 0;
-        siren = 0;
+        activeEnemyCount = 0;
 
-        int[] counts = { slime, Goblin, ouger, siren, Golem, Chraken, Ghost, Prism_Dragon, Crown, Shaman, Knight_night,chaos };
+        // 1. 넘어온 데이터 값 출력 (모두 0인지 확인용)
+        string debugLog = "받은 데이터 값들: ";
+        for (int n = 0; n < counts.Length; n++) debugLog += $"[{n}번:{counts[n]}] ";
+        Debug.Log(debugLog);
 
-        for (int k = 0; k < counts.Length; k++)
+        // 2. 프리팹 배열 크기 확인
+        if (kindenemy == null || kindenemy.Length == 0)
         {
-            int countToFill = Mathf.Min(counts[k], 11);
-            for (int j = 0; j < countToFill; j++)
+            Debug.LogError("KindEnemy 프리팹 배열이 인스펙터에서 비어있습니다!");
+            return;
+        }
+
+        // 3. 실제 루프 (counts와 kindenemy 중 작은 값 기준)
+        int limit = Mathf.Min(counts.Length, kindenemy.Length);
+
+        for (int k = 0; k < limit; k++)
+        {
+            // 0마리라고 설정했으면 건너뜀
+            if (counts[k] <= 0) continue;
+
+            for (int j = 0; j < counts[k]; j++)
             {
                 if (currentIndex < spawns.Length)
-                    spawns[currentIndex++] = kindenemy[k];
+                {
+                    if (kindenemy[k] != null)
+                    {
+                        spawns[currentIndex++] = kindenemy[k];
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"{k}번 프리팹이 Null입니다. 소환 목록에서 제외합니다.");
+                    }
+                }
             }
         }
+
         activeEnemyCount = currentIndex;
+        Debug.Log($"<color=yellow>총 소환 가능 적 개수(activeEnemyCount): {activeEnemyCount}</color>");
     }
 
     public void spawn()

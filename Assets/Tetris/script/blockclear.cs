@@ -136,18 +136,20 @@ public class blockclear : MonoBehaviour
         int bonusScore = 0;
         int bonusDamage = 0;
 
-        // T-Spin & Mini 판정
+        // --- T-Spin & Mini 판정 (각 -10 반영) ---
         if (isTSpin)
         {
             if (lines == 1)
             {
                 displayMessage += "T-Spin Mini!\n";
-                bonusScore += 100; bonusDamage += 15;
+                bonusScore += 90;   // 100 -> 90
+                bonusDamage += 5;   // 15 -> 5
             }
             else
             {
                 displayMessage += $"T-Spin {lines}Line!\n";
-                bonusScore += 200 * lines; bonusDamage += 30 * lines;
+                bonusScore += 190 * lines;  // 200 -> 190
+                bonusDamage += 20 * lines;  // 30 -> 20
             }
             bb.Tspin = false;
         }
@@ -156,13 +158,14 @@ public class blockclear : MonoBehaviour
             displayMessage += "TETRIS!\n";
         }
 
-        // B2B 판정
+        // --- B2B 판정 (각 -10 반영) ---
         if (isDifficult)
         {
             if (isB2B)
             {
                 displayMessage += "Back-to-Back!\n";
-                bonusScore += 150; bonusDamage += 20;
+                bonusScore += 140;  // 150 -> 140
+                bonusDamage += 10;  // 20 -> 10
             }
             isB2B = true;
         }

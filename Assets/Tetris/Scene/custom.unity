@@ -8242,6 +8242,30 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &527442799
 GameObject:
   m_ObjectHideFlags: 0
@@ -34076,6 +34100,7 @@ MonoBehaviour:
   topOffset: 1
   scoreText: {fileID: 1711288959}
   combo: 0
+  isB2B: 0
 --- !u!114 &2078534755
 MonoBehaviour:
   m_ObjectHideFlags: 0
