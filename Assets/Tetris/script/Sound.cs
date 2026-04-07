@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using System; // 씬 전환 감지를 위해 추가
+using System;
 
 public class Sound : MonoBehaviour
 {
@@ -16,6 +14,8 @@ public class Sound : MonoBehaviour
     public AudioSource slimehit;
     public AudioSource Goblin;
     public AudioSource Golem;
+    public AudioSource Ghost;
+    public AudioSource boss;
     public AudioSource night_knight;
     public AudioSource ouger;
     public AudioSource Prism_Dragon;
@@ -24,10 +24,13 @@ public class Sound : MonoBehaviour
     public AudioSource Jester;
     public AudioSource combo;
     public AudioSource siren;
+
     [Header("Settings UI")]
     public AudioMixer mixer;
-    public GameObject currentSceneUI;
+
+    // Action<BGM값, SFX값>
     public Action<float, float> OnVolumeDataChanged;
+
     private void Awake()
     {
         if (instance == null)
@@ -41,10 +44,6 @@ public class Sound : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    public void PlaySE(AudioSource source)
-    {
-        if (source != null) source.Play();
-    }
 
     private void InitVolume()
     {
@@ -57,7 +56,10 @@ public class Sound : MonoBehaviour
         float volume = Mathf.Log10(Mathf.Max(value, 0.0001f)) * 20;
         mixer.SetFloat("BGM", volume);
         PlayerPrefs.SetFloat("BGM_Value", value);
-        OnVolumeDataChanged?.Invoke(value, PlayerPrefs.GetFloat("BGM_Value", 0.75f));
+
+        // 현재 저장된 SFX 값을 가져와서 함께 쏴줍니다 (SFX 슬라이더는 가만히 있게 함)
+        float currentSFX = PlayerPrefs.GetFloat("SFX_Value", 0.75f);
+        OnVolumeDataChanged?.Invoke(value, currentSFX);
     }
 
     public void SetLevelSFX(float value)
@@ -65,6 +67,14 @@ public class Sound : MonoBehaviour
         float volume = Mathf.Log10(Mathf.Max(value, 0.0001f)) * 20;
         mixer.SetFloat("SFX", volume);
         PlayerPrefs.SetFloat("SFX_Value", value);
-        OnVolumeDataChanged?.Invoke(value, PlayerPrefs.GetFloat("SFX_Value", 0.75f));
+
+        // 현재 저장된 BGM 값을 가져와서 함께 쏴줍니다 (BGM 슬라이더는 가만히 있게 함)
+        float currentBGM = PlayerPrefs.GetFloat("BGM_Value", 0.75f);
+        OnVolumeDataChanged?.Invoke(currentBGM, value);
+    }
+
+    public void PlaySE(AudioSource source)
+    {
+        if (source != null) source.Play();
     }
 }

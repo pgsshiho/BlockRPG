@@ -56,11 +56,7 @@ public class slime : Enemybase
     IEnumerator WaitDeadAnimation()
     {
         yield return new WaitForSeconds(1.0f);
-        if (es != null)
-        {
-            es.isSpawning = false;
-            es.spawn();
-        }
+        base.enemyspawn();
         Destroy(gameObject);
     }
 }

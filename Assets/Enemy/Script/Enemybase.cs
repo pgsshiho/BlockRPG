@@ -91,7 +91,6 @@ public class Enemybase : MonoBehaviour, TakeDamage
         if (isDead) return;
         isDead = true;
 
-        // 물리 충돌 끄기 (시체에 블록이 닿지 않게)
         Collider2D col = GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
 
@@ -135,5 +134,24 @@ public class Enemybase : MonoBehaviour, TakeDamage
         float hpRatio = (float)hp / maxhp;
         Image img = hpbar.GetComponent<Image>();
         if (img != null) img.fillAmount = hpRatio;
+    }
+    public void enemyspawn()
+    {
+        string scenename = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        if (scenename == "custom") { 
+            if (newEs != null)
+            {
+                newEs.isSpawning = false;
+                newEs.spawn();
+            }
+        }
+        else
+        {
+            if (es != null)
+            {
+                es.isSpawning = false;
+                es.spawn();
+            }
+        }
     }
 }

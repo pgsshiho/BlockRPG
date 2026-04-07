@@ -8,7 +8,7 @@ public class CustomCloneBase : MonoBehaviour
     [Header("프리팹 12종을 순서대로 넣어주세요")]
     public GameObject[] kindenemy; // 인스펙터에서 반드시 Size를 12로 설정해야 함
 
-    public GameObject[] spawns = new GameObject[144]; // 12종 * 최대 12마리 대비 여유있게 설정
+    public GameObject[] spawns = new GameObject[144];
     private int activeEnemyCount = 0;
 
     void Start()
@@ -28,6 +28,7 @@ public class CustomCloneBase : MonoBehaviour
 
             Swap(c);
             spawn();
+            
         }
         else
         {

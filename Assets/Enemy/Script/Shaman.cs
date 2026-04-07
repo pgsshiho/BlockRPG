@@ -7,11 +7,13 @@ public class Shaman : Enemybase
     private Conebase cb;
     public GameObject specialBlock; // 교체할 프리팹
     public FindEnemy enemyData;
+    public Sound sd;
     protected override void Start()
     {
         base.Start();
         anim = GetComponent<Animator>();
         cb = FindAnyObjectByType<Conebase>(); // 수정: GetComponent가 아닌 Find
+        sd = FindAnyObjectByType<Sound>();
         if (enemyData != null) enemyData.shaman = true;
     }
 
@@ -21,7 +23,7 @@ public class Shaman : Enemybase
         base.Attack();
 
         if (anim != null) anim.SetTrigger("Attack");
-
+        if (sd != null) sd.Shamen.Play();
         BlockBase target = GetActiveBlock();
         if (target != null)
         {
@@ -32,7 +34,6 @@ public class Shaman : Enemybase
             if (cb != null && specialBlock != null)
             {
                 GameObject newObj = Instantiate(specialBlock, cb.spawnpoint.transform.position, Quaternion.identity);
-                // 새 블록의 고스트 생성 및 연결을 위해 seeclone 호출
                 cb.seeclone(specialBlock, newObj);
             }
         }
@@ -68,7 +69,7 @@ public class Shaman : Enemybase
     IEnumerator WaitDeadAnimation()
     {
         yield return new WaitForSeconds(0.8f);
-        if (es != null) { es.isSpawning = false; es.spawn(); }
+        base.enemyspawn();
         Destroy(gameObject);
     }
 }

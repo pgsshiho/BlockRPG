@@ -48,7 +48,7 @@ public class NyarlathotepBoss : Enemybase
         base.Attack();
 
         if (anim != null) anim.SetTrigger("Attack");
-
+        if (sd != null && sd.Goblin != null) sd.boss.Play();
         // 랜덤하게 하나의 패턴 실행
         int randomIndex = UnityEngine.Random.Range(0, patterns.Count);
         patterns[randomIndex].Invoke();
@@ -195,10 +195,14 @@ public class NyarlathotepBoss : Enemybase
 
     IEnumerator WaitDeadAnimation()
     {
+        string sceneName = SceneManager.GetActiveScene().name;
         yield return new WaitForSeconds(1.5f); // 죽는 애니메이션 대기
         if (es != null) { es.isSpawning = false; es.spawn(); }
-        SceneChanger.BG("GameClear");
-        Gameclear.score = blockclear.currentScore;
+        if (sceneName == "Dungeon")
+        {
+            SceneChanger.BG("GameClear");
+            Gameclear.score = blockclear.currentScore;
+        }
         Destroy(gameObject);
     }
 }

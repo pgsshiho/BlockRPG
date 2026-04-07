@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7714559055228196016}
   - component: {fileID: 6178390085002040822}
   - component: {fileID: 3151191272704677335}
+  - component: {fileID: 2310646925700177556}
   m_Layer: 0
   m_Name: golemidle_2_0
   m_TagString: Untagged
@@ -113,3 +114,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2310646925700177556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333719991158237791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5490f14f7f6e2c844a7d2bf46fcabf6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Golem
+  frame: 0
+  isattack: 0
+  baseTargetFrame: 500
+  targetFrame: 0
+  maxhp: 60
+  hp: 60
+  damage: 4
+  ex: 0
+  hpbar: {fileID: 0}
+  baseHp: 60
+  baseDamage: 4
+  shakeDuration: 3
+  shakeMagnitude: 3
+  enemyData: {fileID: 11400000, guid: 25a1d081ca08e2d4898a87400d2a0baa, type: 2}

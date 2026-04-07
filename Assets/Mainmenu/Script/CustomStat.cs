@@ -84,7 +84,7 @@ public class CustomStat : MonoBehaviour
             }
             Debug.Log($"[데이터 전송 완료] 0번 슬라임: {DataHolder.instance.monsterCounts[0]}마리");
 
-            SceneChanger.BG("custom");
+            SceneChanger.BG("custom"); 
         }
         else
         {

@@ -26,7 +26,7 @@ public class Prism_Dragon : Enemybase, ISpecialAttack
 
         if (anim != null) anim.SetTrigger("Attack");
         // 드래곤 전용 사운드가 있다면 여기에 추가
-        // if (sd != null && sd.dragonAttack != null) sd.dragonAttack.Play();
+        if (sd != null && sd.Prism_Dragon != null) sd.Prism_Dragon.Play();
 
         StartCoroutine(SpecialAttackSequence());
     }
@@ -59,11 +59,7 @@ public class Prism_Dragon : Enemybase, ISpecialAttack
     IEnumerator WaitDeadAnimation()
     {
         yield return new WaitForSeconds(0.8f); // 사망 애니메이션 대기
-        if (es != null)
-        {
-            es.isSpawning = false;
-            es.spawn();
-        }
+        base.enemyspawn();
         Destroy(gameObject);
     }
 }

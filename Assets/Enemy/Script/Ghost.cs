@@ -90,8 +90,7 @@ public class Ghost : Enemybase, ISpecialAttack
         base.Attack();
 
         if (anim != null) anim.SetTrigger("Attack");
-        if (sd != null && sd.Goblin != null) sd.Goblin.Play();
-
+        if (sd != null && sd.Goblin != null) sd.Ghost.Play();
         StartCoroutine(GhostAttackSequence());
     }
 
@@ -120,7 +119,7 @@ public class Ghost : Enemybase, ISpecialAttack
     IEnumerator WaitDeadAnimation()
     {
         yield return new WaitForSeconds(0.8f);
-        if (es != null) { es.isSpawning = false; es.spawn(); }
+        base.enemyspawn();
         Destroy(gameObject);
     }
 }

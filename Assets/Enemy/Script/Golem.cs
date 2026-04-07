@@ -64,7 +64,7 @@ public class Golem : Enemybase, ISpecialAttack
 
         // 3. 애니메이션 및 사운드 (골렘 사운드가 있다면 sd.golem 등으로 교체)
         if (anim != null) anim.SetTrigger("Attack");
-        // if (sd != null && sd.golem != null) sd.golem.Play(); 
+        if (sd != null && sd.Golem != null) sd.Golem.Play(); 
 
         // 4. 특수 공격 시퀀스 시작
         StartCoroutine(SpecialAttackSequence());
@@ -79,7 +79,7 @@ public class Golem : Enemybase, ISpecialAttack
         yield return new WaitForSeconds(shakeDuration);
 
         // 공격 후 후딜레이
-        yield return new WaitForSeconds(0.8f);
+        yield return new WaitForSeconds(1.0f);
 
         isattack = false;
     }
@@ -101,11 +101,7 @@ public class Golem : Enemybase, ISpecialAttack
     IEnumerator WaitDeadAnimation()
     {
         yield return new WaitForSeconds(1.0f);
-        if (es != null)
-        {
-            es.isSpawning = false;
-            es.spawn();
-        }
+        base.enemyspawn();
         Destroy(gameObject);
     }
 }

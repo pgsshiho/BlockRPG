@@ -108,12 +108,7 @@ public class Siren : Enemybase
     {
         yield return new WaitForSeconds(1.0f);
 
-        // 여기서 확실하게 플래그를 풀고 스폰을 호출합니다.
-        if (es != null)
-        {
-            es.isSpawning = false; // 여기서 풀어줘야 다음 spawn()의 return에 안 걸림
-            es.spawn();
-        }
+        base.enemyspawn();
 
         Destroy(gameObject);
     }

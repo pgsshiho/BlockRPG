@@ -64,11 +64,7 @@ IEnumerator WaitAttackAnimation()
     IEnumerator WaitDeadAnimation()
     {
         yield return new WaitForSeconds(0.8f);
-        if (es != null)
-        {
-            es.isSpawning = false; // 방어막 해제
-            es.spawn();            // 새 적 소환
-        }
+        base.enemyspawn();
         Destroy(gameObject);
     }
 }
