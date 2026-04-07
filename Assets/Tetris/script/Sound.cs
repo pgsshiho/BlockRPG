@@ -28,8 +28,8 @@ public class Sound : MonoBehaviour
     [Header("Settings UI")]
     public AudioMixer mixer;
 
-    // Action<BGM값, SFX값>
-    public Action<float, float> OnVolumeDataChanged;
+    // 볼륨 데이터가 변할 때 모든 슬라이더에게 알리는 이벤트
+    public event Action<float, float> OnVolumeDataChanged;
 
     private void Awake()
     {
@@ -47,28 +47,30 @@ public class Sound : MonoBehaviour
 
     private void InitVolume()
     {
-        SetLevelBGM(PlayerPrefs.GetFloat("BGM_Value", 0.75f));
-        SetLevelSFX(PlayerPrefs.GetFloat("SFX_Value", 0.75f));
+        // 초기 로딩 시 Mixer에 값 적용
+        SetLevelBGM(PlayerPrefs.GetFloat("BGM_Value", 0.75f), false);
+        SetLevelSFX(PlayerPrefs.GetFloat("SFX_Value", 0.75f), false);
     }
 
-    public void SetLevelBGM(float value)
+    // save 매개변수를 추가해 초기화 시 중복 저장을 방지합니다.
+    public void SetLevelBGM(float value, bool save = true)
     {
         float volume = Mathf.Log10(Mathf.Max(value, 0.0001f)) * 20;
         mixer.SetFloat("BGM", volume);
-        PlayerPrefs.SetFloat("BGM_Value", value);
 
-        // 현재 저장된 SFX 값을 가져와서 함께 쏴줍니다 (SFX 슬라이더는 가만히 있게 함)
+        if (save) PlayerPrefs.SetFloat("BGM_Value", value);
+
         float currentSFX = PlayerPrefs.GetFloat("SFX_Value", 0.75f);
         OnVolumeDataChanged?.Invoke(value, currentSFX);
     }
 
-    public void SetLevelSFX(float value)
+    public void SetLevelSFX(float value, bool save = true)
     {
         float volume = Mathf.Log10(Mathf.Max(value, 0.0001f)) * 20;
         mixer.SetFloat("SFX", volume);
-        PlayerPrefs.SetFloat("SFX_Value", value);
 
-        // 현재 저장된 BGM 값을 가져와서 함께 쏴줍니다 (BGM 슬라이더는 가만히 있게 함)
+        if (save) PlayerPrefs.SetFloat("SFX_Value", value);
+
         float currentBGM = PlayerPrefs.GetFloat("BGM_Value", 0.75f);
         OnVolumeDataChanged?.Invoke(currentBGM, value);
     }

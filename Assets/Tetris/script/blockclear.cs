@@ -30,6 +30,10 @@ public class blockclear : MonoBehaviour
     public int combo = 0;
     public bool isB2B = false;
 
+    [Header("UI Effects (Damage Text)")]
+    public GameObject floatingTextPrefab; // FloatingText 스크립트가 붙은 TMP 프리팹
+    public Transform textSpawnPoint;       // 텍스트가 생성될 Canvas 내 부모 위치
+
     // 내부 상태 및 참조 변수
     Enemybase eb;
     BlockBase bb;
@@ -44,13 +48,11 @@ public class blockclear : MonoBehaviour
         sd = FindAnyObjectByType<Sound>();
         st = FindAnyObjectByType<Stat>();
 
-        // 씬 시작 시 데이터 초기화
         grid = new Transform[width, height];
         isDamagedHole = new bool[width, height];
         UpdateScoreUI();
     }
 
-    // 좌표 -> 그리드 인덱스 변환
     public static Vector2Int PosToIndex(Vector3 pos)
     {
         blockclear instance = FindAnyObjectByType<blockclear>();
@@ -69,7 +71,7 @@ public class blockclear : MonoBehaviour
             {
                 DeleteLine(y);
                 DecreaseRowsAbove(y + 1);
-                y--; // 줄이 내려왔으므로 현재 줄 다시 검사
+                y--;
                 linesCleared++;
             }
         }
@@ -82,7 +84,7 @@ public class blockclear : MonoBehaviour
         }
         else
         {
-            if (bb != null) bb.Tspin = false; // 줄 안 지워지면 Tspin 무효
+            if (bb != null) bb.Tspin = false;
             ResetCombo();
         }
 
@@ -136,42 +138,25 @@ public class blockclear : MonoBehaviour
         int bonusScore = 0;
         int bonusDamage = 0;
 
-        // --- T-Spin & Mini 판정 (각 -10 반영) ---
         if (isTSpin)
         {
-            if (lines == 1)
-            {
-                displayMessage += "T-Spin Mini!\n";
-                bonusScore += 90;   // 100 -> 90
-                bonusDamage += 5;   // 15 -> 5
-            }
-            else
-            {
-                displayMessage += $"T-Spin {lines}Line!\n";
-                bonusScore += 190 * lines;  // 200 -> 190
-                bonusDamage += 20 * lines;  // 30 -> 20
-            }
+            if (lines == 1) { displayMessage += "Small Twist!\n"; bonusScore += 90; bonusDamage += 5; }
+            else { displayMessage += $"Twist {lines}Line!\n"; bonusScore += 190 * lines; bonusDamage += 20 * lines; }
             bb.Tspin = false;
         }
-        else if (lines == 4)
-        {
-            displayMessage += "TETRIS!\n";
-        }
+        else if (lines == 4) { displayMessage += "Quad Clear!\n"; }
 
-        // --- B2B 판정 (각 -10 반영) ---
         if (isDifficult)
         {
-            if (isB2B)
-            {
-                displayMessage += "Back-to-Back!\n";
-                bonusScore += 140;  // 150 -> 140
-                bonusDamage += 10;  // 20 -> 10
-            }
+            if (isB2B) { displayMessage += "Chain!\n"; bonusScore += 140; bonusDamage += 10; }
             isB2B = true;
         }
-        else
+        else { isB2B = false; }
+
+        // [연출] 판정 텍스트 생성
+        if (!string.IsNullOrEmpty(displayMessage))
         {
-            isB2B = false;
+            SpawnFloatingText(displayMessage.Replace("\n", ""), 40, Color.cyan);
         }
 
         int comboScore = (combo > 1) ? (combo - 1) * 50 : 0;
@@ -195,6 +180,21 @@ public class blockclear : MonoBehaviour
         {
             string comboStr = (combo > 1) ? $"{combo} COMBO!\n" : "";
             scoreText.text = $"Score: {currentScore}\n<size=80%>{displayMessage}{comboStr}</size>";
+        }
+    }
+
+    // [연출] 텍스트 소환 함수
+    void SpawnFloatingText(string message, float fontSize, Color textColor)
+    {
+        if (floatingTextPrefab == null || textSpawnPoint == null) return;
+
+        GameObject obj = Instantiate(floatingTextPrefab, textSpawnPoint);
+        obj.transform.localPosition = Vector3.zero;
+
+        FloatingText ft = obj.GetComponent<FloatingText>();
+        if (ft != null)
+        {
+            ft.Setup(message, fontSize, textColor);
         }
     }
 
@@ -296,7 +296,14 @@ public class blockclear : MonoBehaviour
             {
                 float multiplier = (Stat.instance != null) ? (1.0f + (Stat.instance.atk * 0.1f)) : 1f;
                 int enemyCurrentHp = target.hp;
-                float potentialDamage = remainingDamage * multiplier;
+                int potentialDamage = Mathf.CeilToInt(remainingDamage * multiplier);
+
+                // [연출] 적에게 입히는 데미지 숫자 생성
+                if (potentialDamage > 0)
+                {
+                    SpawnFloatingText("-" + potentialDamage.ToString(), 30, Color.red);
+                }
+
                 if (potentialDamage >= enemyCurrentHp)
                 {
                     int damageConsumed = Mathf.CeilToInt(enemyCurrentHp / multiplier);
