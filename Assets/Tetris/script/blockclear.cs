@@ -283,7 +283,7 @@ public class blockclear : MonoBehaviour
             {
                 Time.timeScale = 1;
                 ScoreForSpeed = 0;
-                Gameover.killerName = "OVERFLOW"; // 명칭 유지 가능
+                Gameover.killerName = "GEM"; // 명칭 유지 가능
                 SceneManager.LoadScene("Gameover"); // 명칭 유지
                 return;
             }
