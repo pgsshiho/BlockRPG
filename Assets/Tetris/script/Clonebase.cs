@@ -55,12 +55,20 @@ public class Conebase : MonoBehaviour
 
     public void fillbag()
     {
+        // 1. 기본 세트 생성 (8종의 보석이 1개씩 포함됨)
+        // prefabs에 새로운 8번째 보석을 넣으면 자동으로 8개가 들어갑니다.
         List<GameObject> newBag = new List<GameObject>(prefabs);
+
+        // 2. 보너스 보석 추가 (1개를 완전 랜덤으로 추가하여 총 9개 구성)
+        // 8+1 시스템: "희귀한 유물이 하나 더 섞여 들어왔습니다."
         if (prefabs.Length > 0)
         {
-            int extra = Random.Range(0, prefabs.Length);
-            newBag.Add(prefabs[extra]);
+            int bonusIndex = Random.Range(0, prefabs.Length);
+            newBag.Add(prefabs[bonusIndex]);
         }
+
+        // 3. 셔플 (Fisher-Yates 알고리즘)
+        // 이제 9개의 보석이 무작위로 섞입니다.
         for (int i = newBag.Count - 1; i > 0; i--)
         {
             int k = Random.Range(0, i + 1);
@@ -68,9 +76,10 @@ public class Conebase : MonoBehaviour
             newBag[k] = newBag[i];
             newBag[i] = temp;
         }
+
+        // 4. 메인 리스트(blockBag)에 추가
         blockBag.AddRange(newBag);
     }
-
     void UpdateNextVisuals()
     {
         foreach (GameObject obj in nextVisuals) Destroy(obj);

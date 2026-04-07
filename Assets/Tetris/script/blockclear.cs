@@ -6,35 +6,31 @@ using System.Collections.Generic;
 
 public class blockclear : MonoBehaviour
 {
-    // --- 그리드 설정 ---
     public const int width = 20;
-    public const int height = 60;
+    public const int height = 80;
     public static Transform[,] grid = new Transform[width, height];
     public static bool[,] isDamagedHole = new bool[width, height];
 
     [Header("Grid Position Settings")]
     public float visualYOffset = -19f;
+    public int topOffset = 2;
 
     [Header("Line Detection Settings")]
     public int lineCheckStartX = 6;
     public int lineCheckEndX = 16;
     public int requiredBlocks = 10;
 
-    [Header("Hole Detection (Damage)")]
-    public int topOffset = 1;
-
-    [Header("Score & Stats")]
+    [Header("Score & Combo System")]
     public static int ScoreForSpeed = 0;
     public static int currentScore = 0;
     public TextMeshProUGUI scoreText;
-    public int combo = 0;
-    public bool isB2B = false;
+    public int combo = 0; // 명칭 유지
+    public bool isLinkActive = false;
 
-    [Header("UI Effects (Damage Text)")]
-    public GameObject floatingTextPrefab; // FloatingText 스크립트가 붙은 TMP 프리팹
-    public Transform textSpawnPoint;       // 텍스트가 생성될 Canvas 내 부모 위치
+    [Header("UI Effects")]
+    public GameObject floatingTextPrefab;
+    public Transform textSpawnPoint;
 
-    // 내부 상태 및 참조 변수
     Enemybase eb;
     BlockBase bb;
     Sound sd;
@@ -47,7 +43,6 @@ public class blockclear : MonoBehaviour
         bb = FindAnyObjectByType<BlockBase>();
         sd = FindAnyObjectByType<Sound>();
         st = FindAnyObjectByType<Stat>();
-
         grid = new Transform[width, height];
         isDamagedHole = new bool[width, height];
         UpdateScoreUI();
@@ -70,7 +65,7 @@ public class blockclear : MonoBehaviour
             if (IsLineFull(y))
             {
                 DeleteLine(y);
-                DecreaseRowsAbove(y + 1);
+                PushDownRows(y + 1);
                 y--;
                 linesCleared++;
             }
@@ -79,12 +74,12 @@ public class blockclear : MonoBehaviour
         if (linesCleared > 0)
         {
             combo++;
-            AddScore(linesCleared);
-            PlayClearSound();
+            CalculateReward(linesCleared);
+            PlaySuccessSound();
         }
         else
         {
-            if (bb != null) bb.Tspin = false;
+            if (bb != null) bb.IsTwist = false;
             ResetCombo();
         }
 
@@ -111,7 +106,7 @@ public class blockclear : MonoBehaviour
         }
     }
 
-    void DecreaseRowsAbove(int startY)
+    void PushDownRows(int startY)
     {
         for (int y = startY; y < height; y++)
         {
@@ -129,47 +124,44 @@ public class blockclear : MonoBehaviour
         }
     }
 
-    void AddScore(int lines)
+    void CalculateReward(int lines)
     {
         displayMessage = "";
-        bool isTSpin = (bb != null && bb.Tspin);
-        bool isDifficult = (lines == 4) || isTSpin;
+        bool twistPerformed = (bb != null && bb.IsTwist);
+        bool isSpecial = (lines >= 4) || twistPerformed;
 
         int bonusScore = 0;
-        int bonusDamage = 0;
+        int bonusPower = 0;
 
-        if (isTSpin)
+        if (twistPerformed)
         {
-            if (lines == 1) { displayMessage += "Small Twist!\n"; bonusScore += 90; bonusDamage += 5; }
-            else { displayMessage += $"Twist {lines}Line!\n"; bonusScore += 190 * lines; bonusDamage += 20 * lines; }
-            bb.Tspin = false;
+            if (lines == 1) { displayMessage += "Twist Single!\n"; bonusScore += 150; bonusPower += 10; }
+            else if (lines == 2) { displayMessage += "Twist Double!\n"; bonusScore += 450; bonusPower += 35; }
+            else { displayMessage += $"Twist Burst {lines}!\n"; bonusScore += 700 * lines; bonusPower += 50 * lines; }
+            bb.IsTwist = false;
         }
-        else if (lines == 4) { displayMessage += "Quad Clear!\n"; }
+        else if (lines >= 4) { displayMessage += "ULTRA BURST!\n"; }
 
-        if (isDifficult)
+        if (isSpecial)
         {
-            if (isB2B) { displayMessage += "Chain!\n"; bonusScore += 140; bonusDamage += 10; }
-            isB2B = true;
+            if (isLinkActive) { displayMessage += "LINK BONUS!\n"; bonusScore += 200; bonusPower += 15; }
+            isLinkActive = true;
         }
-        else { isB2B = false; }
+        else { isLinkActive = false; }
 
-        // [연출] 판정 텍스트 생성
-        if (!string.IsNullOrEmpty(displayMessage))
-        {
-            SpawnFloatingText(displayMessage.Replace("\n", ""), 40, Color.cyan);
-        }
+        if (!string.IsNullOrEmpty(displayMessage)) SpawnFloatingText(displayMessage.Replace("\n", " "), 35, Color.green);
 
-        int comboScore = (combo > 1) ? (combo - 1) * 50 : 0;
-        int comboDamage = (combo > 1) ? (combo - 1) * 5 : 0;
+        int comboBonus = (combo > 1) ? (combo * combo * 12) : 0;
+        int comboPower = (combo > 1) ? (int)(combo * 7.5f) : 0;
 
-        int[] baseLineScore = { 0, 50, 100, 200, 400 };
-        int[] baseLineDamage = { 0, 5, 25, 50, 80 };
+        int[] baseLineScore = { 0, 70, 180, 350, 750 };
+        int[] baseLinePower = { 0, 10, 30, 60, 110 };
 
-        int finalScore = baseLineScore[Mathf.Min(lines, 4)] + bonusScore + comboScore;
-        int finalDamage = baseLineDamage[Mathf.Min(lines, 4)] + bonusDamage + comboDamage;
+        int finalScore = baseLineScore[Mathf.Min(lines, 4)] + bonusScore + comboBonus;
+        int finalPower = baseLinePower[Mathf.Min(lines, 4)] + bonusPower + comboPower;
 
         currentScore += finalScore;
-        StartCoroutine(ProcessDamageSequence(finalDamage));
+        StartCoroutine(ProcessAttackSequence(finalPower));
         ScoreForSpeed = currentScore;
         UpdateScoreUI();
     }
@@ -178,27 +170,11 @@ public class blockclear : MonoBehaviour
     {
         if (scoreText != null)
         {
-            string comboStr = (combo > 1) ? $"{combo} COMBO!\n" : "";
-            scoreText.text = $"Score: {currentScore}\n<size=80%>{displayMessage}{comboStr}</size>";
+            string comboStr = (combo > 1) ? $"{combo} COMBO!\n" : ""; // 명칭 유지
+            scoreText.text = $"SCORE: {currentScore:N0}\n<size=70%>{displayMessage}{comboStr}</size>";
         }
     }
 
-    // [연출] 텍스트 소환 함수
-    void SpawnFloatingText(string message, float fontSize, Color textColor)
-    {
-        if (floatingTextPrefab == null || textSpawnPoint == null) return;
-
-        GameObject obj = Instantiate(floatingTextPrefab, textSpawnPoint);
-        obj.transform.localPosition = Vector3.zero;
-
-        FloatingText ft = obj.GetComponent<FloatingText>();
-        if (ft != null)
-        {
-            ft.Setup(message, fontSize, textColor);
-        }
-    }
-
-    #region [구멍 감지 로직]
     public void CheckForEnclosedHoles()
     {
         bool[,] isAccessible = new bool[width, height];
@@ -207,11 +183,7 @@ public class blockclear : MonoBehaviour
 
         for (int x = 0; x < width; x++)
         {
-            if (grid[x, startHeight] == null)
-            {
-                isAccessible[x, startHeight] = true;
-                queue.Enqueue(new Vector2Int(x, startHeight));
-            }
+            if (grid[x, startHeight] == null) { isAccessible[x, startHeight] = true; queue.Enqueue(new Vector2Int(x, startHeight)); }
         }
 
         Vector2Int[] directions = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
@@ -223,18 +195,13 @@ public class blockclear : MonoBehaviour
                 Vector2Int next = curr + dir;
                 if (next.x >= 0 && next.x < width && next.y >= 0 && next.y < height)
                 {
-                    if (!isAccessible[next.x, next.y] && grid[next.x, next.y] == null)
-                    {
-                        isAccessible[next.x, next.y] = true;
-                        queue.Enqueue(next);
-                    }
+                    if (!isAccessible[next.x, next.y] && grid[next.x, next.y] == null) { isAccessible[next.x, next.y] = true; queue.Enqueue(next); }
                 }
             }
         }
 
         bool[,] currentLoopVisit = new bool[width, height];
         int newHoleGroupCount = 0;
-
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
@@ -249,9 +216,9 @@ public class blockclear : MonoBehaviour
 
         if (newHoleGroupCount > 0 && st != null)
         {
-            int damage = newHoleGroupCount * (3 * st.difficult);
-            st.hp -= damage;
-            st.diecheck(damage, "Gem");
+            int penalty = newHoleGroupCount * (4 * st.difficult);
+            st.hp -= penalty;
+            st.diecheck(penalty, "Pressure");
             st.hpcal();
         }
     }
@@ -262,7 +229,6 @@ public class blockclear : MonoBehaviour
         q.Enqueue(new Vector2Int(startX, startY));
         currentVisit[startX, startY] = true;
         isDamagedHole[startX, startY] = true;
-
         Vector2Int[] directions = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
         while (q.Count > 0)
         {
@@ -282,36 +248,28 @@ public class blockclear : MonoBehaviour
             }
         }
     }
-    #endregion
 
-    #region [기타 기능]
-    IEnumerator ProcessDamageSequence(int remainingDamage)
+    IEnumerator ProcessAttackSequence(int remainingAtk)
     {
-        while (remainingDamage > 0)
+        while (remainingAtk > 0)
         {
             Enemybase target = null;
             Enemybase[] enemies = FindObjectsByType<Enemybase>(FindObjectsSortMode.None);
             foreach (var e in enemies) { if (!e.IsDead) { target = e; break; } }
             if (target != null)
             {
-                float multiplier = (Stat.instance != null) ? (1.0f + (Stat.instance.atk * 0.1f)) : 1f;
+                float multiplier = (Stat.instance != null) ? (1.0f + (Stat.instance.atk * 0.13f)) : 1f;
                 int enemyCurrentHp = target.hp;
-                int potentialDamage = Mathf.CeilToInt(remainingDamage * multiplier);
-
-                // [연출] 적에게 입히는 데미지 숫자 생성
-                if (potentialDamage > 0)
+                int potentialAtk = Mathf.CeilToInt(remainingAtk * multiplier);
+                if (potentialAtk > 0) SpawnFloatingText("-" + potentialAtk.ToString(), 55, Color.red);
+                if (potentialAtk >= enemyCurrentHp)
                 {
-                    SpawnFloatingText("-" + potentialDamage.ToString(), 30, Color.red);
+                    int consumed = Mathf.CeilToInt(enemyCurrentHp / multiplier);
+                    target.hit(remainingAtk);
+                    remainingAtk -= consumed;
+                    yield return new WaitForSeconds(0.7f);
                 }
-
-                if (potentialDamage >= enemyCurrentHp)
-                {
-                    int damageConsumed = Mathf.CeilToInt(enemyCurrentHp / multiplier);
-                    target.hit(remainingDamage);
-                    remainingDamage -= damageConsumed;
-                    yield return new WaitForSeconds(1.1f);
-                }
-                else { target.hit(remainingDamage); remainingDamage = 0; }
+                else { target.hit(remainingAtk); remainingAtk = 0; }
             }
             else { yield return new WaitForSeconds(0.1f); }
         }
@@ -321,49 +279,108 @@ public class blockclear : MonoBehaviour
     {
         for (int x = 0; x < width; x++)
         {
-            if (grid[x, 56] != null)
+            if (grid[x, 61] != null)
             {
                 Time.timeScale = 1;
                 ScoreForSpeed = 0;
-                Gameover.killerName = "Gem";
-                SceneManager.LoadScene("Gameover");
+                Gameover.killerName = "OVERFLOW"; // 명칭 유지 가능
+                SceneManager.LoadScene("Gameover"); // 명칭 유지
                 return;
             }
         }
     }
 
-    void ResetCombo()
+    void ResetCombo() { combo = 0; displayMessage = ""; if (sd != null && sd.blockclear != null) sd.blockclear.pitch = 1f; UpdateScoreUI(); }
+    void PlaySuccessSound() { if (sd != null && sd.blockclear != null) { if (sd.blockclear.pitch < 2.8f) sd.blockclear.pitch += 0.14f; sd.blockclear.Play(); } }
+    void SpawnFloatingText(string message, float fontSize, Color textColor)
     {
-        combo = 0;
-        displayMessage = "";
-        if (sd != null && sd.blockclear != null) sd.blockclear.pitch = 1f;
-        UpdateScoreUI();
+        if (floatingTextPrefab == null || textSpawnPoint == null) return;
+        GameObject obj = Instantiate(floatingTextPrefab, textSpawnPoint);
+        obj.transform.localPosition = new Vector3(Random.Range(-50f, 50f), Random.Range(-20f, 20f), 0);
+        FloatingText ft = obj.GetComponent<FloatingText>();
+        if (ft != null) ft.Setup(message, fontSize, textColor);
     }
-
-    void PlayClearSound()
-    {
-        if (sd != null && sd.blockclear != null)
-        {
-            if (sd.blockclear.pitch < 2f) sd.blockclear.pitch += 0.1f;
-            sd.blockclear.Play();
-        }
-    }
-
     void OnDrawGizmos()
+
     {
-        Gizmos.color = new Color(1, 1, 1, 0.2f);
+
+        // 1. 전체 그리드 베이스 (연한 회색)
+
+        Gizmos.color = new Color(1, 1, 1, 0.05f);
+
         for (int x = 0; x < width; x++)
+
         {
+
             for (int y = 0; y < height; y++)
+
             {
+
                 float wx = x * 0.5f - 4.5f;
+
                 float wy = y * 0.5f + visualYOffset;
+
                 Gizmos.DrawWireCube(new Vector3(wx, wy, 0), new Vector3(0.5f, 0.5f, 0.1f));
+
             }
+
         }
+
+
+
+        // 2. 실제 라인 클리어 감지 범위 (하늘색 영역)
+
+        // lineCheckStartX ~ lineCheckEndX 범위를 강조합니다.
+
+        Gizmos.color = new Color(0, 0.8f, 1f, 0.3f);
+
+        float startXPos = (lineCheckStartX * 0.5f) - 4.5f - 0.25f;
+
+        float endXPos = ((lineCheckEndX - 1) * 0.5f) - 4.5f + 0.25f;
+
+        float centerX = (startXPos + endXPos) / 2f;
+
+        float rangeWidth = endXPos - startXPos;
+
+
+
+        // 감지 구역을 반투명한 박스로 표시
+
+        Vector3 areaCenter = new Vector3(centerX, (height * 0.25f) + visualYOffset - 0.25f, 0);
+
+        Vector3 areaSize = new Vector3(rangeWidth, height * 0.5f, 0.1f);
+
+        Gizmos.DrawCube(areaCenter, areaSize);
+
+
+
+        // 감지 구역 테두리
+
+        Gizmos.color = Color.cyan;
+
+        Gizmos.DrawWireCube(areaCenter, areaSize);
+
+
+
+        // 3. 게임 오버 라인 (빨간색)
+
         Gizmos.color = Color.red;
-        float dY = 56 * 0.5f + visualYOffset;
-        Gizmos.DrawLine(new Vector3(-10, dY, 0), new Vector3(10, dY, 0));
+
+        // 인덱스 56 혹은 60 등 실제 체크하는 높이에 맞춰 선을 그립니다.
+
+        // 현재 코드의 CheckGameOver는 grid[x, 60]을 체크하지만 배열은 59가 최대이므로 56~58 정도가 적당합니다.
+
+        float deadLineY = 61 * 0.5f + visualYOffset - 0.25f;
+
+        Gizmos.DrawLine(new Vector3(-10, deadLineY, 0), new Vector3(10, deadLineY, 0));
+
+
+
+        // "DEAD LINE" 표시용 구구조물
+
+        Gizmos.DrawSphere(new Vector3(startXPos, deadLineY, 0), 0.1f);
+
+        Gizmos.DrawSphere(new Vector3(endXPos, deadLineY, 0), 0.1f);
+
     }
-    #endregion
 }
