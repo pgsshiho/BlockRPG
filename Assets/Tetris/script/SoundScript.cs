@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+
 public class SoundScript : MonoBehaviour
 {
     public enum SoundType { BGM, SFX }
@@ -10,26 +11,29 @@ public class SoundScript : MonoBehaviour
 
     void Start()
     {
-        // 1. 현재 저장된 값으로 내 슬라이더 초기화
-        float savedVal = (type == SoundType.BGM) ?
-            PlayerPrefs.GetFloat("BGM_Value", 0.75f) :
-            PlayerPrefs.GetFloat("SFX_Value", 0.75f);
-        slider.value = savedVal;
+        RefreshSliderOnOpen();
 
-        // 2. 슬라이더 조작 시 매니저의 함수 호출
         slider.onValueChanged.AddListener(val => {
             if (type == SoundType.BGM) Sound.instance.SetLevelBGM(val);
             else Sound.instance.SetLevelSFX(val);
         });
 
-        // 3. 매니저의 방송 채널 구독
         if (Sound.instance != null)
             Sound.instance.OnVolumeDataChanged += SyncSlider;
     }
 
-    void SyncSlider(float bgm, float sfx)
+    public void SyncSlider(float bgm, float sfx)
     {
+        // 내 타입에 맞는 값만 받아와서 적용 (상대방 값은 무시)
         slider.value = (type == SoundType.BGM) ? bgm : sfx;
+    }
+
+    public void RefreshSliderOnOpen()
+    {
+        float savedVal = (type == SoundType.BGM) ?
+            PlayerPrefs.GetFloat("BGM_Value", 0.75f) :
+            PlayerPrefs.GetFloat("SFX_Value", 0.75f);
+        slider.value = savedVal;
     }
 
     void OnDestroy()

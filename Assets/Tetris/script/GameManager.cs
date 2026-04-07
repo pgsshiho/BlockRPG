@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     public GameObject panel;
     public GameObject statpanel;
     public bool isON = false;
-
+    SoundScript ss;
     private KeyBinding key;
     private EnemySpawn es;
     public GameObject blackpanel;
@@ -51,8 +51,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // GameManager.cs 내부
     public void PauseGame()
     {
+        SoundScript[] allSoundScripts = FindObjectsByType<SoundScript>(FindObjectsSortMode.None);
+
+        foreach (SoundScript script in allSoundScripts)
+        {
+            script.RefreshSliderOnOpen(); 
+        }
         Time.timeScale = 0;
         isON = true;
         if (panel != null) panel.SetActive(true);

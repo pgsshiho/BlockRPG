@@ -71,11 +71,7 @@ public class ouger : Enemybase, ISpecialAttack
     IEnumerator WaitDeadAnimation()
     {
         yield return new WaitForSeconds(1.0f); // 사망 애니메이션 시간
-        if (es != null)
-        {
-            es.isSpawning = false;
-            es.spawn();
-        }
+        base.enemyspawn();
         Destroy(gameObject);
     }
 }

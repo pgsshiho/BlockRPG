@@ -28,6 +28,10 @@ public class BlockBase : MonoBehaviour
         gm = FindAnyObjectByType<GameManager>();
         key = FindAnyObjectByType<KeyBinding>();
         SnapToGrid();
+        if (ghost != null)
+        {
+            UpdateGhostPosition();
+        }
     }
     void Update()
     {

@@ -47,7 +47,7 @@ public class Crown : Enemybase
     IEnumerator WaitDeadAnimation()
     {
         yield return new WaitForSeconds(0.8f);
-        if (es != null) { es.isSpawning = false; es.spawn(); }
+        base.enemyspawn();
         Destroy(gameObject);
     }public void Holdc()
     {
