@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Conebase : MonoBehaviour
 {
-    private GameObject ghostBlock; // 외부 접근을 위해 아래 GetGhostBlock() 추가
+    private GameObject ghostBlock;
     public GameObject[] prefabs;
     public GameObject spawnpoint;
     public List<GameObject> blockBag = new List<GameObject>();
@@ -15,7 +15,9 @@ public class Conebase : MonoBehaviour
     Stat st;
     private List<GameObject> nextVisuals = new List<GameObject>();
 
-    // [추가] 고스트 적이 이 블록을 찾아 숨길 수 있도록 반환하는 함수
+    [Header("Ghost Settings")]
+    public Sprite ghostInnerSprite; 
+
     public GameObject GetGhostBlock()
     {
         return ghostBlock;
@@ -97,20 +99,36 @@ public class Conebase : MonoBehaviour
     {
         if (ghostBlock != null) Destroy(ghostBlock);
 
+        // 1. 고스트 생성
         ghostBlock = Instantiate(prefab, spawnpoint.transform.position, Quaternion.identity);
+        ghostBlock.name = "Ghost_" + prefab.name;
 
+        // 2. 기능 제거
         BlockBase bBase = ghostBlock.GetComponent<BlockBase>();
         if (bBase != null) Destroy(bBase);
 
         Rigidbody2D rb = ghostBlock.GetComponent<Rigidbody2D>();
         if (rb != null) rb.simulated = false;
 
+        // 3. 스프라이트 교체 및 색상 설정
         foreach (SpriteRenderer sr in ghostBlock.GetComponentsInChildren<SpriteRenderer>())
         {
+            // 테두리 스프라이트로 교체
+            if (ghostInnerSprite != null)
+            {
+                sr.sprite = ghostInnerSprite;
+            }
             Color color = sr.color;
-            color.a = 0.3f;
+            color.a = 1.0f;
             sr.color = color;
+
+            // 본체보다 뒤에 그려지도록 설정
+            sr.sortingOrder = 10;
         }
+
+        // 4. 레이어 변경 (Ghost 레이어가 있다면)
+        int ghostLayer = LayerMask.NameToLayer("Ghost");
+        if (ghostLayer != -1) ghostBlock.layer = ghostLayer;
 
         owner.GetComponent<BlockBase>().ghost = ghostBlock;
     }
