@@ -75,6 +75,22 @@ MonoBehaviour:
     m_Key: chaosex
     m_Metadata:
       m_Items: []
+  - m_Id: 2006629998886912
+    m_Key: MSG_NO_POINTS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2006667688902656
+    m_Key: MSG_MAX_REACHED
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2006917740724224
+    m_Key: MSG_LEVEL_UP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2006918625722368
+    m_Key: UI_POINTS_LABEL
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

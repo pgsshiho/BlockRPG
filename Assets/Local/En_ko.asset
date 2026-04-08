@@ -104,6 +104,22 @@ MonoBehaviour:
       \uBAA8\uB4E0 \uB2A5\uB825\uC744 \uC0AC\uC6A9\uD558\uB294 \uC874\uC7AC\uC785\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
+  - m_Id: 2006629998886912
+    m_Localized: Not enough points!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2006667688902656
+    m_Localized: Max level reached!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2006917740724224
+    m_Localized: Level Up!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2006918625722368
+    m_Localized: 'Points:'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

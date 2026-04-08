@@ -206,6 +206,8 @@ public class Mainmenu : MonoBehaviour
     public void closekey() { keypanel.SetActive(false); UpdateKeyUI(); }
     public void StoryStart() => SceneChanger.BG("StoryTetris");
     public void DungeonStart() {
+        Time.timeScale = 1f; 
+        if (Stat.instance != null) Stat.instance.hp = Stat.instance.maxhp;
         blockclear.currentScore = 0;
         SceneChanger.BG("Dungeon"); }
     public void ResetLevelCheck() => ResetWarning.SetActive(true);
@@ -245,6 +247,8 @@ public class Mainmenu : MonoBehaviour
     public void CloseCustum() => custumpanel.SetActive(false);
     public void StartCUstom()
     {
+        Time.timeScale = 1f;
+        if (Stat.instance != null) Stat.instance.hp = Stat.instance.maxhp;
         blockclear.currentScore = 0;
         SceneChanger.BG("custom");
     }
