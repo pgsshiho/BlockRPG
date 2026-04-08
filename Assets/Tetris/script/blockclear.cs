@@ -133,29 +133,32 @@ public class blockclear : MonoBehaviour
         int bonusScore = 0;
         int bonusPower = 0;
 
+        // 1. 특수 제거 보너스 하향
         if (twistPerformed)
         {
-            if (lines == 1) { displayMessage += "Twist Single!\n"; bonusScore += 150; bonusPower += 10; }
-            else if (lines == 2) { displayMessage += "Twist Double!\n"; bonusScore += 450; bonusPower += 35; }
-            else { displayMessage += $"Twist Burst {lines}!\n"; bonusScore += 700 * lines; bonusPower += 50 * lines; }
+            if (lines == 1) { displayMessage += "Twist Single!\n"; bonusScore += 100; bonusPower += 5; } // 150 -> 100
+            else if (lines == 2) { displayMessage += "Twist Double!\n"; bonusScore += 300; bonusPower += 20; } // 450 -> 300
+            else { displayMessage += $"Twist Burst {lines}!\n"; bonusScore += 500 * lines; bonusPower += 30 * lines; } // 700 -> 500
             bb.IsTwist = false;
         }
         else if (lines >= 4) { displayMessage += "ULTRA BURST!\n"; }
 
         if (isSpecial)
         {
-            if (isLinkActive) { displayMessage += "LINK BONUS!\n"; bonusScore += 200; bonusPower += 15; }
+            if (isLinkActive) { displayMessage += "LINK BONUS!\n"; bonusScore += 100; bonusPower += 10; } // 200 -> 100
             isLinkActive = true;
         }
         else { isLinkActive = false; }
 
         if (!string.IsNullOrEmpty(displayMessage)) SpawnFloatingText(displayMessage.Replace("\n", " "), 35, Color.green);
 
-        int comboBonus = (combo > 1) ? (combo * combo * 12) : 0;
-        int comboPower = (combo > 1) ? (int)(combo * 7.5f) : 0;
+        // 2. 콤보 보너스 하향 (제곱에서 배수로 변경하여 폭주 방지)
+        int comboBonus = (combo > 1) ? (combo * 25) : 0; // combo*combo*12 -> combo*25
+        int comboPower = (combo > 1) ? (int)(combo * 4f) : 0; // 7.5f -> 4f
 
-        int[] baseLineScore = { 0, 70, 180, 350, 750 };
-        int[] baseLinePower = { 0, 10, 30, 60, 110 };
+        // 3. 기본 라인 점수/데미지 하향
+        int[] baseLineScore = { 0, 40, 100, 250, 500 }; // 70, 180, 350, 750에서 하향
+        int[] baseLinePower = { 0, 5, 15, 35, 70 };      // 10, 30, 60, 110에서 하향
 
         int finalScore = baseLineScore[Mathf.Min(lines, 4)] + bonusScore + comboBonus;
         int finalPower = baseLinePower[Mathf.Min(lines, 4)] + bonusPower + comboPower;
@@ -166,6 +169,41 @@ public class blockclear : MonoBehaviour
         UpdateScoreUI();
     }
 
+    IEnumerator ProcessAttackSequence(int remainingAtk)
+    {
+        while (remainingAtk > 0)
+        {
+            Enemybase target = null;
+            Enemybase[] enemies = FindObjectsByType<Enemybase>(FindObjectsSortMode.None);
+            foreach (var e in enemies) { if (!e.IsDead) { target = e; break; } }
+
+            if (target != null)
+            {
+                // 4. 스탯에 따른 공격력 배율 하향 (13% -> 7%)
+                float multiplier = (Stat.instance != null) ? (1.0f + (Stat.instance.atk * 0.07f)) : 1f;
+
+                int enemyCurrentHp = target.hp;
+                int potentialAtk = Mathf.CeilToInt(remainingAtk * multiplier);
+
+                if (potentialAtk > 0) SpawnFloatingText("-" + potentialAtk.ToString(), 55, Color.red);
+
+                if (potentialAtk >= enemyCurrentHp)
+                {
+                    // 적 체력을 깎는데 소모된 순수 공격력 계산
+                    int consumed = Mathf.CeilToInt(enemyCurrentHp / multiplier);
+                    target.hit(potentialAtk); // 실제 데미지 전달
+                    remainingAtk -= consumed;
+                    yield return new WaitForSeconds(0.5f); // 대기 시간 단축 (속도감)
+                }
+                else
+                {
+                    target.hit(potentialAtk);
+                    remainingAtk = 0;
+                }
+            }
+            else { yield return new WaitForSeconds(0.1f); }
+        }
+    }
     public void UpdateScoreUI()
     {
         if (scoreText != null)
@@ -246,32 +284,6 @@ public class blockclear : MonoBehaviour
                     }
                 }
             }
-        }
-    }
-
-    IEnumerator ProcessAttackSequence(int remainingAtk)
-    {
-        while (remainingAtk > 0)
-        {
-            Enemybase target = null;
-            Enemybase[] enemies = FindObjectsByType<Enemybase>(FindObjectsSortMode.None);
-            foreach (var e in enemies) { if (!e.IsDead) { target = e; break; } }
-            if (target != null)
-            {
-                float multiplier = (Stat.instance != null) ? (1.0f + (Stat.instance.atk * 0.13f)) : 1f;
-                int enemyCurrentHp = target.hp;
-                int potentialAtk = Mathf.CeilToInt(remainingAtk * multiplier);
-                if (potentialAtk > 0) SpawnFloatingText("-" + potentialAtk.ToString(), 55, Color.red);
-                if (potentialAtk >= enemyCurrentHp)
-                {
-                    int consumed = Mathf.CeilToInt(enemyCurrentHp / multiplier);
-                    target.hit(remainingAtk);
-                    remainingAtk -= consumed;
-                    yield return new WaitForSeconds(0.7f);
-                }
-                else { target.hit(remainingAtk); remainingAtk = 0; }
-            }
-            else { yield return new WaitForSeconds(0.1f); }
         }
     }
 

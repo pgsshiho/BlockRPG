@@ -15603,10 +15603,10 @@ RectTransform:
   - {fileID: 955201469}
   - {fileID: 499557072}
   - {fileID: 262266679}
-  - {fileID: 1789629510}
   - {fileID: 1516430524}
   - {fileID: 1897994528}
   - {fileID: 1281050595}
+  - {fileID: 1789629510}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -40832,8 +40832,9 @@ MonoBehaviour:
   maxhpText: {fileID: 1178191713}
   spdText: {fileID: 559723738}
   statpText: {fileID: 846715857}
-  overstatPopup: {fileID: 1854248993}
-  popupText: {fileID: 818480286}
+  overstatPanel: {fileID: 1789629511}
+  popupText: {fileID: 1455941021}
+  tableName: En
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
