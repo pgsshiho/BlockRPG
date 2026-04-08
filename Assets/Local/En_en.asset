@@ -27,7 +27,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 751166783488
-    m_Localized: "Go to the end of the dungeon and \ndefeat the last enemy."
+    m_Localized: Go to the end of the dungeon and defeat the last enemy.
     m_Metadata:
       m_Items: []
   - m_Id: 1476185784320

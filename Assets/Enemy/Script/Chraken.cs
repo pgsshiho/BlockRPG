@@ -54,7 +54,7 @@ public class Chraken : Enemybase, ISpecialAttack
 
     IEnumerator WaitDeadAnimation()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.8f);
         base.enemyspawn();
 
         Destroy(gameObject);
