@@ -105,19 +105,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2006629998886912
-    m_Localized: Not enough points!
+    m_Localized: "\uD3EC\uC778\uD2B8 \uBD80\uC871!"
     m_Metadata:
       m_Items: []
   - m_Id: 2006667688902656
-    m_Localized: Max level reached!
+    m_Localized: "\uCD5C\uB300\uCE58 \uB3C4\uB2EC!"
     m_Metadata:
       m_Items: []
   - m_Id: 2006917740724224
-    m_Localized: Level Up!
+    m_Localized: "\uB808\uBCA8 \uC5C5!"
     m_Metadata:
       m_Items: []
   - m_Id: 2006918625722368
-    m_Localized: 'Points:'
+    m_Localized: "\uD3EC\uC778\uD2B8:"
     m_Metadata:
       m_Items: []
   references:
