@@ -132,6 +132,37 @@ MonoBehaviour:
     m_Localized: 'Points:'
     m_Metadata:
       m_Items: []
+  - m_Id: 2442587168800768
+    m_Localized: Fill a horizontal row with gems to deal damage to enemies and clear
+      the line.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2442976261799936
+    m_Localized: An enemy that constantly interferes with your progress, but grants
+      health recovery upon defeat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2443741382541312
+    m_Localized: 'Upgrade your stats to strengthen yourself.
+
+      MAX HP: Increase
+      Maximum Health
+
+      ATK: Increase Attack Power
+
+      SPD: Decrease Gem Fall
+      Spee
+
+      INT: Increase Number of Preview Gems'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2446056059535360
+    m_Localized: 'If a hole appears in the middle that absolutely cannot be inserted,
+      it will take slight damage.
+
+'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
