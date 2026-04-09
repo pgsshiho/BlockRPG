@@ -48,8 +48,6 @@ public class ouger : Enemybase, ISpecialAttack
 
         // 공격 후 약간의 후딜레이 (고블린의 0.8초처럼)
         yield return new WaitForSeconds(0.8f);
-
-        // 이제 다음 공격이 가능하도록 해제
         isattack = false;
     }
 
