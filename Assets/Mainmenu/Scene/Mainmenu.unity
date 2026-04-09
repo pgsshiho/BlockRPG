@@ -7239,7 +7239,7 @@ MonoBehaviour:
     m_TableReference:
       m_TableCollectionName: GUID:4011844a6fca3f8488675c3ebf296a70
     m_TableEntryReference:
-      m_KeyId: 2442587168800768
+      m_KeyId: 2443741382541312
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -15426,7 +15426,6 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 659687327}
   - {fileID: 1443410530}
   - {fileID: 1725141661}
   - {fileID: 1968291185}
@@ -15437,6 +15436,7 @@ RectTransform:
   - {fileID: 1958590204}
   - {fileID: 45458624}
   - {fileID: 1339095553}
+  - {fileID: 659687327}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

@@ -5,7 +5,7 @@ using UnityEngine;
 public class BlockBase : MonoBehaviour
 {
     public static List<BlockBase> AllBlocks = new List<BlockBase>();
-
+    public bool skipSpawnNext = false;
     Rigidbody2D rb;
     int frame = 60, nowfram = 0, dropDistance = 1;
     float moveTimer = 0f, lockDelayTimer = 0f;
@@ -284,6 +284,8 @@ public class BlockBase : MonoBehaviour
 
     void OnHardDropSettle()
     {
+
+        if (skipSpawnNext) return;
         if (ghost != null) Destroy(ghost);
         SnapToGrid();
 
