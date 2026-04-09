@@ -97,6 +97,7 @@ public class Mainmenu : MonoBehaviour
     {
         if (nowrulepage > 1)
         {
+            Debug.Log("버튼눌림");
             rulepage[nowrulepage - 1].SetActive(false);
             nowrulepage--;
             rulepage[nowrulepage - 1].SetActive(true);
