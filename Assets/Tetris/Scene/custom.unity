@@ -26784,8 +26784,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::blockclear
   visualYOffset: -19
   topOffset: 1
-  lineCheckStartX: 6
-  lineCheckEndX: 18
+  lineCheckStartX: 3
+  lineCheckEndX: 15
   requiredBlocks: 12
   scoreText: {fileID: 1711288959}
   combo: 0

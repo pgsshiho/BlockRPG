@@ -21,7 +21,16 @@ public class BlockBase : MonoBehaviour
     public bool isground = false, IsTwist = false, rightclock = false, rightleft = false, Irotate = false;
     public int trying = 0; // 조작 횟수 카운트 (무한 회전 방지)
     public GameObject BaseDesigh, ChangeDesigh;
-
+    bool lastMirrorState;
+    void CheckMirrorChange()
+    {
+        if (gm.IsMirrored != lastMirrorState)
+        {
+            SnapToGrid(); // 위치 강제 고정
+            UpdateGhostPosition(); // 고스트 즉시 갱신
+            lastMirrorState = gm.IsMirrored;
+        }
+    }
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -377,6 +386,12 @@ public class BlockBase : MonoBehaviour
         SnapToGrid();
         if (!canmove(Vector3.down))
         {
+            if (!IsRotationSafe()) // IsRotationSafe가 충돌 감지를 하므로 활용 가능
+            {
+                // 만약 충돌 중이라면 위로 한 칸 올리는 등의 보정 로직 필요
+                transform.position += Vector3.up * 0.5f;
+            }
+
             OnHardDropSettle();
         }
     }
