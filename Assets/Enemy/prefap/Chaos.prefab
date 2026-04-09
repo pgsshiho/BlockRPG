@@ -137,5 +137,6 @@ MonoBehaviour:
   hpbar: {fileID: 0}
   baseHp: 400
   baseDamage: 6
+  enemyDisplayName: Nyarlathotep
   specialBlock: {fileID: 573880280774149007, guid: 88ac8a20781d1a041a17214afb92a17a,
     type: 3}

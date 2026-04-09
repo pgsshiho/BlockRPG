@@ -137,6 +137,7 @@ MonoBehaviour:
   hpbar: {fileID: 0}
   baseHp: 60
   baseDamage: 4
+  enemyDisplayName: Golem
   shakeDuration: 3
   shakeMagnitude: 3
   enemyData: {fileID: 11400000, guid: 25a1d081ca08e2d4898a87400d2a0baa, type: 2}

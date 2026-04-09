@@ -312,4 +312,37 @@ public class blockclear : MonoBehaviour
         FloatingText ft = obj.GetComponent<FloatingText>();
         if (ft != null) ft.Setup(message, fontSize, textColor);
     }
+    // 에디터에서 범위를 시각적으로 표시해주는 Gizmos 함수
+    private void OnDrawGizmos()
+    {
+        // 1. 라인 감지 범위 표시 (Line Detection Range)
+        // 설정된 startX, endX, 그리고 y축 전체 범위를 사각형으로 표시
+        Gizmos.color = new Color(1f, 0f, 0f, 0.3f); // 투명한 빨간색
+
+        // 인덱스를 실제 월드 좌표로 변환하기 위한 계산
+        float worldStartX = (lineCheckStartX / 2f) - 4.5f;
+        float worldEndX = (lineCheckEndX / 2f) - 4.5f;
+        float widthSize = worldEndX - worldStartX;
+
+        // 중심점과 사이즈 계산
+        Vector3 center = new Vector3(worldStartX + (widthSize / 2f) - 0.25f, visualYOffset + (height / 4f), 0);
+        Vector3 size = new Vector3(widthSize, height / 2f, 0.1f);
+
+        Gizmos.DrawWireCube(center, size);
+        Gizmos.DrawCube(center, size);
+
+        // 2. 게임 오버 감지선 표시 (GameOver Line)
+        // y = 61 인덱스를 월드 좌표로 변환
+        float gameOverY = (61 / 2f) + visualYOffset;
+        Gizmos.color = Color.yellow; // 게임오버 선은 노란색
+        Vector3 lineStart = new Vector3(-5f, gameOverY, 0);
+        Vector3 lineEnd = new Vector3(5f, gameOverY, 0);
+
+        Gizmos.DrawLine(lineStart, lineEnd);
+
+        // 게임오버 텍스트 표시 (선택 사항)
+#if UNITY_EDITOR
+        UnityEditor.Handles.Label(lineStart + Vector3.up * 0.2f, "GAME OVER LINE (Y:61)");
+#endif
+    }
 }

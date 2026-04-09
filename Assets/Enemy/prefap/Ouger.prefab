@@ -137,5 +137,6 @@ MonoBehaviour:
   hpbar: {fileID: 0}
   baseHp: 50
   baseDamage: 4
+  enemyDisplayName: Ouger
   mirrorDuration: 6
   enemyData: {fileID: 11400000, guid: 25a1d081ca08e2d4898a87400d2a0baa, type: 2}

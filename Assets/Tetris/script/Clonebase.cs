@@ -41,8 +41,11 @@ public class Conebase : MonoBehaviour
 
     public void Clone()
     {
-        if (c + 5 >= blockBag.Count) fillbag();
 
+        BlockBase existingBlock = FindObjectOfType<BlockBase>();
+
+        if (existingBlock != null && existingBlock.enabled) return;
+        if (c + 5 >= blockBag.Count) fillbag();
         currentBlock = Instantiate(blockBag[c], spawnpoint.transform.position, Quaternion.identity);
         seeclone(blockBag[c], currentBlock);
 

@@ -137,6 +137,7 @@ MonoBehaviour:
   hpbar: {fileID: 0}
   baseHp: 25
   baseDamage: 2
+  enemyDisplayName: Shaman
   specialBlock: {fileID: 573880280774149007, guid: 88ac8a20781d1a041a17214afb92a17a,
     type: 3}
   enemyData: {fileID: 11400000, guid: 25a1d081ca08e2d4898a87400d2a0baa, type: 2}

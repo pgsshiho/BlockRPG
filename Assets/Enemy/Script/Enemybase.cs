@@ -26,7 +26,7 @@ public class Enemybase : MonoBehaviour, TakeDamage
 
     protected Stat st;
     protected bool isDead = false;
-
+    public string enemyDisplayName = "적";
     public bool IsDead => isDead;
 
     protected virtual void Start()
@@ -77,7 +77,7 @@ public class Enemybase : MonoBehaviour, TakeDamage
         TakeDamage player = Stat.instance.GetComponent<TakeDamage>();
         if (player != null)
         {
-            player.TakeDamage(damage, gameObject.name);
+            player.TakeDamage(damage, enemyDisplayName);
         }
     }
 
