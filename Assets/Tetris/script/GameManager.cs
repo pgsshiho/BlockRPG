@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     private EnemySpawn es;
     public GameObject blackpanel;
     public GameObject hiddenhold;
+    Stat st;
     public bool IsMirrored { get; private set; }
 
     void Awake()
@@ -98,7 +99,8 @@ public class GameManager : MonoBehaviour
         }
         blockclear.ScoreForSpeed = 0;
         blockclear.currentScore = 0;
-
+        st = FindAnyObjectByType<Stat>();
+        st.hp = st.maxhp;
         SceneChanger.BG("Mainmenu");
     }
 

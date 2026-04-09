@@ -15350,7 +15350,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1282988335}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: backmenu
         m_Mode: 1
@@ -26768,7 +26768,7 @@ MonoBehaviour:
   panel: {fileID: 152610432}
   statpanel: {fileID: 179017485}
   isON: 1
-  blackpanel: {fileID: 1112927515}
+  blackpanel: {fileID: 1880027286}
   hiddenhold: {fileID: 1111159642}
 --- !u!114 &1282988336
 MonoBehaviour:
@@ -31060,7 +31060,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1282988335}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: ResumeGame
         m_Mode: 1
@@ -38055,7 +38055,7 @@ Transform:
   m_GameObject: {fileID: 1880027286}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.7763, y: 4.706, z: 0}
+  m_LocalPosition: {x: -0.36, y: 5.36, z: 0}
   m_LocalScale: {x: 38.96456, y: 69.96087, z: 38.96456}
   m_ConstrainProportionsScale: 0
   m_Children: []

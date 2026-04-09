@@ -97,7 +97,7 @@ public class Ghost : Enemybase, ISpecialAttack
     IEnumerator GhostAttackSequence()
     {
         ApplyEffect();
-        yield return new WaitForSeconds(0.8f);
+        yield return new WaitForSeconds(1.0f);
         isattack = false;
     }
 
