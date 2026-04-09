@@ -17,10 +17,11 @@ public class Mainmenu : MonoBehaviour
     public GameObject Statpanel;
     private bool isWaitingForKey = false;
     int nowpage = 0;
-
+    int nowrulepage = 0;
     [Header("MainPage / Bestiary")]
     public GameObject[] Page;        // 도감 각 페이지 오브젝트
     public GameObject[] PageHide;    // 도감 각 페이지를 가리고 있는 '잠금/물음표' 오브젝트
+    public GameObject[] rulepage;
     public FindEnemy enemyData;      // ScriptableObject 할당용
 
     [Header("Key Display Texts")]
@@ -84,7 +85,24 @@ public class Mainmenu : MonoBehaviour
             nowpage++;
         }
     }
-
+    public void Openrulepage()
+    {
+        if (nowrulepage < rulepage.Length)
+        {
+            rulepage[nowrulepage].SetActive(true);
+            nowrulepage++;
+        }
+    }
+    public void Beforerulepage()
+    {
+        if (nowrulepage > 1)
+        {
+            Debug.Log("버튼눌림");
+            rulepage[nowrulepage - 1].SetActive(false);
+            nowrulepage--;
+            rulepage[nowrulepage - 1].SetActive(true);
+        }
+    }
     public void beforePage()
     {
         if (nowpage > 1)
@@ -94,7 +112,14 @@ public class Mainmenu : MonoBehaviour
             Page[nowpage - 1].SetActive(true);
         }
     }
-
+    public void CloseRulePage()
+    {
+        nowrulepage = 0;
+        foreach (GameObject page in rulepage)
+        {
+            page.SetActive(false);
+        }
+    }
     public void ClosePage()
     {
         nowpage = 0;

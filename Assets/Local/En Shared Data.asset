@@ -91,6 +91,22 @@ MonoBehaviour:
     m_Key: UI_POINTS_LABEL
     m_Metadata:
       m_Items: []
+  - m_Id: 2442587168800768
+    m_Key: Gem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2442976261799936
+    m_Key: Enemyex
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2443741382541312
+    m_Key: StatEx
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2446056059535360
+    m_Key: HoleEx
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
