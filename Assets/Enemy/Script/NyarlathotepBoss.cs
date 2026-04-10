@@ -200,7 +200,7 @@ public class NyarlathotepBoss : Enemybase
         if (es != null) { es.isSpawning = false; es.spawn(); }
         if (sceneName == "Dungeon")
         {
-            SceneChanger.BG("GameClear");
+            SceneChanger.BG("Clear");
             Gameclear.score = blockclear.currentScore;
         }
         Destroy(gameObject);
