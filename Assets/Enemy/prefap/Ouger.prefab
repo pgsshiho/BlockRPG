@@ -128,7 +128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ouger
   frame: 0
   isattack: 0
-  baseTargetFrame: 650
+  baseTargetFrame: 400
   targetFrame: 0
   maxhp: 50
   hp: 50
