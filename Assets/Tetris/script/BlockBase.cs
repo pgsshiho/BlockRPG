@@ -5,32 +5,45 @@ using UnityEngine;
 public class BlockBase : MonoBehaviour
 {
     public static List<BlockBase> AllBlocks = new List<BlockBase>();
+    
+    [Header("Settings")]
     public bool skipSpawnNext = false;
-    Rigidbody2D rb;
-    int frame = 60, nowfram = 0, dropDistance = 1;
-    float moveTimer = 0f, lockDelayTimer = 0f;
+    public GameObject ghost;
+    public GameObject BaseDesigh;
+    public GameObject ChangeDesigh;
+
+    [Header("Status")]
+    public bool isground = false;
+    public bool IsTwist = false; // T-Spin 판정 결과
+    public int trying = 0; // 조작 횟수 (무한 회전 방지)
+
+    // 내부 변수
+    private Rigidbody2D rb;
+    private int frame = 60;
+    private int nowfram = 0;
+    private int dropDistance = 1;
+    private float moveTimer = 0f;
+    private float lockDelayTimer = 0f;
+    private bool lastActionWasRotate = false;
+    private bool lastMirrorState;
 
     // 스크립트 참조
-    Conebase cb;
-    GameManager gm;
-    blockclear bc;
-    KeyBinding key;
+    private Conebase cb;
+    private GameManager gm;
+    private blockclear bc;
+    private KeyBinding key;
 
-    public GameObject ghost;
-    // Tspin: T-Spin 여부, rightclock: 시계방향 여부, rightleft: 180도 회전 여부, Irotate: I블록 회전 상태
-    public bool isground = false, IsTwist = false, rightclock = false, rightleft = false, Irotate = false;
-    public int trying = 0; // 조작 횟수 카운트 (무한 회전 방지)
-    public GameObject BaseDesigh, ChangeDesigh;
-    bool lastMirrorState;
-    void CheckMirrorChange()
-    {
-        if (gm.IsMirrored != lastMirrorState)
-        {
-            SnapToGrid(); // 위치 강제 고정
-            UpdateGhostPosition(); // 고스트 즉시 갱신
-            lastMirrorState = gm.IsMirrored;
-        }
-    }
+    // SRS(Super Rotation System) 범용 킥 데이터 (0.5 단위 그리드 기준)
+    // 인덱스: 0(기본), 1(좌), 2(우), 3(하), 4(상), 5(좌하단)
+    private readonly Vector3[] kickOffsets = {
+        new Vector3(0, 0, 0),
+        new Vector3(-0.5f, 0, 0),
+        new Vector3(0.5f, 0, 0),
+        new Vector3(0, -0.5f, 0),
+        new Vector3(0, 0.5f, 0),
+        new Vector3(-0.5f, -0.5f, 0)
+    };
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -41,13 +54,14 @@ public class BlockBase : MonoBehaviour
 
         SnapToGrid();
         if (ghost != null) UpdateGhostPosition();
+        if (gm != null) lastMirrorState = gm.IsMirrored;
     }
 
     void Update()
     {
-        if (gm.isON) return;
+        if (gm != null && gm.isON) return;
 
-        // 속도 및 조작 설정 (Stat 스크립트 기반)
+        // 속도 및 조작 설정 (Stat 기반)
         int speedStat = (Stat.instance != null) ? Stat.instance.spd : 0;
         float moveMod = Mathf.Clamp(Mathf.Pow(2, speedStat / 5f), 0.2f, 1.5f);
         float currentDas = 0.15f * moveMod;
@@ -56,9 +70,10 @@ public class BlockBase : MonoBehaviour
         if (isground) lockDelayTimer += Time.deltaTime;
 
         // 회전 입력 처리
-        if (Input.GetKeyDown(key.rotate)) { rightclock = false; RotateBlock(); }
-        if (Input.GetKeyDown(key.zRotate)) { rightclock = true; RotateBlock(); }
-        if (Input.GetKeyDown(key.aRotate)) { rightleft = true; RotateBlock(); }
+        if (Input.GetKeyDown(key.rotate)) RotateBlock(-90f); // 시계
+        if (Input.GetKeyDown(key.zRotate)) RotateBlock(90f);  // 반시계
+        if (Input.GetKeyDown(key.aRotate)) RotateBlock(180f); // 180도
+        
         if (Input.GetKeyDown(key.hardDrop)) HardDrop();
 
         // 좌우하 이동 처리
@@ -72,92 +87,73 @@ public class BlockBase : MonoBehaviour
             moveTimer = 0;
         }
 
-        // 아무 키 입력 시 고스트 위치 업데이트 (최적화)
-        if (Input.anyKey && ghost != null && !gm.isON)
+        // 미러 모드 변경 체크
+        CheckMirrorChange();
+
+        // 고스트 업데이트
+        if (Input.anyKey && ghost != null)
         {
             UpdateGhostPosition();
         }
     }
 
-    void RotateBlock()
+    void CheckMirrorChange()
     {
+        if (gm != null && gm.IsMirrored != lastMirrorState)
+        {
+            SnapToGrid();
+            UpdateGhostPosition();
+            lastMirrorState = gm.IsMirrored;
+        }
+    }
+
+    void RotateBlock(float angle)
+    {
+        // O형 블록(ㅁ)은 회전 제외
+        if (gameObject.name.Contains("ㅁ") || gameObject.name.Contains("O")) return;
+
         Vector3 originalPos = transform.position;
         Quaternion originalRot = transform.rotation;
 
-        // O블록(ㅁ)은 회전하지 않음
-        if (!gameObject.name.Contains("ㅁ"))
+        // 1. 회전 적용
+        transform.Rotate(0, 0, angle);
+        
+        bool success = false;
+
+        // 2. SRS 킥 시도
+        foreach (Vector3 offset in kickOffsets)
         {
-            // 1. 회전 적용
-            if (rightleft)
-            {
-                transform.Rotate(0, 0, 180);
-                rightleft = false;
-            }
-            else if (!rightclock) // 반시계
-            {
-                if (gameObject.name.Contains("I"))
-                {
-                    transform.Rotate(0, 0, Irotate ? -90 : 90);
-                    Irotate = !Irotate;
-                }
-                else transform.Rotate(0, 0, -90);
-            }
-            else // 시계
-            {
-                if (gameObject.name.Contains("I"))
-                {
-                    transform.Rotate(0, 0, Irotate ? 90 : -90);
-                    Irotate = !Irotate;
-                }
-                else transform.Rotate(0, 0, 90);
-            }
+            float mirrorFactor = (gm != null && gm.IsMirrored) ? -1f : 1f;
+            Vector3 testOffset = new Vector3(offset.x * mirrorFactor, offset.y, 0);
 
+            transform.position = originalPos + testOffset;
+            if (IsRotationSafe())
+            {
+                success = true;
+                break;
+            }
+        }
+
+        if (success)
+        {
             SnapToGrid();
-            bool success = IsRotationSafe();
-
-            // 2. 충돌 시 0.5 단위 킥백(Kickback) 시도
-            if (!success)
-            {
-                Vector3[] kickOffsets = gameObject.name.Contains("I") ?
-                    new Vector3[] {
-                        new Vector3(-0.5f, 0, 0), new Vector3(0.5f, 0, 0), new Vector3(0, 0.5f, 0),
-                        new Vector3(0, -0.5f, 0), new Vector3(-1f, 0, 0), new Vector3(1f, 0, 0)
-                    } :
-                    new Vector3[] {
-                        new Vector3(-0.5f, 0, 0), new Vector3(0.5f, 0, 0), new Vector3(0, -0.5f, 0),
-                        new Vector3(0, 0.5f, 0), new Vector3(-0.5f, -0.5f, 0), new Vector3(0.5f, -0.5f, 0)
-                    };
-
-                foreach (Vector3 offset in kickOffsets)
-                {
-                    transform.position = originalPos + offset;
-                    SnapToGrid();
-                    if (IsRotationSafe())
-                    {
-                        success = true;
-                        break;
-                    }
-                }
-            }
-
-            if (success)
-            {
-                if (isground) lockDelayTimer = 0;
-                trying++; // 조작 횟수 누적
-                Sound.instance.swing.Play();
-                CheckTwistStatus();
-            }
-            else
-            {
-                // 모든 시도 실패 시 원래대로 복구
-                transform.position = originalPos;
-                transform.rotation = originalRot;
-            }
+            lastActionWasRotate = true;
+            if (isground) lockDelayTimer = 0;
+            trying++;
+            if (Sound.instance != null) Sound.instance.swing.Play();
+            CheckTwistStatus();
+        }
+        else
+        {
+            // 모든 킥 실패 시 복구
+            transform.position = originalPos;
+            transform.rotation = originalRot;
         }
     }
 
     void CheckTwistStatus()
     {
+        // T-Spin 판정 (T자 블록 계열 확인)
         if (gameObject.name.Contains("ㅗ") || gameObject.name.Contains("T"))
         {
             Vector2[] corners = {
@@ -168,10 +164,12 @@ public class BlockBase : MonoBehaviour
             int count = 0;
             foreach (Vector2 offset in corners)
             {
-                Vector2 check = (Vector2)transform.position + offset;
-                if (IsPosOccupied(check)) count++;
+                // 월드 좌표 기준 귀퉁이 체크
+                Vector2 checkPos = (Vector2)transform.position + (Vector2)(transform.rotation * offset);
+                if (IsPosOccupied(checkPos)) count++;
             }
-            IsTwist = (count >= 3); // 4개 구석 중 3개 이상 막히면 T-Spin
+            // 3개 이상의 구석이 막혀있고 마지막 행동이 회전일 때 T-Spin
+            IsTwist = (count >= 3 && lastActionWasRotate);
         }
     }
 
@@ -180,7 +178,7 @@ public class BlockBase : MonoBehaviour
         Vector2Int idx = blockclear.PosToIndex(pos);
         if (idx.x < 0 || idx.x >= blockclear.width || idx.y < 0) return true;
 
-        Collider2D hit = Physics2D.OverlapCircle(pos, 0.15f);
+        Collider2D hit = Physics2D.OverlapBox(pos, new Vector2(0.4f, 0.4f), 0);
         return (hit != null && hit.transform.parent != transform && (hit.CompareTag("Floor") || hit.CompareTag("Block")));
     }
 
@@ -214,17 +212,17 @@ public class BlockBase : MonoBehaviour
         return true;
     }
 
-    void HandleInputMovement(KeyCode key, Vector3 dir, float das, float arr)
+    void HandleInputMovement(KeyCode k, Vector3 dir, float das, float arr)
     {
         Vector3 finalDir = (gm != null && gm.IsMirrored) ? (dir == Vector3.right ? Vector3.left : (dir == Vector3.left ? Vector3.right : dir)) : dir;
 
-        if (Input.GetKeyDown(key))
+        if (Input.GetKeyDown(k))
         {
             MoveOnce(finalDir);
             moveTimer = 0;
         }
 
-        if (Input.GetKey(key))
+        if (Input.GetKey(k))
         {
             moveTimer += Time.deltaTime;
             if (moveTimer > das)
@@ -244,13 +242,14 @@ public class BlockBase : MonoBehaviour
         {
             transform.position += dir * 0.5f;
             SnapToGrid();
+            lastActionWasRotate = false; // 이동 시 T-Spin 조건 취소
             if (isground) lockDelayTimer = 0;
         }
     }
 
     private void FixedUpdate()
     {
-        if (gm.isON) return;
+        if (gm != null && gm.isON) return;
 
         UpdateLevelSpeed();
         nowfram++;
@@ -271,6 +270,7 @@ public class BlockBase : MonoBehaviour
                 transform.position += new Vector3(0, -0.5f, 0);
                 isground = false;
                 lockDelayTimer = 0;
+                lastActionWasRotate = false;
             }
             else
             {
@@ -283,7 +283,6 @@ public class BlockBase : MonoBehaviour
         {
             int speedStat = (Stat.instance != null) ? Stat.instance.spd : 0;
             float lockMod = Mathf.Pow(2, speedStat / 3f);
-            // 0.3초 혹은 일정 조작 횟수(15회) 초과 시 고정
             if (lockDelayTimer >= 0.35f * lockMod || trying >= 15)
             {
                 OnHardDropSettle();
@@ -293,7 +292,6 @@ public class BlockBase : MonoBehaviour
 
     void OnHardDropSettle()
     {
-
         if (skipSpawnNext) return;
         if (ghost != null) Destroy(ghost);
         SnapToGrid();
@@ -301,7 +299,6 @@ public class BlockBase : MonoBehaviour
         foreach (Transform child in transform)
         {
             Vector2Int idx = blockclear.PosToIndex(child.position);
-
             if (idx.x >= 0 && idx.x < blockclear.width && idx.y >= 0 && idx.y < blockclear.height)
             {
                 blockclear.grid[idx.x, idx.y] = child;
@@ -309,10 +306,12 @@ public class BlockBase : MonoBehaviour
             }
         }
 
+        if (IsTwist) Debug.Log("T-Spin Success!");
+        
         bc.DeleteFullLines();
-        Sound.instance.drop.Play();
+        if (Sound.instance != null) Sound.instance.drop.Play();
         this.enabled = false;
-        cb.Clone(); // 다음 블록 생성
+        cb.Clone();
     }
 
     bool canmove(Vector3 direction)
@@ -336,16 +335,17 @@ public class BlockBase : MonoBehaviour
 
     void UpdateGhostPosition()
     {
+        if (ghost == null) return;
         ghost.transform.position = transform.position;
         ghost.transform.rotation = transform.rotation;
 
         int loop = 0;
-        while (canmoveGhost(Vector3.down) && loop < 100) // 맵 높이에 따라 루프 횟수 조절
+        while (canmoveGhost(Vector3.down) && loop < 40)
         {
             ghost.transform.position += new Vector3(0, -0.5f, 0);
             loop++;
         }
-
+        
         ghost.transform.position = new Vector3(
             Mathf.Round(ghost.transform.position.x * 2f) / 2f,
             Mathf.Round(ghost.transform.position.y * 2f) / 2f,
@@ -378,22 +378,13 @@ public class BlockBase : MonoBehaviour
     void HardDrop()
     {
         int loop = 0;
-        while (canmove(Vector3.down) && loop < 100)
+        while (canmove(Vector3.down) && loop < 40)
         {
             transform.position += new Vector3(0, -0.5f, 0);
             loop++;
         }
         SnapToGrid();
-        if (!canmove(Vector3.down))
-        {
-            if (!IsRotationSafe()) // IsRotationSafe가 충돌 감지를 하므로 활용 가능
-            {
-                // 만약 충돌 중이라면 위로 한 칸 올리는 등의 보정 로직 필요
-                transform.position += Vector3.up * 0.5f;
-            }
-
-            OnHardDropSettle();
-        }
+        OnHardDropSettle();
     }
 
     void UpdateLevelSpeed()
@@ -402,13 +393,12 @@ public class BlockBase : MonoBehaviour
         int speedStat = (Stat.instance != null) ? Stat.instance.spd : 0;
         int d = (Stat.instance != null) ? Stat.instance.difficult : 3;
 
-        int[] frames = { 60, 50, 42, 35, 30, 25, 20, 16, 13, 10, 8, 7, 6, 5, 4, 3, 2, 2, 1 };
-
+        int[] framesArr = { 60, 50, 42, 35, 30, 25, 20, 16, 13, 10, 8, 7, 6, 5, 4, 3, 2, 2, 1 };
         float levelIndex = s / 1000f;
         float baseFrame;
 
-        if (levelIndex < frames.Length) baseFrame = frames[Mathf.FloorToInt(levelIndex)];
-        else baseFrame = 1f / (levelIndex - frames.Length + 1);
+        if (levelIndex < framesArr.Length) baseFrame = framesArr[Mathf.FloorToInt(levelIndex)];
+        else baseFrame = 1f / (levelIndex - framesArr.Length + 1);
 
         baseFrame -= (d - 3) * 5;
         float finalFrame = baseFrame * Mathf.Pow(2, speedStat / 3f);
@@ -432,27 +422,24 @@ public class BlockBase : MonoBehaviour
     {
         if (BaseDesigh != null) BaseDesigh.SetActive(false);
         if (ChangeDesigh != null) ChangeDesigh.SetActive(true);
-
-        if (ghost != null)
-        {
-            Transform gBase = ghost.transform.Find(BaseDesigh.name);
-            Transform gChange = ghost.transform.Find(ChangeDesigh.name);
-            if (gBase != null) gBase.gameObject.SetActive(false);
-            if (gChange != null) gChange.gameObject.SetActive(true);
-        }
+        UpdateGhostDesign(false);
     }
 
     public void dechange()
     {
         if (BaseDesigh != null) BaseDesigh.SetActive(true);
         if (ChangeDesigh != null) ChangeDesigh.SetActive(false);
+        UpdateGhostDesign(true);
+    }
 
+    void UpdateGhostDesign(bool showBase)
+    {
         if (ghost != null)
         {
-            Transform gBase = ghost.transform.Find(BaseDesigh.name);
-            Transform gChange = ghost.transform.Find(ChangeDesigh.name);
-            if (gBase != null) gBase.gameObject.SetActive(true);
-            if (gChange != null) gChange.gameObject.SetActive(false);
+            Transform gBase = ghost.transform.Find(BaseDesigh?.name ?? "");
+            Transform gChange = ghost.transform.Find(ChangeDesigh?.name ?? "");
+            if (gBase != null) gBase.gameObject.SetActive(showBase);
+            if (gChange != null) gChange.gameObject.SetActive(!showBase);
         }
     }
 }
