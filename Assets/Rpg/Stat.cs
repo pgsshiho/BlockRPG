@@ -76,7 +76,7 @@ public class Stat : MonoBehaviour, TakeDamage
 
     public void upit() { if (maxstatpoint > 0 && it < 5) { it++; maxstatpoint--; SaveAndNotify(); } }
     public void upatk() { if (maxstatpoint > 0 && atk < 20) { atk++; maxstatpoint--; SaveAndNotify(); } }
-    public void upmaxhp() { if (maxstatpoint > 0) { maxhp += 10; maxstatpoint--; hp = maxhp; hpcal(); SaveAndNotify(); } }
+    public void upmaxhp() { if (maxstatpoint > 0) { maxhp += 10; maxstatpoint--; hpcal(); SaveAndNotify(); } }
     public void upspd() { if (maxstatpoint > 0 && spd < 10) { spd++; maxstatpoint--; SaveAndNotify(); } }
 
     public void downit() { if (it > 0) { it--; maxstatpoint++; SaveAndNotify(); } }
