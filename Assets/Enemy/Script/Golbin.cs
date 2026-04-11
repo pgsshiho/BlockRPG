@@ -20,11 +20,15 @@ public class Golbin : Enemybase
 {
     if (isattack) return;
 
-    // 1. 부모의 Attack을 호출하여 frame = 0f와 isattack = true를 처리합니다.
+    int baseattack = damage;
+    if(hold.hold == null)
+        {
+            base.damage = baseattack * 2; // 홀드가 비어있으면 공격력 2배
+        }
     base.Attack(); 
-
-    // 2. 골블린 전용 로직 수행
-    if (anim != null)
+    base.damage = baseattack; // 공격 후 원래 공격력으로 복원
+                              // 2. 골블린 전용 로직 수행
+        if (anim != null)
     {
         anim.SetTrigger("Attack");
     }
@@ -37,7 +41,7 @@ public class Golbin : Enemybase
         hold.ishave = false;
         // hold.ishold = true; // 필요하다면 추가
     }
-        sd.Goblin.Play();
+            sd.Goblin.Play();
     StartCoroutine(WaitAttackAnimation());
 }
 
