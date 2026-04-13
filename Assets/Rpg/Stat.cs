@@ -22,8 +22,8 @@ public class Stat : MonoBehaviour, TakeDamage
     public float ex = 0;
 
     [Header("UI References")]
-    private Image hpBarImage;
-    private Image expBarImage;
+    public Image hpBarImage;
+    public Image expBarImage;
 
     public Action OnStatChanged;
     public Action OnLevelUp;

@@ -133,7 +133,7 @@ MonoBehaviour:
   maxhp: 400
   hp: 400
   damage: 6
-  ex: 0
+  ex: 30
   hpbar: {fileID: 0}
   baseHp: 500
   baseDamage: 7

@@ -38,7 +38,9 @@ public class StatUI : MonoBehaviour
 
     private void InitSequence()
     {
-        // Notion 스타일의 시퀀스 구조 적용
+        // 의도한 색상 변수 설정 (알파값 145/255 = 약 0.568)
+        Color targetColor = new Color(0, 0, 0, 145f / 255f);
+
         popupSequence = DOTween.Sequence()
             .Append(overstatPanel.transform.DOScale(1.2f, 0.15f).From(Vector3.one * 0.5f))
             .Append(overstatPanel.transform.DOScale(1f, 0.15f))
@@ -47,7 +49,9 @@ public class StatUI : MonoBehaviour
             .Join(popupText.DOFade(0, 0.5f))
             .OnComplete(() => {
                 overstatPanel.gameObject.SetActive(false);
-                overstatPanel.color = Color.white; // 알파 초기화
+
+                // 여기서 강제로 '의도한 색'으로 되돌림
+                overstatPanel.color = targetColor;
                 popupText.color = Color.white;
             })
             .SetAutoKill(false).Pause();

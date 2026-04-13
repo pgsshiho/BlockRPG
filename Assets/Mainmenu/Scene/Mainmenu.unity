@@ -14766,6 +14766,8 @@ MonoBehaviour:
   maxhp: 100
   level: 1
   ex: 0
+  hpBarImage: {fileID: 0}
+  expBarImage: {fileID: 0}
 --- !u!4 &703093906
 Transform:
   m_ObjectHideFlags: 0
