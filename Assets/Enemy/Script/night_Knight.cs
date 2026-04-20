@@ -13,7 +13,9 @@ public class night_Knight : Enemybase
         anim = GetComponent<Animator>();
         cb = FindAnyObjectByType<Conebase>();
         sd = FindAnyObjectByType<Sound>();
-        if (enemyData != null) enemyData.knight_night = true;
+        if (enemyData != null){ enemyData.knight_night = true;
+            enemyData.Save();
+        }
     }
 
     public override void Attack()

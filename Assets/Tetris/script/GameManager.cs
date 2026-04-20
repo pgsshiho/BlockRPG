@@ -102,8 +102,10 @@ public class GameManager : MonoBehaviour
         blockclear.currentScore = 0;
         st = FindAnyObjectByType<Stat>();
         st.hp = st.maxhp;
+        st.hpcal();
         enemySpawn = FindAnyObjectByType<EnemySpawn>();
-        enemySpawn.i = 0;
+        if(enemySpawn != null)
+            enemySpawn.i = 0;
         SceneChanger.BG("Mainmenu");
     }
 

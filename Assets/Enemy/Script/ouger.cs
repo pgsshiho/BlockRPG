@@ -13,7 +13,10 @@ public class ouger : Enemybase, ISpecialAttack
         base.Start();
         anim = GetComponent<Animator>();
         sd = Sound.instance; // 싱글톤 참조
-        if (enemyData != null) enemyData.golem = true;
+        if (enemyData != null) {enemyData.golem = true;
+        enemyData.Save();
+        }
+
     }
 
     public void ApplyEffect() => GameManager.Instance?.SetMirrorMode(true);

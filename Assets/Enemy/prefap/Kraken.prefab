@@ -135,7 +135,7 @@ MonoBehaviour:
   damage: 4
   ex: 10
   hpbar: {fileID: 0}
-  baseHp: 40
+  baseHp: 30
   baseDamage: 4
   enemyDisplayName: Kraken
   holdDuration: 6

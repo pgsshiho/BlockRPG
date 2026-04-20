@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using TMPro;
 [System.Serializable]
 public class EnemyGroup
 {
@@ -11,7 +11,7 @@ public class EnemySpawn : MonoBehaviour
 {
     public bool isSpawning = false;
     public EnemyGroup[] enemy;
-
+    public TextMeshProUGUI nowwave;
     [Header("Settings")]
     public int scoreThreshold = 1500;
     public GameObject spawnpoint;
@@ -35,7 +35,7 @@ public class EnemySpawn : MonoBehaviour
         // 난이도 계산
         int currentScore = blockclear.ScoreForSpeed;
         i = currentScore / scoreThreshold;
-
+        nowwave.text = $"Wave: {i + 1}";
         if (enemy.Length > 0)
         {
             i = Mathf.Clamp(i, 0, enemy.Length - 1);

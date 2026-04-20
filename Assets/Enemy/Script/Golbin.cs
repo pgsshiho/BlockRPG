@@ -13,7 +13,10 @@ public class Golbin : Enemybase
         anim = GetComponent<Animator>();
         hold = FindAnyObjectByType<Hold>();
         sd = FindAnyObjectByType<Sound>();
-        if (enemyData != null) enemyData.goblin = true;
+        if (enemyData != null) { enemyData.goblin = true; 
+        enemyData.Save();
+        }
+
     }
 
     public override void Attack()

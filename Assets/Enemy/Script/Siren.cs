@@ -17,7 +17,9 @@ public class Siren : Enemybase
         // 키 설정을 바꾸기 위해 KeyBinding 스크립트를 찾습니다.
         key = Object.FindAnyObjectByType<KeyBinding>();
         sd = FindAnyObjectByType<Sound>();
-        if (enemyData != null) enemyData.knight_night = true;
+        if (enemyData != null){ enemyData.knight_night = true;
+            enemyData.Save();
+        }
     }
 
     public override void Attack()

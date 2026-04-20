@@ -107,6 +107,18 @@ MonoBehaviour:
     m_Key: HoleEx
     m_Metadata:
       m_Items: []
+  - m_Id: 6339866615316480
+    m_Key: Starts
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6340072861827072
+    m_Key: Quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6340094043062272
+    m_Key: Reset Level
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

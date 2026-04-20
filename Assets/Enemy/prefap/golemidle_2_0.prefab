@@ -135,7 +135,7 @@ MonoBehaviour:
   damage: 4
   ex: 9
   hpbar: {fileID: 0}
-  baseHp: 60
+  baseHp: 50
   baseDamage: 4
   enemyDisplayName: Golem
   shakeDuration: 3

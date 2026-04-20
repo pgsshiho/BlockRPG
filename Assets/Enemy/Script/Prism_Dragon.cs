@@ -13,7 +13,9 @@ public class Prism_Dragon : Enemybase, ISpecialAttack
         base.Start();
         anim = GetComponent<Animator>();
         sd = Sound.instance;
-        if (enemyData != null) enemyData.dragon = true;
+        if (enemyData != null){ enemyData.dragon = true;
+            enemyData.Save();
+        }
     }
 
     public void ApplyEffect() => GameManager.Instance?.change();

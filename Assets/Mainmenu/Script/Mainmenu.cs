@@ -40,7 +40,7 @@ public class Mainmenu : MonoBehaviour
     {
         st = Stat.instance;
         if (st == null) st = FindAnyObjectByType<Stat>();
-
+        if (enemyData != null) enemyData.Load();
         UpdateKeyUI();
         UpdateEnemyDiscovery(); // 게임 시작 시 도감 해제 상태 반영
     }
@@ -54,7 +54,7 @@ public class Mainmenu : MonoBehaviour
     // --- [도감 해제 로직] ---
     public void UpdateEnemyDiscovery()
     {
-        // 세이렌 제거로 인해 총 11개로 체크 범위를 변경함
+        if (enemyData != null) enemyData.Load();
         if (enemyData == null || PageHide == null || PageHide.Length < 11)
         {
             Debug.LogWarning("FindEnemy 데이터나 PageHide 배열 설정이 부족합니다. (필요 개수: 11)");

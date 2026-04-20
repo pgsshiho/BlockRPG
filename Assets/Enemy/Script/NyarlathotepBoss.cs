@@ -28,7 +28,9 @@ public class NyarlathotepBoss : Enemybase
         key = FindAnyObjectByType<KeyBinding>();
         hold = FindAnyObjectByType<Hold>();
         cb = FindAnyObjectByType<Conebase>();
-        if (enemyData != null) enemyData.boss = true;
+        if (enemyData != null) {enemyData.boss = true;
+            enemyData.Save();
+        }
         // --- 8가지 패턴 등록 ---
         patterns.Add(Pattern_Siren);      // 1. 키 교체
         patterns.Add(Pattern_Slime);      // 2. 일반 강타

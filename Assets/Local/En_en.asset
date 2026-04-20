@@ -143,17 +143,18 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2443741382541312
-    m_Localized: 'Upgrade your stats to strengthen yourself.
+    m_Localized: 'Gain 1 Attribute Point per Level Up to upgrade your stats.
 
-      MAX HP: Increase
-      Maximum Health
+      MAX
+      HP: Increases your maximum Health.
 
-      ATK: Increase Attack Power
+      ATK: Increases overall damage output.
 
-      SPD: Decrease Gem Fall
-      Spee
+      SPD:
+      Reduces the falling speed of gems for better control.
 
-      INT: Increase Number of Preview Gems'
+      INT: Increases
+      the number of "Next" minerals shown.'
     m_Metadata:
       m_Items: []
   - m_Id: 2446056059535360
@@ -161,6 +162,18 @@ MonoBehaviour:
       it will take slight damage.
 
 '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6339866615316480
+    m_Localized: Start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6340072861827072
+    m_Localized: Quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6340094043062272
+    m_Localized: Reset Level
     m_Metadata:
       m_Items: []
   references:

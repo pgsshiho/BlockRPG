@@ -19,7 +19,9 @@ public class Golem : Enemybase, ISpecialAttack
         anim = GetComponent<Animator>();
         sd = Sound.instance;
         originalRotation = Camera.main.transform.rotation;
-        if (enemyData != null) enemyData.golem = true;
+        if (enemyData != null) { enemyData.golem = true;
+            enemyData.Save();
+        }
     }
 
     // ISpecialAttack 인터페이스 구현

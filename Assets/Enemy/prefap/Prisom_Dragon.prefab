@@ -135,7 +135,7 @@ MonoBehaviour:
   damage: 5
   ex: 20
   hpbar: {fileID: 0}
-  baseHp: 60
+  baseHp: 50
   baseDamage: 5
   enemyDisplayName: Prism Dragon
   changeDuration: 4

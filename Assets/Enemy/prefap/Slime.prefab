@@ -135,7 +135,7 @@ MonoBehaviour:
   damage: 3
   ex: 4
   hpbar: {fileID: 0}
-  baseHp: 35
+  baseHp: 25
   baseDamage: 3
   enemyDisplayName: Slime
   enemyData: {fileID: 11400000, guid: 25a1d081ca08e2d4898a87400d2a0baa, type: 2}

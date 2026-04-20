@@ -135,7 +135,7 @@ MonoBehaviour:
   damage: 2
   ex: 15
   hpbar: {fileID: 0}
-  baseHp: 25
+  baseHp: 20
   baseDamage: 2
   enemyDisplayName: Shaman
   specialBlock: {fileID: 573880280774149007, guid: 88ac8a20781d1a041a17214afb92a17a,

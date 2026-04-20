@@ -12,7 +12,9 @@ public class slime : Enemybase
         base.Start(); // 부모(Enemybase)의 Start 실행
         anim = GetComponent<Animator>();
         sd = FindAnyObjectByType<Sound>();
-        if (enemyData != null) enemyData.slime = true;
+        if (enemyData != null){ enemyData.slime = true;
+            enemyData.Save();
+        }
     }
 
     public override void Attack()

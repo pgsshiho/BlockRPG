@@ -135,7 +135,7 @@ MonoBehaviour:
   damage: 5
   ex: 10
   hpbar: {fileID: 0}
-  baseHp: 20
+  baseHp: 15
   baseDamage: 5
   enemyDisplayName: Ghost
   enemyData: {fileID: 11400000, guid: 25a1d081ca08e2d4898a87400d2a0baa, type: 2}

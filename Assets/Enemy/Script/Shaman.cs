@@ -14,7 +14,9 @@ public class Shaman : Enemybase
         anim = GetComponent<Animator>();
         cb = FindAnyObjectByType<Conebase>(); // 수정: GetComponent가 아닌 Find
         sd = FindAnyObjectByType<Sound>();
-        if (enemyData != null) enemyData.shaman = true;
+        if (enemyData != null){ enemyData.shaman = true;
+            enemyData.Save();
+        }
     }
 
     public override void Attack()

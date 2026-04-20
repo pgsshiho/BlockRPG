@@ -18,7 +18,9 @@ public class Ghost : Enemybase, ISpecialAttack
         anim = GetComponent<Animator>();
         sd = Sound.instance;
         cb = FindAnyObjectByType<Conebase>();
-        if (enemyData != null) enemyData.ghost = true;
+        if (enemyData != null) { enemyData.ghost = true;
+            enemyData.Save();
+                }
     }
 
     public void ApplyEffect()

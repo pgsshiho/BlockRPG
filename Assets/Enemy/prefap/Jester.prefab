@@ -135,7 +135,7 @@ MonoBehaviour:
   damage: 0
   ex: 10
   hpbar: {fileID: 0}
-  baseHp: 40
+  baseHp: 35
   baseDamage: 3
   enemyDisplayName: Jester
   enemyData: {fileID: 11400000, guid: 25a1d081ca08e2d4898a87400d2a0baa, type: 2}

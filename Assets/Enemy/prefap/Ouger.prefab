@@ -135,7 +135,7 @@ MonoBehaviour:
   damage: 4
   ex: 8
   hpbar: {fileID: 0}
-  baseHp: 50
+  baseHp: 40
   baseDamage: 4
   enemyDisplayName: Ouger
   mirrorDuration: 6
