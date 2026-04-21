@@ -13,4 +13,6 @@ public class KeyData : ScriptableObject
     public KeyCode zRotate = KeyCode.Z;
     public KeyCode aRotate = KeyCode.A;
     public KeyCode openstat = KeyCode.K;
+    public KeyCode Heal = KeyCode.H;
+    public KeyCode Skill = KeyCode.F;
 }

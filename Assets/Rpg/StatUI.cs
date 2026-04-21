@@ -12,7 +12,7 @@ public class StatUI : MonoBehaviour
     public TextMeshProUGUI maxhpText;
     public TextMeshProUGUI spdText;
     public TextMeshProUGUI statpText;
-
+    public TextMeshProUGUI LevelText;
     [Header("Popups (Animation)")]
     public Image overstatPanel; // Image로 변경 (페이드 애니메이션용)
     public TextMeshProUGUI popupText;
@@ -31,11 +31,15 @@ public class StatUI : MonoBehaviour
         if (Stat.instance != null)
         {
             Stat.instance.OnStatChanged += UpdateDisplay;
-            Stat.instance.OnLevelUp += () => ShowMessage("MSG_LEVEL_UP");
+            Stat.instance.OnLevelUp += HandleUpgrade;
         }
         UpdateDisplay();
     }
-
+    public void HandleUpgrade()
+    {
+        UpdateDisplay();
+        ShowMessage("MSG_LEVEL_UP");
+    }
     private void InitSequence()
     {
         // 의도한 색상 변수 설정 (알파값 145/255 = 약 0.568)
@@ -64,7 +68,7 @@ public class StatUI : MonoBehaviour
         atkText.text = Stat.instance.atk.ToString();
         maxhpText.text = Stat.instance.maxhp.ToString();
         spdText.text = Stat.instance.spd.ToString();
-
+        LevelText.text = "Level: " + Stat.instance.level.ToString();
         // 레이블 번역 적용
         string label = GetText("UI_POINTS_LABEL");
         statpText.text = $"{label} {Stat.instance.maxstatpoint}";

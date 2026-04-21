@@ -24,7 +24,7 @@ public class Sound : MonoBehaviour
     public AudioSource Jester;
     public AudioSource combo;
     public AudioSource siren;
-
+    public AudioSource potion;
     [Header("Settings UI")]
     public AudioMixer mixer;
 

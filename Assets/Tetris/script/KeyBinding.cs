@@ -7,7 +7,7 @@ public class KeyBinding : MonoBehaviour
 
     [Header("Current Keys")]
     public KeyCode rotate;
-    public KeyCode right, left, down, hardDrop, hold, hold2, zRotate, aRotate, openstat;
+    public KeyCode right, left, down, hardDrop, hold, hold2, zRotate, aRotate, openstat, Heal, Skill;
 
     private void Awake()
     {
@@ -40,6 +40,8 @@ public class KeyBinding : MonoBehaviour
         zRotate = defaultKeys.zRotate;
         aRotate = defaultKeys.aRotate;
         openstat = defaultKeys.openstat;
+        Heal = defaultKeys.Heal;
+        Skill = defaultKeys.Skill;
 
         // 2. 변경된 기본값을 저장소(PlayerPrefs)에 즉시 반영
         SaveKeys();
@@ -60,6 +62,8 @@ public class KeyBinding : MonoBehaviour
         PlayerPrefs.SetInt("Key_ZRotate", (int)zRotate);
         PlayerPrefs.SetInt("Key_ARotate", (int)aRotate);
         PlayerPrefs.SetInt("Key_OpenStat", (int)openstat);
+        PlayerPrefs.SetInt("Key_Heal", (int)Heal);
+        PlayerPrefs.SetInt("Key_Skill", (int)Skill);
         PlayerPrefs.Save();
     }
 
@@ -81,6 +85,8 @@ public class KeyBinding : MonoBehaviour
         zRotate = (KeyCode)PlayerPrefs.GetInt("Key_ZRotate", (int)defaultKeys.zRotate);
         aRotate = (KeyCode)PlayerPrefs.GetInt("Key_ARotate", (int)defaultKeys.aRotate);
         openstat = (KeyCode)PlayerPrefs.GetInt("Key_OpenStat", (int)defaultKeys.openstat);
+        Heal = (KeyCode)PlayerPrefs.GetInt("Key_Heal", (int)defaultKeys.Heal);
+        Skill = (KeyCode)PlayerPrefs.GetInt("Key_Skill", (int)defaultKeys.Skill);
 
         Debug.Log("키 설정을 로드했습니다.");
     }

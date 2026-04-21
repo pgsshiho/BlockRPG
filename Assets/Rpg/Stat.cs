@@ -120,7 +120,7 @@ public class Stat : MonoBehaviour, TakeDamage
         while (ex >= requiredEx)
         {
             ex -= requiredEx;
-            level++;
+            level++;    
             maxstatpoint += 1;
             UpdateRequiredEx();
             isLeveledUp = true;

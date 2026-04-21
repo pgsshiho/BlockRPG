@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.UI;
+using TMPro;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
@@ -12,8 +13,12 @@ public class GameManager : MonoBehaviour
     private EnemySpawn es;
     public GameObject blackpanel;
     public GameObject hiddenhold;
+    public Sound sound;
     Stat st;
     EnemySpawn enemySpawn;
+    public int potion = 2;
+    public TextMeshProUGUI postioncount;
+    public GameObject Potionenable;
     public bool IsMirrored { get; private set; }
 
     void Awake()
@@ -31,6 +36,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        postioncount.text = potion.ToString();
+        Potionenable.SetActive(false);
         key = KeyBinding.instance;
     }
 
@@ -50,6 +57,26 @@ public class GameManager : MonoBehaviour
         {
             if (!isON) openstat();
             else if (statpanel.activeSelf) closestat();
+        }
+        if(key != null && Input.GetKeyDown(key.Heal) && potion > 0)
+        {
+            potion--;
+            postioncount.text = potion.ToString();
+            st = FindAnyObjectByType<Stat>();
+            st.hp += 20f;
+            st.hpcal();
+            sound = FindAnyObjectByType<Sound>();
+            sound.PlaySE(sound.potion);
+            if (st.hp > st.maxhp) st.hp = st.maxhp;
+            if(potion <= 0)
+            {
+                Potionenable.SetActive(true);
+            }
+        }
+        else if (key != null && Input.GetKeyDown(key.Heal) && potion <= 0)
+        {
+            Debug.Log("포션이 없습니다!");
+            Potionenable.SetActive(true);
         }
     }
 
