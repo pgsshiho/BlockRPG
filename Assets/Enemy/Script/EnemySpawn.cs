@@ -42,7 +42,6 @@ public class EnemySpawn : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Enemy 그룹이 설정되지 않았습니다!");
             isSpawning = false;
             return;
         }
@@ -56,7 +55,6 @@ public class EnemySpawn : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"난이도 {i}에 프리팹이 없습니다.");
             isSpawning = false;
         }
     }

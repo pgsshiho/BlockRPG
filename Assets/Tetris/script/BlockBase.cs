@@ -305,8 +305,6 @@ public class BlockBase : MonoBehaviour
                 child.tag = "Block";
             }
         }
-
-        if (IsTwist) Debug.Log("T-Spin Success!");
         
         bc.DeleteFullLines();
         if (Sound.instance != null) Sound.instance.drop.Play();

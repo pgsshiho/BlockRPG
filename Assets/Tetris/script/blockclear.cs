@@ -36,13 +36,14 @@ public class blockclear : MonoBehaviour
     Sound sd;
     Stat st;
     string displayMessage = "";
-
+    reincarnationSkill skill;
     void Awake()
     {
         eb = FindAnyObjectByType<Enemybase>();
         bb = FindAnyObjectByType<BlockBase>();
         sd = FindAnyObjectByType<Sound>();
         st = FindAnyObjectByType<Stat>();
+        skill = FindAnyObjectByType<reincarnationSkill>();
         grid = new Transform[width, height];
         isDamagedHole = new bool[width, height];
         UpdateScoreUI();
@@ -164,6 +165,8 @@ public class blockclear : MonoBehaviour
         int finalPower = baseLinePower[Mathf.Min(lines, 4)] + bonusPower + comboPower;
 
         currentScore += finalScore;
+        skill.TryActivateSelfHeal(lines);
+        skill.TrySkill();
         StartCoroutine(ProcessAttackSequence(finalPower));
         ScoreForSpeed = currentScore;
         UpdateScoreUI();
@@ -182,22 +185,35 @@ public class blockclear : MonoBehaviour
                 // 4. 스탯에 따른 공격력 배율 하향 (13% -> 7%)
                 float multiplier = (Stat.instance != null) ? (1.0f + (Stat.instance.atk * 0.07f)) : 1f;
 
+                // 워리어 버프 시 데미지 50% 증가
+                float warriorMult = RoleSkill.isWarrior ? 1.5f : 1f;
+
                 int enemyCurrentHp = target.hp;
-                int potentialAtk = Mathf.CeilToInt(remainingAtk * multiplier);
+                int potentialAtk = Mathf.CeilToInt(remainingAtk * multiplier * warriorMult);
 
                 if (potentialAtk > 0) SpawnFloatingText("-" + potentialAtk.ToString(), 55, Color.red);
 
                 if (potentialAtk >= enemyCurrentHp)
                 {
-                    // 적 체력을 깎는데 소모된 순수 공격력 계산
-                    int consumed = Mathf.CeilToInt(enemyCurrentHp / multiplier);
+                    // 적 체력을 깎는데 소모된 순수 공격력 계산 (워리어 보정 포함)
+                    int consumed = Mathf.CeilToInt(enemyCurrentHp / (multiplier * warriorMult));
                     target.hit(potentialAtk); // 실제 데미지 전달
+                    if (RoleSkill.isArcher)
+                    {
+                        yield return new WaitForSeconds(0.1f);
+                        target.hit(potentialAtk);
+                    }
                     remainingAtk -= consumed;
                     yield return new WaitForSeconds(0.5f); // 대기 시간 단축 (속도감)
                 }
                 else
                 {
                     target.hit(potentialAtk);
+                    if (RoleSkill.isArcher)
+                    {
+                        yield return new WaitForSeconds(0.1f);
+                        target.hit(potentialAtk);
+                    }
                     remainingAtk = 0;
                 }
             }

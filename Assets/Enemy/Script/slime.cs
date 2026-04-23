@@ -49,7 +49,6 @@ public class slime : Enemybase
         {
             anim.SetTrigger("dead");
         }
-        Debug.Log("슬라임죽음");
         base.dead(); // 부모의 dead(점수, 경험치 등) 실행
 
         StartCoroutine(WaitDeadAnimation());

@@ -75,7 +75,6 @@ public class GameManager : MonoBehaviour
         }
         else if (key != null && Input.GetKeyDown(key.Heal) && potion <= 0)
         {
-            Debug.Log("포션이 없습니다!");
             Potionenable.SetActive(true);
         }
     }

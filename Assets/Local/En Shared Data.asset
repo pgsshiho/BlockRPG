@@ -119,6 +119,34 @@ MonoBehaviour:
     m_Key: Reset Level
     m_Metadata:
       m_Items: []
+  - m_Id: 7190543260418048
+    m_Key: PotionEx
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7225159916683264
+    m_Key: ClassEx
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7227659600232448
+    m_Key: WarriorEx
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7248199337607168
+    m_Key: Rogue Ex
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7248367210430464
+    m_Key: ArcherEx
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7248367915073536
+    m_Key: WizardEx
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7439850827907072
+    m_Key: ReEx
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

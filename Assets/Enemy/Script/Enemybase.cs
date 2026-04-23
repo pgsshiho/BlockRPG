@@ -12,7 +12,6 @@ public class Enemybase : MonoBehaviour, TakeDamage
     public int hp = 40;
     public int damage;
     public int ex;
-
     [Header("Settings")]
     public GameObject hpbar;
     public int baseHp = 40;
@@ -28,7 +27,7 @@ public class Enemybase : MonoBehaviour, TakeDamage
     protected bool isDead = false;
     public string enemyDisplayName = "적";
     public bool IsDead => isDead;
-
+    public bool isStunned = false;
     protected virtual void Start()
     {
         st = Stat.instance;
@@ -50,7 +49,7 @@ public class Enemybase : MonoBehaviour, TakeDamage
     void Update()
     {
         if (GameManager.Instance != null && GameManager.Instance.isON) return;
-        if (isDead) return;
+        if (isDead || isStunned) return;
 
         UpdateTargetFrame();
         if (frame >= targetFrame && !isattack) Attack();
@@ -59,7 +58,7 @@ public class Enemybase : MonoBehaviour, TakeDamage
     private void FixedUpdate()
     {
         if (GameManager.Instance != null && GameManager.Instance.isON) return;
-        if (!isattack && !isDead) frame++;
+        if (!isattack && !isDead && !isStunned) frame++;
     }
 
     void UpdateTargetFrame()
@@ -68,9 +67,27 @@ public class Enemybase : MonoBehaviour, TakeDamage
         float calculatedFrame = baseTargetFrame + (3 - d) * 25f;
         targetFrame = Mathf.Max(100f, calculatedFrame);
     }
-
+    public void ApplyStun(float duration)
+    {
+        if (isDead) return;
+        StartCoroutine(StunCoroutine(duration));
+    }
+    private System.Collections.IEnumerator StunCoroutine(float duration)
+    {
+        isStunned = true;
+        yield return new WaitForSeconds(duration);
+        isStunned = false;
+    }
     public virtual void Attack()
     {
+        if (RoleSkill.isRogue && RoleSkill.avoid > 0)
+        {
+            RoleSkill.avoid--; // 횟수를 먼저 깎음
+            isattack = false; 
+            frame = 0f;
+
+            return; // 공격을 가하지 않고 종료
+        }
         isattack = true;
         frame = 0f;
 
@@ -80,7 +97,6 @@ public class Enemybase : MonoBehaviour, TakeDamage
             player.TakeDamage(damage, enemyDisplayName);
         }
     }
-
     public void TakeDamage(int amount, string attackerName)
     {
         hit(amount);

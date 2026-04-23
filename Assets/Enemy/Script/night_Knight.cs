@@ -66,19 +66,15 @@ public class night_Knight : Enemybase
 
     IEnumerator WaitDeadAnimation()
     {
-        Debug.Log("1단계: 사망 코루틴 시작됨");
         yield return new WaitForSeconds(1.0f);
 
-        Debug.Log($"2단계: 대기 완료. es 존재 여부: {es != null}");
         if (es != null)
         {
             es.isSpawning = false;
-            Debug.Log("3단계: isSpawning 해제 및 spawn() 호출 직전");
             es.spawn();
         }
         else
         {
-            Debug.LogError("범인 검거: es(EnemySpawn)가 null입니다!");
         }
 
         Destroy(gameObject);

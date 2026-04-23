@@ -23,16 +23,12 @@ public class CustomCloneBase : MonoBehaviour
         {
             int[] c = DataHolder.instance.monsterCounts;
 
-            // 여기서도 로그 확인
-            Debug.Log($"[소환지점 로드] 0번 데이터: {c[0]}");
-
             Swap(c);
             spawn();
             
         }
         else
         {
-            Debug.LogError("소환 지점에서 DataHolder를 찾지 못했습니다.");
         }
     }
     // 매개변수를 배열로 받도록 수정하여 관리가 편하게 변경
@@ -44,12 +40,10 @@ public class CustomCloneBase : MonoBehaviour
         // 1. 넘어온 데이터 값 출력 (모두 0인지 확인용)
         string debugLog = "받은 데이터 값들: ";
         for (int n = 0; n < counts.Length; n++) debugLog += $"[{n}번:{counts[n]}] ";
-        Debug.Log(debugLog);
 
         // 2. 프리팹 배열 크기 확인
         if (kindenemy == null || kindenemy.Length == 0)
         {
-            Debug.LogError("KindEnemy 프리팹 배열이 인스펙터에서 비어있습니다!");
             return;
         }
 
@@ -71,14 +65,12 @@ public class CustomCloneBase : MonoBehaviour
                     }
                     else
                     {
-                        Debug.LogWarning($"{k}번 프리팹이 Null입니다. 소환 목록에서 제외합니다.");
                     }
                 }
             }
         }
 
         activeEnemyCount = currentIndex;
-        Debug.Log($"<color=yellow>총 소환 가능 적 개수(activeEnemyCount): {activeEnemyCount}</color>");
     }
 
     public void spawn()
