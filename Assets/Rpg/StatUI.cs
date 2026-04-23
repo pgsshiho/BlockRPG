@@ -13,6 +13,10 @@ public class StatUI : MonoBehaviour
     public TextMeshProUGUI spdText;
     public TextMeshProUGUI statpText;
     public TextMeshProUGUI LevelText;
+    public int maxhpmin = 10;
+    public int atkmin = 0;
+    public int spdmin = 0;
+    public int itmin = 0;
     [Header("Popups (Animation)")]
     public Image overstatPanel; // Image로 변경 (페이드 애니메이션용)
     public TextMeshProUGUI popupText;
@@ -80,10 +84,46 @@ public class StatUI : MonoBehaviour
     public void Btn_UpSpd() { if (Stat.instance.maxstatpoint <= 0) { ShowMessage("MSG_NO_POINTS"); return; } if (Stat.instance.spd >= 10) { ShowMessage("MSG_MAX_REACHED"); return; } Stat.instance.upspd(); }
     public void Btn_UpMaxHp() { if (Stat.instance.maxstatpoint <= 0) { ShowMessage("MSG_NO_POINTS"); return; } Stat.instance.upmaxhp(); }
 
-    public void Btn_DownIt() => Stat.instance.downit();
-    public void Btn_DownAtk() => Stat.instance.downatk();
-    public void Btn_DownSpd() => Stat.instance.downspd();
-    public void Btn_DownMaxHp() => Stat.instance.downmaxhp();
+    // StatUI.cs 내부 버튼 로직 수정
+    public void Btn_DownIt()
+    {
+        if (Stat.instance.it <= Stat.instance.baseIt)
+        {
+            ShowMessage("MSG_MIN_REACHED"); // "직업 기초 스탯 이하로는 줄일 수 없습니다"
+            return;
+        }
+        Stat.instance.downit();
+    }
+
+    public void Btn_DownAtk()
+    {
+        if (Stat.instance.atk <= Stat.instance.baseAtk)
+        {
+            ShowMessage("MSG_MIN_REACHED");
+            return;
+        }
+        Stat.instance.downatk();
+    }
+
+    public void Btn_DownSpd()
+    {
+        if (Stat.instance.spd <= Stat.instance.baseSpd)
+        {
+            ShowMessage("MSG_MIN_REACHED");
+            return;
+        }
+        Stat.instance.downspd();
+    }
+
+    public void Btn_DownMaxHp()
+    {
+        if (Stat.instance.maxhp <= Stat.instance.baseMaxHp)
+        {
+            ShowMessage("MSG_MIN_REACHED");
+            return;
+        }
+        Stat.instance.downmaxhp();
+    }
 
     // 메시지 출력 (Key를 받아 번역 후 시퀀스 재생)
     public void ShowMessage(string key)

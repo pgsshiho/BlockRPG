@@ -15,6 +15,7 @@ public class Mainmenu : MonoBehaviour
     public GameObject ResetWarning;
     public GameObject custumpanel;
     public GameObject Statpanel;
+    public GameObject Skillpanel;
     private bool isWaitingForKey = false;
     int nowpage = 0;
     int nowrulepage = 0;
@@ -35,12 +36,17 @@ public class Mainmenu : MonoBehaviour
     public TextMeshProUGUI zRotateTxt;
     public TextMeshProUGUI aRotateTxt;
     public TextMeshProUGUI openstatTxt;
+    public TextMeshProUGUI HealTxt;
+    public TextMeshProUGUI SkillTxt;
+    Reincarnation reincarnation;
 
+    public GameObject RoleChoose;
     void Start()
     {
         st = Stat.instance;
         if (st == null) st = FindAnyObjectByType<Stat>();
         if (enemyData != null) enemyData.Load();
+        if (reincarnation == null) reincarnation = FindAnyObjectByType<Reincarnation>();
         UpdateKeyUI();
         UpdateEnemyDiscovery(); // 게임 시작 시 도감 해제 상태 반영
     }
@@ -57,7 +63,6 @@ public class Mainmenu : MonoBehaviour
         if (enemyData != null) enemyData.Load();
         if (enemyData == null || PageHide == null || PageHide.Length < 11)
         {
-            Debug.LogWarning("FindEnemy 데이터나 PageHide 배열 설정이 부족합니다. (필요 개수: 11)");
             return;
         }
 
@@ -97,7 +102,6 @@ public class Mainmenu : MonoBehaviour
     {
         if (nowrulepage > 1)
         {
-            Debug.Log("버튼눌림");
             rulepage[nowrulepage - 1].SetActive(false);
             nowrulepage--;
             rulepage[nowrulepage - 1].SetActive(true);
@@ -175,8 +179,9 @@ public class Mainmenu : MonoBehaviour
         if (zRotateTxt) zRotateTxt.text = KeyBinding.instance.zRotate.ToString();
         if (aRotateTxt) aRotateTxt.text = KeyBinding.instance.aRotate.ToString();
         if (openstatTxt) openstatTxt.text = KeyBinding.instance.openstat.ToString();
+        if (HealTxt) HealTxt.text = KeyBinding.instance.Heal.ToString();
+        if (SkillTxt) SkillTxt.text = KeyBinding.instance.Skill.ToString();
     }
-
     public void ChangeKey(int keyIndex) { if (!isWaitingForKey) StartCoroutine(WaitForKeyPress(keyIndex)); }
 
     IEnumerator WaitForKeyPress(int keyIndex)
@@ -222,6 +227,8 @@ public class Mainmenu : MonoBehaviour
             case 7: kb.zRotate = newKey; break;
             case 8: kb.aRotate = newKey; break;
             case 10: kb.openstat = newKey; break;
+            case 11: kb.Heal = newKey; break;
+         case 12: kb.Skill = newKey; break;
         }
         UpdateKeyUI();
         kb.SaveKeys();
@@ -229,6 +236,7 @@ public class Mainmenu : MonoBehaviour
 
     public void openkey() { keypanel.SetActive(true); UpdateKeyUI(); }
     public void closekey() { keypanel.SetActive(false); UpdateKeyUI(); }
+    public void OpenSkill() => Skillpanel.SetActive(true);
     public void StoryStart() => SceneChanger.BG("StoryTetris");
     public void DungeonStart() {
         Time.timeScale = 1f; 
@@ -239,32 +247,39 @@ public class Mainmenu : MonoBehaviour
 
     public void ResetLevel()
     {
-        PlayerPrefs.DeleteAll();
-        if (Stat.instance != null)
-        {
-            Stat.instance.difficult = 3;
-            Stat.instance.it = 5;
-            Stat.instance.atk = 0;
-            Stat.instance.spd = 0;
-            Stat.instance.maxstatpoint = 0;
-            Stat.instance.hp = 100;
-            Stat.instance.maxhp = 100;
-            Stat.instance.level = 1;
-            Stat.instance.ex = 0;
-            Stat.instance.SaveData();
-            Stat.instance.RefreshUI();
-        }
+        if (st.level >= 5) { 
+            PlayerPrefs.DeleteAll();
+            if (Stat.instance != null)
+            {
+                Stat.instance.difficult = 3;
+                Stat.instance.it = 0;
+                Stat.instance.atk = 0;
+                Stat.instance.spd = 0;
+                Stat.instance.maxstatpoint = 0;
+                Stat.instance.hp = 100;
+                Stat.instance.maxhp = 100;
+                Stat.instance.level = 1;
+                Stat.instance.ex = 0;
+                Stat.instance.SaveData();
+                Stat.instance.RefreshUI();
+            }
 
-        // 도감 데이터 리셋 (세이렌 제외)
-        if (enemyData != null)
-        {
-            enemyData.slime = enemyData.goblin = enemyData.ouger =
-            enemyData.golem = enemyData.chraken = enemyData.ghost = enemyData.dragon =
-            enemyData.crown = enemyData.shaman = enemyData.knight_night = enemyData.boss = false;
+            // 도감 데이터 리셋 (세이렌 제외)
+            if (enemyData != null)
+            {
+                enemyData.slime = enemyData.goblin = enemyData.ouger =
+                enemyData.golem = enemyData.chraken = enemyData.ghost = enemyData.dragon =
+                enemyData.crown = enemyData.shaman = enemyData.knight_night = enemyData.boss = false;
+            }
+            reincarnation.PerformReincarnation();
+            UpdateEnemyDiscovery();
+            ResetWarning.SetActive(false); 
+            RoleChoose.SetActive(true);
         }
-
-        UpdateEnemyDiscovery();
-        ResetWarning.SetActive(false);
+        else
+        {
+        if (statusText != null) statusText.text = "레벨 5 이상부터 리셋 가능합니다!";
+        }
     }
 
     public void CancelReset() => ResetWarning.SetActive(false);

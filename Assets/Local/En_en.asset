@@ -31,8 +31,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1476185784320
-    m_Localized: "Resetting will return your level and \nall stats to their default
-      state. \nAre you sure you want to reset?"
+    m_Localized: Reincarnate. Upon reincarnation, all current levels will be reset,
+      and you will receive 1 Reincarnation Point in return. (Minimum Level 10)
     m_Metadata:
       m_Items: []
   - m_Id: 1948154036224
@@ -174,6 +174,81 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 6340094043062272
     m_Localized: Reset Level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7190543260418048
+    m_Localized: 'If you use an HP recovery potion, 20 HP will be restored.
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7225159916683264
+    m_Localized: 'Each class has its own base stats and class skills. Base stats
+      cannot be reduced further. Additionally, the class can be changed upon reincarnation.
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7227659600232448
+    m_Localized: 'Starts with 20 additional HP.
+
+
+
+      Class Skill: Increases damage
+      by 50% for 6 seconds.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7248199337607168
+    m_Localized: 'Starts with 2 additional SPD.
+
+
+
+      Class Skill: Evade 2 attacks.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7248367210430464
+    m_Localized: 'Starts with +2 additional ATK.
+
+
+
+      Class Skill: Double Attack'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7248367915073536
+    m_Localized: '
+
+      Starts with 2 additional INT.
+
+
+
+      Class Skill: Enemies
+      are unable to attack for 6 seconds.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7439850827907072
+    m_Localized: 'If you reincarnate, you will gain Reincarnation Points, all levels
+      will be reset to 0, and you can re-select your class. Additionally, reincarnation
+      is possible starting from level 5. Reincarnation Points can be used to purchase
+      skills.
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7505624808521728
+    m_Localized: Recovers 0.25 per level for every gem slot removed (Number of removed
+      gem slots * Level * 0.25)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7506353094885376
+    m_Localized: Whenever you attack with a gem, there is a certain probability of
+      stunning the opponent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7506684944023552
+    m_Localized: 'Whenever you attack with a gem, there is a certain probability
+      of gaining a shield twice.
+
+'
     m_Metadata:
       m_Items: []
   references:

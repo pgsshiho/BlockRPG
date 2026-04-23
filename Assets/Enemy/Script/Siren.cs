@@ -59,7 +59,6 @@ public class Siren : Enemybase
 
         // [키 바꾸기] 하드드롭과 아래 방향키를 교체
         SwapKeys();
-        Debug.Log("Siren: Keys Swapped!");
 
         // 4초 동안 유지
         yield return new WaitForSeconds(8.0f);
@@ -68,7 +67,6 @@ public class Siren : Enemybase
         if (isConfusionActive) // 죽어서 이미 복구된 게 아닐 때만 실행
         {
             SwapKeys();
-            Debug.Log("Siren: Keys Restored!");
             isConfusionActive = false;
         }
 
@@ -128,7 +126,6 @@ public class Siren : Enemybase
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         SwapKeys();
-        Debug.Log("Siren: Keys Restored!");
         isConfusionActive = false;
     }
 }

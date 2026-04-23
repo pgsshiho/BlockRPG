@@ -25,7 +25,6 @@ public class KeyBinding : MonoBehaviour
     {
         if (defaultKeys == null)
         {
-            Debug.LogError("KeyBinding: DefaultKeys가 연결되지 않아 초기화할 수 없습니다!");
             return;
         }
 
@@ -46,7 +45,6 @@ public class KeyBinding : MonoBehaviour
         // 2. 변경된 기본값을 저장소(PlayerPrefs)에 즉시 반영
         SaveKeys();
 
-        Debug.Log("키 설정을 초기값으로 리셋했습니다.");
     }
     // -----------------------
 
@@ -71,7 +69,6 @@ public class KeyBinding : MonoBehaviour
     {
         if (defaultKeys == null)
         {
-            Debug.LogError("KeyBinding: DefaultKeys(ScriptableObject)가 인스펙터에 연결되지 않았습니다!");
             return;
         }
 
@@ -88,6 +85,5 @@ public class KeyBinding : MonoBehaviour
         Heal = (KeyCode)PlayerPrefs.GetInt("Key_Heal", (int)defaultKeys.Heal);
         Skill = (KeyCode)PlayerPrefs.GetInt("Key_Skill", (int)defaultKeys.Skill);
 
-        Debug.Log("키 설정을 로드했습니다.");
     }
 }
