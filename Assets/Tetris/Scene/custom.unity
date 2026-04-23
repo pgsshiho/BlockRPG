@@ -5368,20 +5368,20 @@ MonoBehaviour:
   Choose: {fileID: 0}
   skillUIList:
   - role: 0
-    skillObject: {fileID: 0}
-    cooldownImage: {fileID: 0}
+    skillObject: {fileID: 1635407335}
+    cooldownImage: {fileID: 1635407335}
     cooldownTime: 30
   - role: 1
-    skillObject: {fileID: 0}
-    cooldownImage: {fileID: 0}
+    skillObject: {fileID: 1635407335}
+    cooldownImage: {fileID: 1635407335}
     cooldownTime: 50
   - role: 2
-    skillObject: {fileID: 0}
-    cooldownImage: {fileID: 0}
+    skillObject: {fileID: 1635407335}
+    cooldownImage: {fileID: 1635407335}
     cooldownTime: 40
   - role: 3
-    skillObject: {fileID: 0}
-    cooldownImage: {fileID: 0}
+    skillObject: {fileID: 1635407335}
+    cooldownImage: {fileID: 1635407335}
     cooldownTime: 40
 --- !u!1 &224275203
 GameObject:

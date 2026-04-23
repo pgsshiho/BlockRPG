@@ -9,9 +9,9 @@ public class RoleSkill : Role
     public struct SkillUI
     {
         public RoleSkills role;
-        public GameObject skillObject; // 해당 직업의 스킬 UI 부모 오브젝트
-        public Image cooldownImage;    // 쿨타임을 표시할 Image (Filled 방식)
-        public float cooldownTime;     // 스킬별 쿨타임 설정
+        public GameObject skillObject;   // 해당 직업의 스킬 UI 부모 오브젝트
+        public GameObject cooldownImage; // 쿨타임을 표시할 '오브젝트' (Image 컴포넌트가 들어있어야 함)
+        public float cooldownTime;      // 스킬별 쿨타임 설정
     }
 
     [Header("Skill UI Settings")]
@@ -31,7 +31,6 @@ public class RoleSkill : Role
     {
         key = FindAnyObjectByType<KeyBinding>();
 
-        // 빠른 조회를 위해 딕셔너리에 담기
         foreach (var ui in skillUIList)
         {
             skillLookup[ui.role] = ui;
@@ -54,6 +53,7 @@ public class RoleSkill : Role
             }
         }
     }
+
     public void RefreshSkillUI()
     {
         foreach (var ui in skillUIList)
@@ -75,14 +75,19 @@ public class RoleSkill : Role
         {
             if (ui.cooldownImage == null) continue;
 
+            // GameObject에서 Image 컴포넌트 가져오기
+            Image img = ui.cooldownImage.GetComponent<Image>();
+            if (img == null) continue;
+
             float remaining = (lastUsedTime[ui.role] + ui.cooldownTime) - Time.time;
+
             if (remaining > 0)
             {
-                ui.cooldownImage.fillAmount = remaining / ui.cooldownTime;
+                img.fillAmount = remaining / ui.cooldownTime;
             }
             else
             {
-                ui.cooldownImage.fillAmount = 0;
+                img.fillAmount = 0;
             }
         }
     }

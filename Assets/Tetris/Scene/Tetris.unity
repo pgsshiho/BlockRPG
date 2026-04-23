@@ -4694,20 +4694,20 @@ MonoBehaviour:
   Choose: {fileID: 1697231196}
   skillUIList:
   - role: 0
-    skillObject: {fileID: 0}
-    cooldownImage: {fileID: 0}
+    skillObject: {fileID: 1688456267}
+    cooldownImage: {fileID: 1688456267}
     cooldownTime: 30
   - role: 1
-    skillObject: {fileID: 0}
-    cooldownImage: {fileID: 0}
+    skillObject: {fileID: 1688456267}
+    cooldownImage: {fileID: 1688456267}
     cooldownTime: 50
   - role: 2
-    skillObject: {fileID: 0}
-    cooldownImage: {fileID: 0}
+    skillObject: {fileID: 1688456267}
+    cooldownImage: {fileID: 1688456267}
     cooldownTime: 40
   - role: 3
-    skillObject: {fileID: 0}
-    cooldownImage: {fileID: 0}
+    skillObject: {fileID: 1688456267}
+    cooldownImage: {fileID: 1688456267}
     cooldownTime: 40
 --- !u!1 &236397901
 GameObject:
@@ -35745,7 +35745,7 @@ PrefabInstance:
     - target: {fileID: 3087539679853526336, guid: 32e3835094ff5a04b8ce466fa0c2cf5b,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5314285249504693942, guid: 32e3835094ff5a04b8ce466fa0c2cf5b,
         type: 3}
