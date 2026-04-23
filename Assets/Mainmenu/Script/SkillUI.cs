@@ -7,7 +7,7 @@ public class SkillUI : MonoBehaviour
     public TextMeshProUGUI shieldLvText;
     public TextMeshProUGUI lightningLvText;
     public TextMeshProUGUI healLvText;
-
+    public GameObject UpgradePanel;
     private void Start()
     {
         if (Reincarnation.instance != null)
@@ -30,4 +30,5 @@ public class SkillUI : MonoBehaviour
     public void Btn_UpgradeShield() => Reincarnation.instance.UpgradeSkill(SkillType.Shield);
     public void Btn_UpgradeLightning() => Reincarnation.instance.UpgradeSkill(SkillType.Lightning);
     public void Btn_UpgradeHeal() => Reincarnation.instance.UpgradeSkill(SkillType.SelfHeal);
+    public void CloseUpgrade() => UpgradePanel.SetActive(false);
 }

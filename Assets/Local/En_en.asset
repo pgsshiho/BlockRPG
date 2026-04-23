@@ -234,6 +234,23 @@ MonoBehaviour:
 '
     m_Metadata:
       m_Items: []
+  - m_Id: 7505624808521728
+    m_Localized: Recovers 0.25 per level for every gem slot removed (Number of removed
+      gem slots * Level * 0.25)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7506353094885376
+    m_Localized: Whenever you attack with a gem, there is a certain probability of
+      stunning the opponent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7506684944023552
+    m_Localized: 'Whenever you attack with a gem, there is a certain probability
+      of gaining a shield twice.
+
+'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

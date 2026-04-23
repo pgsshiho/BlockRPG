@@ -206,6 +206,22 @@ MonoBehaviour:
       \uAC00\uB2A5\uD569\uB2C8\uB2E4"
     m_Metadata:
       m_Items: []
+  - m_Id: 7505624808521728
+    m_Localized: "\uBCF4\uC11D 1\uCE78\uB2F9 \uB808\uBCA8\uB9C8\uB2E4 0.25\uC529
+      \uD68C\uBCF5\uD569\uB2C8\uB2E4 \r\n(\uC81C\uAC70\uB41C \uBCF4\uC11D \uCE78\uC218
+      * \uB808\uBCA8 * 0.25)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7506353094885376
+    m_Localized: "\uBCF4\uC11D\uC73C\uB85C \uACF5\uACA9\uD560\uB54C\uB9C8\uB2E4 \uC77C\uC815
+      \uD655\uB960\uB85C \uC0C1\uB300\uB97C \uAE30\uC808 \uC2DC\uD0B5\uB2C8\uB2E4"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7506684944023552
+    m_Localized: "\uBCF4\uC11D\uC73C\uB85C \uACF5\uACA9\uD560\uB54C\uB9C8\uB2E4 \uC77C\uC815
+      \uD655\uB960\uB85C 2\uD68C \uBC29\uC5B4\uB9C9\uC744 \uC5BB\uC2B5\uB2C8\uB2E4"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
