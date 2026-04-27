@@ -1,94 +1,107 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class RoleSkill : Role
 {
-    [System.Serializable]
-    public struct SkillUI
-    {
-        public RoleSkills role;
-        public GameObject skillObject;   // 해당 직업의 스킬 UI 부모 오브젝트
-        public GameObject cooldownImage; // 쿨타임을 표시할 '오브젝트' (Image 컴포넌트가 들어있어야 함)
-        public float cooldownTime;      // 스킬별 쿨타임 설정
-    }
+    [Header("오브젝트 연결")]
+    // 스프라이트가 교체될 메인 오브젝트의 SpriteRenderer
+    public SpriteRenderer skillIconRenderer;
+    // 쿨타임 시 켜질 가림막 오브젝트 (Skillenable)
+    public GameObject skillEnableObj;
 
-    [Header("Skill UI Settings")]
-    public List<SkillUI> skillUIList;
+    [Header("직업별 스프라이트")]
+    public Sprite warriorIcon;
+    public Sprite rogueIcon;
+    public Sprite archerIcon;
+    public Sprite wizardIcon;
 
-    private Dictionary<RoleSkills, SkillUI> skillLookup = new Dictionary<RoleSkills, SkillUI>();
+    [Header("직업별 쿨타임 (초)")]
+    public float warriorCooldown = 10f;
+    public float rogueCooldown = 8f;
+    public float archerCooldown = 5f;
+    public float wizardCooldown = 15f;
+
+    private Dictionary<RoleSkills, float> cooldownLookup = new Dictionary<RoleSkills, float>();
     private Dictionary<RoleSkills, float> lastUsedTime = new Dictionary<RoleSkills, float>();
     private KeyBinding key;
 
-    public static bool isWarrior = false;
-    public static bool isRogue = false;
-    public static bool isArcher = false;
-    public static bool isWizard = false;
+    public static bool isWarrior, isRogue, isArcher, isWizard;
     public static int avoid = 2;
+
+    void Awake()
+    {
+        // 씬 시작 시 데이터 로드
+        roleSkill = (RoleSkills)PlayerPrefs.GetInt("SelectedRole", 0);
+    }
+
+    void OnEnable() { Role.OnRoleChosen += HandleRoleChange; }
+    void OnDisable() { Role.OnRoleChosen -= HandleRoleChange; }
 
     void Start()
     {
         key = FindAnyObjectByType<KeyBinding>();
 
-        foreach (var ui in skillUIList)
-        {
-            skillLookup[ui.role] = ui;
-            lastUsedTime[ui.role] = -100f;
-        }
+        // 쿨타임 값 세팅
+        cooldownLookup[RoleSkills.Warrior] = warriorCooldown;
+        cooldownLookup[RoleSkills.Rogue] = rogueCooldown;
+        cooldownLookup[RoleSkills.Archer] = archerCooldown;
+        cooldownLookup[RoleSkills.Wizard] = wizardCooldown;
+
+        // 시작 즉시 사용 가능하도록 초기화
+        foreach (RoleSkills role in System.Enum.GetValues(typeof(RoleSkills)))
+            lastUsedTime[role] = -100f;
 
         RefreshSkillUI();
     }
 
     void Update()
     {
-        UpdateCooldownDisplay();
+        // 가림막 오브젝트 On/Off 제어
+        UpdateCooldownState();
 
-        if (Input.GetKeyDown(key.Skill))
+        // 스킬 실행 체크
+        if (Input.GetKeyDown(key.Skill) && CanUseSkill())
         {
-            if (CanUseSkill(roleSkill))
-            {
-                ExecuteSkill();
-                lastUsedTime[roleSkill] = Time.time;
-            }
+            ExecuteSkill();
+            lastUsedTime[roleSkill] = Time.time;
         }
     }
 
     public void RefreshSkillUI()
     {
-        foreach (var ui in skillUIList)
+        if (skillIconRenderer == null) return;
+
+        // SpriteRenderer의 sprite를 직접 교체
+        switch (roleSkill)
         {
-            if (ui.skillObject != null)
-                ui.skillObject.SetActive(ui.role == roleSkill);
+            case RoleSkills.Warrior: skillIconRenderer.sprite = warriorIcon; break;
+            case RoleSkills.Rogue: skillIconRenderer.sprite = rogueIcon; break;
+            case RoleSkills.Archer: skillIconRenderer.sprite = archerIcon; break;
+            case RoleSkills.Wizard: skillIconRenderer.sprite = wizardIcon; break;
         }
     }
 
-    bool CanUseSkill(RoleSkills role)
+    private void HandleRoleChange(RoleSkills newRole)
     {
-        if (!skillLookup.ContainsKey(role)) return false;
-        return Time.time >= lastUsedTime[role] + skillLookup[role].cooldownTime;
+        roleSkill = newRole;
+        RefreshSkillUI();
     }
 
-    void UpdateCooldownDisplay()
+    bool CanUseSkill()
     {
-        foreach (var ui in skillUIList)
+        return Time.time >= lastUsedTime[roleSkill] + cooldownLookup[roleSkill];
+    }
+
+    void UpdateCooldownState()
+    {
+        if (skillEnableObj == null) return;
+
+        // 쿨타임 중이면 켜고, 아니면 끔
+        bool isCoolingDown = !CanUseSkill();
+        if (skillEnableObj.activeSelf != isCoolingDown)
         {
-            if (ui.cooldownImage == null) continue;
-
-            // GameObject에서 Image 컴포넌트 가져오기
-            Image img = ui.cooldownImage.GetComponent<Image>();
-            if (img == null) continue;
-
-            float remaining = (lastUsedTime[ui.role] + ui.cooldownTime) - Time.time;
-
-            if (remaining > 0)
-            {
-                img.fillAmount = remaining / ui.cooldownTime;
-            }
-            else
-            {
-                img.fillAmount = 0;
-            }
+            skillEnableObj.SetActive(isCoolingDown);
         }
     }
 
@@ -100,12 +113,8 @@ public class RoleSkill : Role
                 StopAllCoroutines();
                 StartCoroutine(WarriorBuffCoroutine());
                 break;
-            case RoleSkills.Rogue:
-                isRogue = true; avoid = 2;
-                break;
-            case RoleSkills.Archer:
-                isArcher = true;
-                break;
+            case RoleSkills.Rogue: isRogue = true; avoid = 2; break;
+            case RoleSkills.Archer: isArcher = true; break;
             case RoleSkills.Wizard:
                 isWizard = true;
                 Enemybase[] enemies = FindObjectsByType<Enemybase>(FindObjectsSortMode.None);
