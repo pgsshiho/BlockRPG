@@ -222,6 +222,10 @@ MonoBehaviour:
       \uD655\uB960\uB85C 2\uD68C \uBC29\uC5B4\uB9C9\uC744 \uC5BB\uC2B5\uB2C8\uB2E4"
     m_Metadata:
       m_Items: []
+  - m_Id: 8985239917920256
+    m_Localized: "\uD658\uC0DD"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

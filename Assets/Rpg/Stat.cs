@@ -123,13 +123,17 @@ public class Stat : MonoBehaviour, TakeDamage
     }
 
     public void GainExperience(float amount)
-    {
-        ex += amount;
+    {   
+        float difficultyMultiplier = difficult / 2f;
+
+        // 최종 경험치 계산
+        float finalEx = amount * difficultyMultiplier;
+
+        ex += finalEx;
         LevelCheck();
         expcal();
         SaveData();
     }
-
     public void TakeDamage(int amount, string attackerName) => damage(amount, attackerName);
 
     private void LevelCheck()

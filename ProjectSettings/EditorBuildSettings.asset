@@ -26,6 +26,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Tetris/Scene/Dungeon.unity
     guid: 51ff8e0f2245f824d847e288df7f9c63
+  - enabled: 1
+    path: Assets/GameOver/Scene/Clear.unity
+    guid: 3716e935178af2743829a8bcbec09935
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 10f3ecefb02abc94c8f63d01ab82cc1e,
       type: 2}

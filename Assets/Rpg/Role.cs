@@ -20,10 +20,11 @@ public class Role : MonoBehaviour
     {
         roleSkill = (RoleSkills)index;
 
-        // 1. 이벤트를 발생시킴 (구독 중인 Stat이 이를 수신함)
+        // 씬이 바뀌어도 기억할 수 있도록 저장 (0: Warrior, 1: Rogue 등)
+        PlayerPrefs.SetInt("SelectedRole", index);
+
         OnRoleChosen?.Invoke(roleSkill);
 
-        // 2. 선택창 비활성화
         if (Choose != null) Choose.SetActive(false);
     }
 }

@@ -21,7 +21,6 @@ public class StatUI : MonoBehaviour
     public Image overstatPanel; // Image로 변경 (페이드 애니메이션용)
     public TextMeshProUGUI popupText;
     [SerializeField] private string tableName = "MyTable"; // 테이블 이름
-
     private Sequence popupSequence;
 
     private void Start()

@@ -5337,6 +5337,7 @@ MonoBehaviour:
   shieldLvText: {fileID: 0}
   lightningLvText: {fileID: 0}
   healLvText: {fileID: 0}
+  UpgradePanel: {fileID: 0}
 --- !u!4 &221700111
 Transform:
   m_ObjectHideFlags: 0
@@ -5365,24 +5366,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoleSkill
   roleSkill: 0
-  Choose: {fileID: 0}
-  skillUIList:
-  - role: 0
-    skillObject: {fileID: 1635407335}
-    cooldownImage: {fileID: 1635407335}
-    cooldownTime: 30
-  - role: 1
-    skillObject: {fileID: 1635407335}
-    cooldownImage: {fileID: 1635407335}
-    cooldownTime: 50
-  - role: 2
-    skillObject: {fileID: 1635407335}
-    cooldownImage: {fileID: 1635407335}
-    cooldownTime: 40
-  - role: 3
-    skillObject: {fileID: 1635407335}
-    cooldownImage: {fileID: 1635407335}
-    cooldownTime: 40
+  Choose: {fileID: 1697231196}
+  skillIconRenderer: {fileID: 631029344}
+  skillEnableObj: {fileID: 1635407335}
+  warriorIcon: {fileID: 21300000, guid: 789a2a8232c97734ab8db7650fc788fd, type: 3}
+  rogueIcon: {fileID: 21300000, guid: 1b07879faae3828469a87b1c16a38424, type: 3}
+  archerIcon: {fileID: 21300000, guid: c99bf6f2f236bfa46a6b466906ad0a5f, type: 3}
+  wizardIcon: {fileID: 21300000, guid: 630762f2f863a944c936acabd705f3c9, type: 3}
+  warriorCooldown: 10
+  rogueCooldown: 8
+  archerCooldown: 5
+  wizardCooldown: 15
 --- !u!1 &224275203
 GameObject:
   m_ObjectHideFlags: 0
@@ -13700,6 +13694,8 @@ GameObject:
   m_Component:
   - component: {fileID: 631029345}
   - component: {fileID: 631029344}
+  - component: {fileID: 631029347}
+  - component: {fileID: 631029346}
   m_Layer: 0
   m_Name: SkillIcon
   m_TagString: Untagged
@@ -13765,21 +13761,63 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!4 &631029345
-Transform:
+--- !u!224 &631029345
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 631029343}
-  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.076, y: 2.43, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.38764673, y: 0.38764673, z: 0.38764673}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -6.076, y: 2.43}
+  m_SizeDelta: {x: 5.12, y: 5.12}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &631029346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 631029343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &631029347
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 631029343}
+  m_CullTransparentMesh: 1
 --- !u!1 &644165073
 GameObject:
   m_ObjectHideFlags: 0
@@ -34417,6 +34455,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1635407337}
   - component: {fileID: 1635407336}
+  - component: {fileID: 1635407339}
+  - component: {fileID: 1635407338}
   m_Layer: 0
   m_Name: Skillenable
   m_TagString: Untagged
@@ -34483,21 +34523,63 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!4 &1635407337
-Transform:
+--- !u!224 &1635407337
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1635407335}
-  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.0799994, y: 2.43, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.990439, y: 1.990439, z: 0.9952195}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -6.0799994, y: 2.43}
+  m_SizeDelta: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1635407338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1635407335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1635407339
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1635407335}
+  m_CullTransparentMesh: 1
 --- !u!1 &1636743022
 GameObject:
   m_ObjectHideFlags: 0
@@ -35568,6 +35650,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 32e3835094ff5a04b8ce466fa0c2cf5b, type: 3}
+--- !u!1 &1697231196 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3087539679853526336, guid: 32e3835094ff5a04b8ce466fa0c2cf5b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1697231195}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1700564165
 GameObject:
   m_ObjectHideFlags: 0
@@ -45301,10 +45389,8 @@ SceneRoots:
   - {fileID: 593849041}
   - {fileID: 2008495377}
   - {fileID: 1396576926}
-  - {fileID: 1635407337}
   - {fileID: 122857829}
   - {fileID: 963794972}
-  - {fileID: 631029345}
   - {fileID: 1921158912}
   - {fileID: 1402382794}
   - {fileID: 251815464}
@@ -45326,3 +45412,5 @@ SceneRoots:
   - {fileID: 377189198}
   - {fileID: 1388643860}
   - {fileID: 221700111}
+  - {fileID: 631029345}
+  - {fileID: 1635407337}

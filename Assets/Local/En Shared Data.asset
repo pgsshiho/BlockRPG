@@ -159,6 +159,10 @@ MonoBehaviour:
     m_Key: ShieldEx
     m_Metadata:
       m_Items: []
+  - m_Id: 8985239917920256
+    m_Key: reincarnation
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
