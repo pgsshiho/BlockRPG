@@ -54,10 +54,16 @@ public class Prism_Dragon : Enemybase, ISpecialAttack
         if (anim != null) anim.SetTrigger("Dead");
 
         base.dead(); // Enemybase의 dead 호출 (보상 처리)
+        Sound.instance.Prism_Dragon_dead.time = 1f;
+        Sound.instance.Prism_Dragon_dead.Play();
 
+        Invoke(nameof(StopSound), 1f);
         StartCoroutine(WaitDeadAnimation());
     }
-
+    void StopSound()
+    {
+        Sound.instance.Prism_Dragon_dead.Stop();
+    }
     IEnumerator WaitDeadAnimation()
     {
         yield return new WaitForSeconds(0.8f); // 사망 애니메이션 대기

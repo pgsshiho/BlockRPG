@@ -61,6 +61,7 @@ public class night_Knight : Enemybase
         isDead = true;
         if (anim != null) anim.SetTrigger("dead");
         base.dead();
+        Sound.instance.night_knight_dead.Play();
         StartCoroutine(WaitDeadAnimation());
     }
 

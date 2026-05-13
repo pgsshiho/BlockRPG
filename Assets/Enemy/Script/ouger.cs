@@ -66,6 +66,7 @@ public class ouger : Enemybase, ISpecialAttack
         if (anim != null) anim.SetTrigger("Dead");
 
         base.dead();
+        Sound.instance.ouger_dead.Play();
         StartCoroutine(WaitDeadAnimation());
     }
 

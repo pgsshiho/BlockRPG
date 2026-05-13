@@ -50,7 +50,7 @@ public class slime : Enemybase
             anim.SetTrigger("dead");
         }
         base.dead(); // 부모의 dead(점수, 경험치 등) 실행
-
+        Sound.instance.slimehit_dead.Play();
         StartCoroutine(WaitDeadAnimation());
     }
 

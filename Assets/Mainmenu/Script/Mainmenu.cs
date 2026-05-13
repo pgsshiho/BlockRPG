@@ -16,6 +16,7 @@ public class Mainmenu : MonoBehaviour
     public GameObject custumpanel;
     public GameObject Statpanel;
     public GameObject Skillpanel;
+    public GameObject bugfixpanel;
     private bool isWaitingForKey = false;
     int nowpage = 0;
     int nowrulepage = 0;
@@ -294,4 +295,13 @@ public class Mainmenu : MonoBehaviour
     }
     public void OpenStat() => Statpanel.SetActive(true);
     public void CloseStat() => Statpanel.SetActive(false);
+
+    public void Openbugfix() => bugfixpanel.SetActive(true);
+    public void Closebugfix() => bugfixpanel.SetActive(false);
+
+    public void bugfix()
+    {
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
+    }
 }

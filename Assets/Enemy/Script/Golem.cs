@@ -97,6 +97,8 @@ public class Golem : Enemybase, ISpecialAttack
         if (anim != null) anim.SetTrigger("dead");
 
         base.dead();
+        Sound.instance.Golem_dead.time = 1f;
+        Sound.instance.Golem_dead.Play();
         StartCoroutine(WaitDeadAnimation());
     }
 

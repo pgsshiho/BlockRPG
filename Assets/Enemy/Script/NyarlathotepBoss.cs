@@ -192,6 +192,7 @@ public class NyarlathotepBoss : Enemybase
         GameManager.Instance?.SetMirrorMode(false);
         if (anim != null) anim.SetTrigger("dead");
         base.dead();
+        Sound.instance.boss_dead.Play();
         StartCoroutine(WaitDeadAnimation());
     }
 

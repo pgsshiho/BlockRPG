@@ -64,7 +64,7 @@ IEnumerator WaitAttackAnimation()
             anim.SetTrigger("Dead");
         }
         base.dead();
-
+        Sound.instance.Goblin_dead.Play();
         StartCoroutine(WaitDeadAnimation());
     }
 

@@ -173,7 +173,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6340094043062272
-    m_Localized: Reset Level
+    m_Localized: reincarnation
     m_Metadata:
       m_Items: []
   - m_Id: 7190543260418048
@@ -253,6 +253,16 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 8985239917920256
     m_Localized: reincarnation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14120726391390208
+    m_Localized: 'Caution: Deleting all save files fixes stat-related bugs.
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14127748121853952
+    m_Localized: Reincarnation Point
     m_Metadata:
       m_Items: []
   references:

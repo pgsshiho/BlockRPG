@@ -8,9 +8,10 @@ public class Sound : MonoBehaviour
 
     [Header("Audio Sources")]
     public AudioSource swing;
+    public AudioSource potion;
     public AudioSource drop;
-    public AudioSource tspinSuccess;
     public AudioSource blockclear;
+    [Header("Enemy Attack")]
     public AudioSource slimehit;
     public AudioSource Goblin;
     public AudioSource Golem;
@@ -22,9 +23,21 @@ public class Sound : MonoBehaviour
     public AudioSource Shamen;
     public AudioSource Kraken;
     public AudioSource Jester;
-    public AudioSource combo;
     public AudioSource siren;
-    public AudioSource potion;
+    [Header("Enemy Dead")]
+    public AudioSource slimehit_dead;
+    public AudioSource Goblin_dead;
+    public AudioSource Golem_dead;
+    public AudioSource Ghost_dead;
+    public AudioSource boss_dead;
+    public AudioSource night_knight_dead;
+    public AudioSource ouger_dead;
+    public AudioSource Prism_Dragon_dead;
+    public AudioSource Shamen_dead;
+    public AudioSource Kraken_dead;
+    public AudioSource Jester_dead;
+    public AudioSource siren_dead;
+
     [Header("Settings UI")]
     public AudioMixer mixer;
 
