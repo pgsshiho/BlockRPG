@@ -20,7 +20,7 @@ public class SkillUI : MonoBehaviour
     void UpdateSkillDisplay()
     {
         var rc = Reincarnation.instance;
-        pointText.text = $"환생 포인트: {rc.reincarnationPoints}";
+        pointText.text = $": {rc.reincarnationPoints}";
         shieldLvText.text = $"Lv.{rc.shieldLevel}";
         lightningLvText.text = $"Lv.{rc.lightningLevel}";
         healLvText.text = $"Lv.{rc.selfHealLevel}";

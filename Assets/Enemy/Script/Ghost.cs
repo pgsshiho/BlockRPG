@@ -113,7 +113,7 @@ public class Ghost : Enemybase, ISpecialAttack
         // StopAllCoroutines(); 
 
         if (anim != null) anim.SetTrigger("Dead");
-
+        Sound.instance.Ghost_dead.Play();
         base.dead();
         StartCoroutine(WaitDeadAnimation());
     }

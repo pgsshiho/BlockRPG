@@ -99,7 +99,7 @@ public class Siren : Enemybase
 
         // 3. 부모 로직 실행 (점수 등)
         base.dead();
-
+        Sound.instance.siren_dead.Play();
         // 4. 스폰 관리는 코루틴에게 맡김
         StartCoroutine(WaitDeadAnimation());
     }

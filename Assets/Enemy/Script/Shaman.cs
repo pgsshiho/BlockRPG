@@ -78,6 +78,7 @@ public class Shaman : Enemybase
         isDead = true;
         if (anim != null) anim.SetTrigger("dead");
         base.dead();
+        Sound.instance.Shamen_dead.Play();
         StartCoroutine(WaitDeadAnimation());
     }
 
