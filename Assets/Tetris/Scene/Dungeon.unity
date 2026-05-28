@@ -4996,7 +4996,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88c23e73a728b4a4b9f0e1178fa3416e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoleSkill
-  roleSkill: 0
+  roleSkill: 4
   Choose: {fileID: 5975573692444255430}
   skillIconRenderer: {fileID: 1888387038}
   skillEnableObj: {fileID: 961100112}
