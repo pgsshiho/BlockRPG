@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 using System;
+using System.Collections;
 
 public class Sound : MonoBehaviour
 {
@@ -41,7 +42,9 @@ public class Sound : MonoBehaviour
     [Header("Settings UI")]
     public AudioMixer mixer;
 
-    // 볼륨 데이터가 변할 때 모든 슬라이더에게 알리는 이벤트
+    private float bgmVolume = 0.75f;
+    private float sfxVolume = 0.75f;
+
     public event Action<float, float> OnVolumeDataChanged;
 
     private void Awake()
@@ -50,7 +53,9 @@ public class Sound : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
-            InitVolume();
+
+            // ★ 핵심: Awake에서 즉시 세팅하지 않고, 코루틴을 시작합니다.
+            StartCoroutine(InitVolumeDelayed());
         }
         else
         {
@@ -58,38 +63,64 @@ public class Sound : MonoBehaviour
         }
     }
 
-    private void InitVolume()
+    // ★ 유니티 오디오 믹서 로딩 타이밍을 맞추기 위한 지연 초기화 함수
+    private IEnumerator InitVolumeDelayed()
     {
-        // 초기 로딩 시 Mixer에 값 적용
-        SetLevelBGM(PlayerPrefs.GetFloat("BGM_Value", 0.75f), false);
-        SetLevelSFX(PlayerPrefs.GetFloat("SFX_Value", 0.75f), false);
+        // 1. 저장된 데이터를 로드합니다.
+        bgmVolume = PlayerPrefs.GetFloat("BGM_Value", 0.75f);
+        sfxVolume = PlayerPrefs.GetFloat("SFX_Value", 0.75f);
+
+        // 2. 유니티 오디오 엔진과 믹서가 완전히 준비될 때까지 '한 프레임' 대기합니다.
+        yield return null;
+
+        // 3. 이제 안정적인 타이밍에 오디오 믹서에 값을 강제로 꽂아 넣습니다.
+        float bgmdB = Mathf.Log10(Mathf.Max(bgmVolume, 0.0001f)) * 20;
+        mixer.SetFloat("BGM", bgmdB);
+
+        float sfxdB = Mathf.Log10(Mathf.Max(sfxVolume, 0.0001f)) * 20;
+        mixer.SetFloat("SFX", sfxdB);
+
+        // 4. 슬라이더들에게도 현재 로드된 최종 값을 전달해 동기화합니다.
+        OnVolumeDataChanged?.Invoke(bgmVolume, sfxVolume);
     }
 
-    // save 매개변수를 추가해 초기화 시 중복 저장을 방지합니다.
     public void SetLevelBGM(float value, bool save = true)
     {
-        float volume = Mathf.Log10(Mathf.Max(value, 0.0001f)) * 20;
+        bgmVolume = Mathf.Clamp01(value);
+
+        float volume = Mathf.Log10(Mathf.Max(bgmVolume, 0.0001f)) * 20;
         mixer.SetFloat("BGM", volume);
 
-        if (save) PlayerPrefs.SetFloat("BGM_Value", value);
+        if (save) PlayerPrefs.SetFloat("BGM_Value", bgmVolume);
 
-        float currentSFX = PlayerPrefs.GetFloat("SFX_Value", 0.75f);
-        OnVolumeDataChanged?.Invoke(value, currentSFX);
+        OnVolumeDataChanged?.Invoke(bgmVolume, sfxVolume);
     }
 
     public void SetLevelSFX(float value, bool save = true)
     {
-        float volume = Mathf.Log10(Mathf.Max(value, 0.0001f)) * 20;
+        sfxVolume = Mathf.Clamp01(value);
+
+        float volume = Mathf.Log10(Mathf.Max(sfxVolume, 0.0001f)) * 20;
         mixer.SetFloat("SFX", volume);
 
-        if (save) PlayerPrefs.SetFloat("SFX_Value", value);
+        if (save) PlayerPrefs.SetFloat("SFX_Value", sfxVolume);
 
-        float currentBGM = PlayerPrefs.GetFloat("BGM_Value", 0.75f);
-        OnVolumeDataChanged?.Invoke(currentBGM, value);
+        OnVolumeDataChanged?.Invoke(bgmVolume, sfxVolume);
     }
 
     public void PlaySE(AudioSource source)
     {
         if (source != null) source.Play();
+    }
+    public void SaveCurrentVolume()
+    {
+        // 1. 현재 실시간 변수에 담긴 값을 PlayerPrefs에 꽂아 넣습니다.
+        PlayerPrefs.SetFloat("BGM_Value", bgmVolume);
+        PlayerPrefs.SetFloat("SFX_Value", sfxVolume);
+
+        // 2. 디스크에 물리적으로 즉시 쓰기 작업을 수행합니다. (데이터 유실 방지)
+        PlayerPrefs.Save();
+
+        Debug.Log($"[SoundManager] 볼륨 저장 완료 - BGM: {bgmVolume}, SFX: {sfxVolume}");
     }
 }

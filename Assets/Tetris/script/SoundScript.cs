@@ -12,18 +12,23 @@ public class SoundScript : MonoBehaviour
 
     void Start()
     {
-        // 처음 시작할 때 슬라이더 위치 초기화
-        RefreshSliderOnOpen();
-
-        slider.onValueChanged.AddListener(OnSliderValueChanged);
+        if (slider != null)
+        {
+            slider.minValue = 0f;
+            slider.maxValue = 1f;
+        }
 
         if (Sound.instance != null)
             Sound.instance.OnVolumeDataChanged += SyncSlider;
+
+        RefreshSliderOnOpen();
+
+        slider.onValueChanged.AddListener(OnSliderValueChanged);
     }
 
     private void OnSliderValueChanged(float val)
     {
-        if (isUpdating) return;
+        if (isUpdating || Sound.instance == null) return;
 
         if (type == SoundType.BGM) Sound.instance.SetLevelBGM(val);
         else Sound.instance.SetLevelSFX(val);
@@ -31,19 +36,25 @@ public class SoundScript : MonoBehaviour
 
     public void SyncSlider(float bgm, float sfx)
     {
+        if (slider == null) return;
+
         isUpdating = true;
         slider.value = (type == SoundType.BGM) ? bgm : sfx;
         isUpdating = false;
     }
 
-    // ★ GameManager에서 호출하는 핵심 함수입니다. 이 부분이 없으면 에러가 납니다!
     public void RefreshSliderOnOpen()
     {
+        if (slider == null) return;
+
         isUpdating = true;
-        float savedVal = (type == SoundType.BGM) ?
+
+        // 현재 로컬에 저장되어 있는 가장 확실한 유저의 세팅 값을 가져옴
+        float currentVal = (type == SoundType.BGM) ?
             PlayerPrefs.GetFloat("BGM_Value", 0.75f) :
             PlayerPrefs.GetFloat("SFX_Value", 0.75f);
-        slider.value = savedVal;
+
+        slider.value = currentVal;
         isUpdating = false;
     }
 
@@ -55,6 +66,6 @@ public class SoundScript : MonoBehaviour
 
     void OnEnable()
     {
-        if (slider != null) RefreshSliderOnOpen();
+        RefreshSliderOnOpen();
     }
 }
