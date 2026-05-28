@@ -47,6 +47,7 @@ public class RoleSkill : Role
         cooldownLookup[RoleSkills.Rogue] = rogueCooldown;
         cooldownLookup[RoleSkills.Archer] = archerCooldown;
         cooldownLookup[RoleSkills.Wizard] = wizardCooldown;
+        cooldownLookup[RoleSkills.None] = 0f;
 
         // 시작 즉시 사용 가능하도록 초기화
         foreach (RoleSkills role in System.Enum.GetValues(typeof(RoleSkills)))
@@ -79,6 +80,7 @@ public class RoleSkill : Role
             case RoleSkills.Rogue: skillIconRenderer.sprite = rogueIcon; break;
             case RoleSkills.Archer: skillIconRenderer.sprite = archerIcon; break;
             case RoleSkills.Wizard: skillIconRenderer.sprite = wizardIcon; break;
+            case RoleSkills.None: skillIconRenderer.sprite = null; break;
         }
     }
 
