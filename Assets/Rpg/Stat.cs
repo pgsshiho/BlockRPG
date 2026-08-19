@@ -49,6 +49,7 @@ public class Stat : MonoBehaviour, TakeDamage
 
     private void Start()
     {
+        skill = FindAnyObjectByType<reincarnationSkill>();
         UpdateRequiredEx();
         RefreshUI();
     }
@@ -109,7 +110,6 @@ public class Stat : MonoBehaviour, TakeDamage
 
     public void damage(int Damage, string killerName)
     {
-        skill = FindAnyObjectByType<reincarnationSkill>();
         if (!skill.isshiled)
         {
             hp -= Damage * difficult * 0.7f;
@@ -159,14 +159,13 @@ public class Stat : MonoBehaviour, TakeDamage
 
     public void hpcal()
     {
-        if (hpBarImage == null) FindUIBars();
-        if (hpBarImage != null) hpBarImage.fillAmount = (float)hp / maxhp;
+        if (hpBarImage != null)
+            hpBarImage.fillAmount = hp / maxhp;
     }
-
     public void expcal()
     {
-        if (expBarImage == null) FindUIBars();
-        if (expBarImage != null) expBarImage.fillAmount = ex / requiredEx;
+        if (expBarImage != null)
+            expBarImage.fillAmount = ex / requiredEx;
     }
 
     private void FindUIBars()
@@ -180,13 +179,18 @@ public class Stat : MonoBehaviour, TakeDamage
     public void OnEnable() => SceneManager.sceneLoaded += OnSceneLoaded;
     public void OnDisable() => SceneManager.sceneLoaded -= OnSceneLoaded;
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) => RefreshUI();
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) { RefreshUI(); skill = FindAnyObjectByType<reincarnationSkill>(); }
 
     public void RefreshUI()
     {
         FindUIBars();
-        hpcal();
-        expcal();
+
+        if (hpBarImage != null)
+            hpBarImage.fillAmount = hp / maxhp;
+
+        if (expBarImage != null)
+            expBarImage.fillAmount = ex / requiredEx;
+
         SafeNotify();
     }
     public void diecheck(int Damage, string killerName)
@@ -244,5 +248,29 @@ public class Stat : MonoBehaviour, TakeDamage
         baseMaxHp = 100;
 
         hp = Mathf.Min(hp, maxhp);
+    }
+    public void FullHeal()
+    {
+        hp = maxhp;
+        hpcal();
+    }
+    public void ResetStat()
+    {
+        difficult = 3;
+
+        it = 0;
+        atk = 0;
+        spd = 0;
+
+        maxstatpoint = 0;
+
+        hp = 100;
+        maxhp = 100;
+
+        level = 1;
+        ex = 0;
+
+        SaveData();
+        RefreshUI();
     }
 }

@@ -42,10 +42,10 @@ public class Mainmenu : MonoBehaviour
     Reincarnation reincarnation;
 
     public GameObject RoleChoose;
+    [SerializeField] private ResetManager resetManager;
     void Start()
     {
         st = Stat.instance;
-        if (st == null) st = FindAnyObjectByType<Stat>();
         if (enemyData != null) enemyData.Load();
         if (reincarnation == null) reincarnation = FindAnyObjectByType<Reincarnation>();
         UpdateKeyUI();
@@ -136,14 +136,6 @@ public class Mainmenu : MonoBehaviour
 
     // --- [기존 로직] ---
     public void qu() => Application.Quit();
-
-    public void infinitestart()
-    {
-        Time.timeScale = 1f;
-        if (Stat.instance != null) Stat.instance.hp = Stat.instance.maxhp;
-        blockclear.currentScore = 0;
-        SceneChanger.BG("Tetris");
-    }
 
     public void difup() { if (st != null && st.difficult < 10) st.difficult++; }
     public void difdown() { if (st != null && st.difficult > 1) st.difficult--; }
@@ -238,61 +230,30 @@ public class Mainmenu : MonoBehaviour
     public void openkey() { keypanel.SetActive(true); UpdateKeyUI(); }
     public void closekey() { keypanel.SetActive(false); UpdateKeyUI(); }
     public void OpenSkill() => Skillpanel.SetActive(true);
-    public void StoryStart() => SceneChanger.BG("StoryTetris");
-    public void DungeonStart() {
-        Time.timeScale = 1f; 
-        if (Stat.instance != null) Stat.instance.hp = Stat.instance.maxhp;
-        blockclear.currentScore = 0;
-        SceneChanger.BG("Dungeon"); }
     public void ResetLevelCheck() => ResetWarning.SetActive(true);
 
     public void ResetLevel()
     {
-        if (st.level >= 5) { 
-            PlayerPrefs.DeleteAll();
-            if (Stat.instance != null)
-            {
-                Stat.instance.difficult = 3;
-                Stat.instance.it = 0;
-                Stat.instance.atk = 0;
-                Stat.instance.spd = 0;
-                Stat.instance.maxstatpoint = 0;
-                Stat.instance.hp = 100;
-                Stat.instance.maxhp = 100;
-                Stat.instance.level = 1;
-                Stat.instance.ex = 0;
-                Stat.instance.SaveData();
-                Stat.instance.RefreshUI();
-            }
+        if (st.level >= 5)
+        {
+            resetManager.FullReset();
 
-            // 도감 데이터 리셋 (세이렌 제외)
-            if (enemyData != null)
-            {
-                enemyData.slime = enemyData.goblin = enemyData.ouger =
-                enemyData.golem = enemyData.chraken = enemyData.ghost = enemyData.dragon =
-                enemyData.crown = enemyData.shaman = enemyData.knight_night = enemyData.boss = false;
-            }
-            reincarnation.PerformReincarnation();
             UpdateEnemyDiscovery();
-            ResetWarning.SetActive(false); 
+
+            ResetWarning.SetActive(false);
+
             RoleChoose.SetActive(true);
         }
         else
         {
-        if (statusText != null) statusText.text = "레벨 5 이상부터 리셋 가능합니다!";
+            if (statusText != null)
+                statusText.text = "레벨 5 이상부터 리셋 가능합니다!";
         }
     }
 
     public void CancelReset() => ResetWarning.SetActive(false);
     public void OpenCustum() => custumpanel.SetActive(true);
     public void CloseCustum() => custumpanel.SetActive(false);
-    public void StartCUstom()
-    {
-        Time.timeScale = 1f;
-        if (Stat.instance != null) Stat.instance.hp = Stat.instance.maxhp;
-        blockclear.currentScore = 0;
-        SceneChanger.BG("custom");
-    }
     public void OpenStat() => Statpanel.SetActive(true);
     public void CloseStat() => Statpanel.SetActive(false);
 

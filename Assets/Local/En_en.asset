@@ -265,6 +265,22 @@ MonoBehaviour:
     m_Localized: Reincarnation Point
     m_Metadata:
       m_Items: []
+  - m_Id: 50262693416239104
+    m_Localized: Key Binding
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50263005677977600
+    m_Localized: Confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50263192064458752
+    m_Localized: Cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50263622068699136
+    m_Localized: Reset
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

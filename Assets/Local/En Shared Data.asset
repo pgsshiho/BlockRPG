@@ -171,6 +171,22 @@ MonoBehaviour:
     m_Key: repoint
     m_Metadata:
       m_Items: []
+  - m_Id: 50262693416239104
+    m_Key: KeyB
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50263005677977600
+    m_Key: confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50263192064458752
+    m_Key: Cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50263622068699136
+    m_Key: "Reset\t"
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
