@@ -59479,6 +59479,7 @@ MonoBehaviour:
   HealTxt: {fileID: 974352590}
   SkillTxt: {fileID: 330832583}
   RoleChoose: {fileID: 1010465114}
+  roleScript: {fileID: 0}
   resetManager: {fileID: 0}
 --- !u!224 &2144814367
 RectTransform:
@@ -59553,7 +59554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4d08b5a20a1efc449ece1be10019844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Role
-  roleSkill: 0
+  roleSkill: 4
   Choose: {fileID: 1010465114}
 --- !u!1 &2146859344
 GameObject:

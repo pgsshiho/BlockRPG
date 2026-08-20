@@ -20,6 +20,7 @@ public class Mainmenu : MonoBehaviour
     private bool isWaitingForKey = false;
     int nowpage = 0;
     int nowrulepage = 0;
+
     [Header("MainPage / Bestiary")]
     public GameObject[] Page;        // 도감 각 페이지 오브젝트
     public GameObject[] PageHide;    // 도감 각 페이지를 가리고 있는 '잠금/물음표' 오브젝트
@@ -42,12 +43,18 @@ public class Mainmenu : MonoBehaviour
     Reincarnation reincarnation;
 
     public GameObject RoleChoose;
+    [SerializeField] private Role roleScript; // ★ Role 스크립트 연결용 변수 추가
     [SerializeField] private ResetManager resetManager;
+
     void Start()
     {
         st = Stat.instance;
         if (enemyData != null) enemyData.Load();
         if (reincarnation == null) reincarnation = FindAnyObjectByType<Reincarnation>();
+
+        // Role 스크립트 자동 탐색 (인스펙터 미할당 대비)
+        if (roleScript == null) roleScript = FindAnyObjectByType<Role>();
+
         UpdateKeyUI();
         UpdateEnemyDiscovery(); // 게임 시작 시 도감 해제 상태 반영
     }
@@ -221,7 +228,7 @@ public class Mainmenu : MonoBehaviour
             case 8: kb.aRotate = newKey; break;
             case 10: kb.openstat = newKey; break;
             case 11: kb.Heal = newKey; break;
-         case 12: kb.Skill = newKey; break;
+            case 12: kb.Skill = newKey; break;
         }
         UpdateKeyUI();
         kb.SaveKeys();
@@ -232,17 +239,22 @@ public class Mainmenu : MonoBehaviour
     public void OpenSkill() => Skillpanel.SetActive(true);
     public void ResetLevelCheck() => ResetWarning.SetActive(true);
 
+    // ★ ResetLevel 수정
     public void ResetLevel()
     {
         if (st.level >= 5)
         {
             resetManager.FullReset();
 
+            // Role 초기화 (None으로 변경 후 선택창 UI 자동 활성화)
+            if (roleScript != null)
+            {
+                roleScript.ResetRole();
+            }
+
             UpdateEnemyDiscovery();
 
             ResetWarning.SetActive(false);
-
-            RoleChoose.SetActive(true);
         }
         else
         {
@@ -250,7 +262,6 @@ public class Mainmenu : MonoBehaviour
                 statusText.text = "레벨 5 이상부터 리셋 가능합니다!";
         }
     }
-
     public void CancelReset() => ResetWarning.SetActive(false);
     public void OpenCustum() => custumpanel.SetActive(true);
     public void CloseCustum() => custumpanel.SetActive(false);
@@ -260,9 +271,13 @@ public class Mainmenu : MonoBehaviour
     public void Openbugfix() => bugfixpanel.SetActive(true);
     public void Closebugfix() => bugfixpanel.SetActive(false);
 
+    // ★ bugfix 수정
     public void bugfix()
     {
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
+
+        // 모든 PlayerPrefs 삭제 후 직업 상태도 None 및 UI 갱신
+        if (roleScript != null) roleScript.ResetRole();
     }
 }
